@@ -1,36 +1,76 @@
-import React from 'react'
-import nishad from '../assets/nishad.jpeg'
-import home from '../assets/home.png'
-
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useMediaQuery } from '@mui/material';
+import nishad from '../assets/nishad.jpeg';
+import HomeIcon from '@mui/icons-material/Home';
+import InsightsIcon from '@mui/icons-material/Insights';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import SensorOccupiedIcon from '@mui/icons-material/SensorOccupied';
+import PaymentIcon from '@mui/icons-material/Payment';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function Sidebar() {
- return (
-    <div className=' h-[915px] bg-white rounded-xl m-5'>
-        <div className='grid grid-cols-10   mx-5 justify-center'>
-            <img src={nishad} className='col-span-4 rounded-full w-[55%] mt-5' alt="" />
-            <div>
-                <h1 className='mt-5 w-full text-nowrap h-auto font-semibold text-xl text-[#585858] '>Welcome back</h1>
-                <h1 className='text-2xl font-bold text-nowrap'>Nishad👋</h1>
+    const location = useLocation();
+    const isTabletScreen = useMediaQuery('(min-width: 768px) and (max-width: 1024px)');
+    const isMobileScreen = useMediaQuery('(max-width: 767px)'); // Detect mobile screen size
+
+    const navigationItems = [
+        { to: '/', icon: <HomeIcon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Home' },
+        { to: '/insights', icon: <InsightsIcon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Insights' },
+        { to: '/expense', icon: <AttachMoneyIcon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Expense Tracker' },
+        { to: '/add', icon: <PersonAddAlt1Icon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Add Student' },
+        { to: '/modify', icon: <EditNoteIcon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Modify Student' },
+        { to: '/filter', icon: <FilterAltIcon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Filter Student' },
+        { to: '/teacherId', icon: <SensorOccupiedIcon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Create Teacher ID' },
+        { to: '/updatefee', icon: <PaymentIcon fontSize={isTabletScreen ? 'large' : 'medium'} />, text: 'Update Fee' },
+    ];
+
+    if (isMobileScreen) {
+        return null;
+    }
+
+    return (
+        <div className='h-screen p-5'>
+            <div className="w-68 h-full rounded-xl bg-white">
+                <div className="p-6">
+                    <div className="flex flex-row justify-around md:gap-2 lg:gap-0 ">
+                        <img src={nishad} className='w-20 rounded-full' alt="" />
+                        {!isTabletScreen && (
+                            <div className="flex justify-center flex-col items-start gap-0">
+                                <h2 className="text-lg text-[#666666]">Welcome back !</h2>
+                                <h1 className="text-3xl font-bold">Nishad 👋</h1>
+                            </div>
+                        )}
+                    </div>
+                    <div className={`mt-${isTabletScreen ? '20' : '16'} flex flex-col ${isTabletScreen ? 'gap-4 justify-between' : 'gap-36'}`}>
+                        <div className="font-normal flex-grow">
+                            <ul className={`flex justify-center items-center flex-col ${isTabletScreen ? 'mt-10' : 'mt-10'}`}>
+                                {navigationItems.map((item) => (
+                                    <li key={item.to} className="mb-2 w-full">
+                                        <Link to={item.to} className={`flex ${isTabletScreen ? 'justify-center' : 'start'} space-x-2 rounded-3xl px-10 p-2 ${location.pathname === item.to ? 'bg-[#5266D7] text-white' : ''}`}>
+                                            <span className="flex items-center justify-center gap-3 text-xl">
+                                                {isTabletScreen ? item.icon : <>{item.icon} {item.text}</>}
+                                            </span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <button className={`flex start space-x-2 rounded-3xl px-10 p-2 ${isTabletScreen ? 'mt-50' : ''}`}>
+                            <span className="flex items-center justify-center gap-3 text-xl">
+                                <LogoutIcon fontSize={isTabletScreen ? 'large' : 'medium'} />
+                                {!isTabletScreen && 'Logout'}
+                            </span>
+                        </button>
+
+                    </div>
+                </div>
             </div>
-           
         </div>
-
-        <div className='grid grid-cols-10 mx-5 mt-20'>
-            <nav className='col-span-10'>
-                <ul className='flex flex-col gap-3 justify-around'>
-                    <li className='bg-[#5266D7] p-2 rounded-xl text-white text-center'><a href='#home' className='text-lg font-semibold'><span><img src={home} alt="" />Home</span></a></li>
-                    <li className='text-center'><a href='#about' className='text-lg font-medium text-[#333333]'>Insights</a></li>
-                    <li className='text-center'><a href='#contact' className='text-lg font-medium text-[#333333]'>Expense Tracker</a></li>
-                    <li className='text-center'><a href='#contact' className='text-lg font-medium text-[#333333]'>Add Student</a></li>
-                    <li className='text-center'><a href='#contact' className='text-lg font-medium text-[#333333]'>Modify Student</a></li>
-                    <li className='text-center'><a href='#contact' className='text-lg font-medium text-[#333333]'>Filter Student</a></li>
-                    <li className='text-center'><a href='#contact' className='text-lg font-medium text-[#333333]'>Create Teacher ID</a></li>
-                </ul>
-            </nav>
-        </div>
-
-    </div>
- )
+    );
 }
 
-export default Sidebar
+export default Sidebar;
