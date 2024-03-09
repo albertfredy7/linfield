@@ -16,7 +16,9 @@ function App() {
  const isLoginRoute = location.pathname === '/login';
  return (
     <>
+      
       <Routes>
+
         <Route path="/" element={<Home />} />
         <Route path="/insights" element={<Insights />} />
         <Route path="/expense" element={<ExpenseTracker />} />
@@ -25,7 +27,6 @@ function App() {
         <Route path="/filter" element={<FilterStudents />} />
         <Route path="/teacherId" element={<CreateTeacher />} />
         <Route path="/updatefee" element={<UpdateFee />} />
-
 
         <Route path="/login" element={<Login />} />
       </Routes>
