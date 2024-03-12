@@ -1,7 +1,5 @@
 import React from 'react'
 
-
-
 function Button({title,icon}) {
     return (
         <div className=' p-4 w-full mt-14 '>

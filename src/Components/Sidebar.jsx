@@ -33,7 +33,7 @@ function Sidebar() {
     }
 
     return (
-        <div className='h-screen p-5 overflow-y-hidden'>
+        <div className='h-screen p-5 overflow-y-hidden fixed'>
             <div className="w-full h-full rounded-xl lg:flex lg:flex-col lg:justify-between bg-white ">
                 <div className="p-6 h-full">
                     <div className="flex flex-row justify-around md:gap-2 lg:gap-2 xl:gap-2 2xl:gap-4">
