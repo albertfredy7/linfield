@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        '3xl': '1600px', // Define a custom breakpoint named '3xl'
+      },
     },
   },
   plugins: [],
