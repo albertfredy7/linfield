@@ -10,6 +10,7 @@ import ModifyStudent from './Pages/ModifyStudent';
 import FilterStudents from './Pages/FilterStudents';
 import CreateTeacher from './Pages/CreateTeacher';
 import UpdateFee from './Pages/UpdateFee';
+import LoginNew from './Pages/LoginNew';
 
 function App() {
  const location = useLocation();
@@ -28,7 +29,7 @@ function App() {
         <Route path="/teacherId" element={<CreateTeacher />} />
         <Route path="/updatefee" element={<UpdateFee />} />
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginNew />} />
       </Routes>
     </>
  );
