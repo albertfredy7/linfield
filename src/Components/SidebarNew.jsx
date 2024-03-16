@@ -76,9 +76,9 @@ function SidebarNew() {
           </div>
           <div className="col-span-3 md:hidden xl:block">
             <div className="w-full h-full flex flex-col justify-center items-start">
-              <h4 className="text-sm">Welcome back,</h4>
+              <h4 className="text-sm 3xl:text-xl">Welcome back,</h4>
               <div className='w-full'>
-                <h3 className="text-lg font-bold">Nishad👋</h3>
+                <h3 className="text-lg 3xl:text-2xl font-bold">Nishad👋</h3>
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@ function SidebarNew() {
                       : ''
                   }`}
                 >
-                  <span className="flex items-center justify-center gap-3 text-md 3xl:text-lg text-nowrap">
+                  <span className="flex items-center justify-center gap-3 text-md 3xl:text-xl text-nowrap">
                     {isTabletScreen ? (
                       item.icon
                     ) : (

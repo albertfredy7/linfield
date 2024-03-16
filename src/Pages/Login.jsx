@@ -1,85 +1,144 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../assets/logo.png';
 import student from '../assets/4760260.jpg';
-import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS
+import {useSelector, useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import Button from '../Components/Button';
+import { teacherLogin } from '../actions/teacherActions';
 
 const Login = () => {
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Email:', email);
-        console.log('Password:', password);
-        if (!email || !password) {
-            toast.error('Please enter both email and password'); // Use toast for error message
-            return;
-        }
-        // Simulate form submission logic
-        // For demonstration purposes, let's assume the submission fails
-        toast.error('An error occurred during login.'); // Use toast for error message
-    };
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-    return (
-        <div className="lg:grid lg:grid-cols-12 xl:grid xl:grid-cols-12 lg:bg-[#f0f0f0] ">
-            <div className=" lg:col-span-2 xl:col-span-3">
-                <img src={student} className='absolute bottom-0 w-1/3 mix-blend-multiply lg:block md:hidden sm:hidden hidden' alt="" />
-            </div>
-            <div className="col-span-9">
-                {/* This div will occupy the remaining 9 columns */}
-                <div className='bg-[#f0f0f0] p-8'>
-                    <div className="bg-white h-full flex flex-col rounded-xl p-4">
-                        <div className='flex justify-center items-center flex-col'>
-                            <img src={logo} alt="logo" className='lg:w-40 w-[50%]' />
-                        </div>
-                        <div className='text-center'>
-                            <h1 className='text-xl lg:text-3xl font-bold text-[#333333]'>Welcome Back!</h1>
-                            <p className=' text-sm lg:text-xl '>Sign in to your account</p>
-                        </div>
-                        <div className='w-full h-full lg:p-7 md:p-5 sm:p-6 flex flex-col justify-between'>
-                            <div className='flex items-center w-full'>
-                                <form className='form-controls w-full lg:mx-[30%]' onSubmit={handleSubmit}>
-                                    <div className='flex flex-col items-center gap-7'>
-                                        <div className='lg:w-full w-full mx-5 text-lg'>
-                                            <label htmlFor="email">Email</label>
-                                            <input type="text" placeholder='Email' className='text-lg bg-[#f0f0f0] border border-white text-gray-900 rounded-lg block sm:w-full md:w-3/4 lg:w-full p-2.5 w-full' onChange={(e) => setEmail(e.target.value)} />
-                                        </div>
-                                        <div className='lg:w-full w-full mx-5 text-lg'>
-                                            <label htmlFor="password">Password</label>
-                                            <input type="text" placeholder='Enter the password' className='bg-[#f0f0f0] text-lg border border-white text-gray-900 rounded-lg block sm:w-full md:w-3/4 lg:w-full w-full p-2.5' onChange={(e) => setPassword(e.target.value)} />
-                                        </div>
-                                        <div className=' w-full'>
-                                            <input type="checkbox" id="remember" name="remember" value="remember" />
-                                            <label htmlFor="remember" className='text-[#333333] p-3 text-start text-lg'>Remember me</label>
-                                        </div>
-                                        <button className='bg-[#5266D7] text-white text-lg rounded-lg sm:w-full md:w-1/4 lg:w-full p-2.5 sm:px-14 flex justify-center items-center w-full font-semibold'>Login</button>
-                                        <ToastContainer
-                                          position="top-right"
-                                          autoClose={5000}
-                                          hideProgressBar={false}
-                                          newestOnTop={false}
-                                          closeOnClick
-                                          rtl={false}
-                                          pauseOnFocusLoss
-                                          draggable
-                                          pauseOnHover
-                                          theme="colored"
-                                        /> {/* ToastContainer is required to display toasts */}
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div className='text-[#666666]'>
-                            <p className='text-center'>Copyright &copy; 2024 Linfield Eduverse </p>
-                            <p className='text-center text-sm font-semibold'>Designed and developed by Apespot ❤</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  const teacherLoginData = useSelector(state => state.teacherLogin)
+  const {loading, teacherInfo, error} = teacherLoginData
+
+  useEffect(() => {
+    if(teacherInfo) {
+      toast.success('Login successful')
+      setTimeout(() => {
+        navigate('/')
+      }, 1000)
+    } else if(error) {
+      toast.error(error)
+    }
+  }, [teacherInfo, error])
+
+  const handleSubmit = (event) => {
+    console.log('Email:', email);
+    console.log('Password:', password);
+    if (!email || !password) {
+      toast.error('Please enter both email and password'); // Use toast for error message
+      return;
+    } else {
+        console.log('im the else condition')
+      dispatch(teacherLogin(email, password))
+    }
+    
+    // For demonstration purposes, let's assume the submission fails
+    // toast.error('An error occurred during login.'); // Use toast for error message
+  };
+
+  return (
+    <div className="bg-slate-100 w-screen h-screen grid grid-cols-1 md:grid-cols-4 xl:grid-cols-3 overflow-y-hidden py-2">
+      <div className="hidden md:grid md:col-span-2 xl:col-span-1">
+        <img
+          src={student}
+          className="absolute bottom-0 w-1/3 md:w-2/3 xl:w-1/3 mix-blend-multiply hidden md:block "
+          alt=""
+        />
+      </div>
+      <div className="col-span-1 md:col-span-2 xl:col-span-2 p-8 md:p-6 ">
+        <div className="h-full w-full bg-white rounded-lg flex flex-col justify-center items-center">
+          <div className="w-full flex justify-center">
+            <img src={logo} className="w-32 h-32 object-cover " />
+          </div>
+          <h3 className="text-black text-lg md:text-2xl xl:text-xl font-semibold">
+            Welcome back👋
+          </h3>
+          <h3 className="text-base md:text-xl xl:text-lg font-medium pb-4">
+            Sign in to your account
+          </h3>
+          <div className="w-full xl:w-1/2 pt-4 space-y-1 px-4">
+            <label
+              for="email"
+              class="block text-base md:text-xl xl:text-base font-medium text-gray-600"
+            >
+              E-mail
+            </label>
+            <input
+              type="text"
+              id="email"
+              class="bg-gray-200 border text-gray-600 text:base md:text-xl xl:text-base rounded-md block w-full p-2 md:p-4 xl:p-2"
+              placeholder="stevejobs@apple.com"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="w-full xl:w-1/2 pt-4 space-y-1 px-4">
+            <label
+              for="password"
+              class="block text-base md:text-xl xl:text-base font-medium text-gray-600"
+            >
+              Password
+            </label>
+            <input
+              type="text"
+              id="password"
+              class="bg-gray-200 border text-gray-600 text:base md:text-xl xl:text-base rounded-md block w-full p-2 md:p-4 xl:p-2"
+              placeholder="thinkdifferent"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="w-full xl:w-1/2 pt-4 px-4 flex items-center">
+            <input
+              type="checkbox"
+              id="remember"
+              name="remember"
+              value="remember"
+              className="h-4 w-4 md:h-5 md:w-5 xl:h-4 xl:w-4"
+            />
+            <label
+              htmlFor="remember"
+              className="text-gray-600 p-3 text-start text-base md:text-xl xl:text-base"
+            >
+              Remember me
+            </label>
+          </div>
+          <div className="w-full xl:w-1/2 pt-2 md:pt-2 px-2">
+            <Button buttonStyle={`w-full bg-[#5266D7] text-white text-lg p-2 md:p-3 xl:p-2 rounded-lg`} onClick={handleSubmit} text={`Login`} />
+          </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />{' '}
+          {/* ToastContainer is required to display toasts */}
+          {/* <div className="text-[#666666] pb-3  flex-1 flex flex-col justify-end">
+            <p className="text-center text-sm">
+              Copyright &copy; 2024 Linfield Eduverse{' '}
+            </p>
+            <p className="text-center text-sm font-semibold">
+              Designed and developed by Apespot ❤
+            </p>
+          </div> */}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Login;

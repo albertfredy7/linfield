@@ -1,13 +1,15 @@
-import React from 'react'
+import React from "react";
 
-function Button({title,icon}) {
+const Button = ({ buttonStyle, onClick, text, icon, iconStyle, textStyle }) => {
     return (
-        <div className=' p-4 w-full mt-14 '>
-            <div className='bg-white px-8 w-full  rounded-3xl'>
-                <button className='w-full'><span className='flex  justify-center gap-5 items-center text-xl font-semibold text-[#666666]  h-full w-full'><img src={icon} className='w-16' alt="" /> {title}</span></button>
-            </div>
-        </div>
-    )
-}
+      <button
+        className={`${buttonStyle}`}
+        onClick={onClick}
+      >
+        {icon && <img src={icon} className={`${iconStyle}`} />}
+        <h4 className={`${textStyle}`}>{text}</h4>
+      </button>
+    );
+};
 
 export default Button

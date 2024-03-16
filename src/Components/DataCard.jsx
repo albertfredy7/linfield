@@ -20,16 +20,16 @@ function DataCard({type, title, subTitle, tailData, style }) {
           )}
           {imageSrc && (
           <div className={`w-full h-full flex justify-center items-center `}>
-            < img className='h-12 lg:h-14 xl:h-10 3xl:h-14 rounded-full' src={imageSrc} alt="" />
+            < img className='h-14 lg:h-20 xl:h-10 3xl:h-16 rounded-full' src={imageSrc} alt="" />
           </div>
           )}
         </div>
         <div className='col-span-5 h-full  flex flex-col gap-0 justify-center items-center'>
-          <h1 className='font-semibold text-md lg:text-lg xl:text-sm 3xl:text-lg'>{title}</h1>
-          {subTitle && <h2 className='text-[#666666] text-md lg:text-lg xl:text-sm 3xl:text-lg'>{subTitle}</h2>}
+          <h1 className='font-medium text-xl lg:text-2xl xl:text-sm 3xl:text-xl'>{title}</h1>
+          {subTitle && <h2 className='text-[#666666] text-xl lg:text-2xl xl:text-sm 3xl:text-xl'>{subTitle}</h2>}
         </div>
         <div className='col-span-3  h-full  flex justify-center items-center'>
-          <h1 className='font-semibold text-sm lg:text-md 3xl:text-lg'>{tailData}</h1>
+          <h1 className='font-semibold text-xl lg:text-2xl xl:text-sm 3xl:text-md'>{tailData}</h1>
         </div>
       </div>
       {/* <div className='flex flex-row justify-center items-center gap-5 bg-pink-200'>
