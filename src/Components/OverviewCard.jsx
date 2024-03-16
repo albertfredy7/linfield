@@ -1,20 +1,20 @@
-// OverviewCard.js
-
 import { useMediaQuery } from '@mui/material';
 import React from 'react';
 
-
-function OverviewCard( data ) {
-
+function OverviewCard({title, value, style}) {
   const isMobileScreen = useMediaQuery('(max-width: 767px)'); // Detect mobile screen size
-  if(isMobileScreen){
-    return null
+
+  let hight = style && style.h ? style.h : 'full'
+
+  if (isMobileScreen) {
+    return null;
   }
+
   return (
-    <div className='w-full px-4 '>
-      <div className='bg-[#2740CD] text-white  p-2 md:py-8 2xl:py-14 2xl:px-10  rounded-3xl flex flex-col items-center justify-center'>
-        <h2 className='text-md md:text-sm  font-medium text-nowrap'>{data.title}</h2>
-        <p className='text-3xl font-bold'>₹ {data.value}</p>
+    <div className={`w-full px-4 h-${hight}`}>
+      <div className='h-full bg-[#2740CD] text-white p-2 rounded-3xl flex flex-col items-center justify-center'>
+        <h2 className='text-md md:text-md xl:text-lg 3xl:text-2xl font-medium text-nowrap'>{title}</h2>
+        <p className='text-2xl font-bold'>₹ {value}</p>
       </div>
     </div>
   );

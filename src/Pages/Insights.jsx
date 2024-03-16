@@ -25,15 +25,19 @@ function Insights() {
         </div>
 
         {/* tablet screens */}
-        <div className="hidden md:block md:col-span-1 lg:col-span-1 xl:hidden p-4">
-          {/* <SidebarComponent /> */}
-          <SidebarNew />
+        <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen">
+          <div className="md:col-span-1 lg:col-span-1">
+            {/* <SidebarComponent /> */}
+            <SidebarNew/>
+          </div>
         </div>
 
         {/* pc screens */}
-        <div className="hidden xl:block xl:col-span-2 2xl:col-span-1 p-4">
+        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen">
+          <div className='col-span-2 bg-red-100'>
+            <SidebarNew/>
+          </div>
           {/* <SidebarComponent /> */}
-          <SidebarNew />
         </div>
       </div>
       {/* <div className='grid grid-cols-5'>

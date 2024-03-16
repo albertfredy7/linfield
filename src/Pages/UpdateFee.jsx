@@ -19,9 +19,11 @@ function UpdateFee() {
         </div>
 
         {/* pc screens */}
-        <div className="hidden xl:block xl:col-span-2 2xl:col-span-1 p-4">
+        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen">
+          <div className='col-span-2 bg-red-100'>
+            <SidebarNew/>
+          </div>
           {/* <SidebarComponent /> */}
-          <SidebarNew/>
         </div>
         
       </div>
