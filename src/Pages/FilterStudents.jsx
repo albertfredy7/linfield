@@ -1,6 +1,7 @@
 import React from 'react'
 import Sidebar from '../Components/Sidebar'
 import SidebarNew from '../Components/SidebarNew'
+import MobileNavigation from '../Components/MobileNavigation'
 
 function FilterStudents() {
   return (
@@ -8,7 +9,9 @@ function FilterStudents() {
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         <div className="block md:hidden ">
-          this is mobile screen
+          <div className='px-6'>
+            <MobileNavigation />
+          </div>
         </div>
 
         {/* tablet screens */}
@@ -26,7 +29,7 @@ function FilterStudents() {
           </div>
           {/* <SidebarComponent /> */}
         </div>
-        
+
       </div>
       {/* <div className='grid grid-cols-5'>
             <div className='w-full '>

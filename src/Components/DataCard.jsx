@@ -6,10 +6,21 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 function DataCard({type, title, subTitle, tailData, style }) {
 
     const dots = type === 'admissions' ? true : false;
-    const transactionsImg = type === 'transactions' ? 'https://www.kindpng.com/picc/m/471-4710522_money-icon-circle-hd-png-download.png' : null;
-    const admissionImg = type === 'admissions' ? 'https://cdn-icons-png.freepik.com/512/10584/10584906.png' : null;
-    const imageSrc = type === 'admissions' ? admissionImg : transactionsImg;
-    const hight = style && style.h ? style.h : null
+    const imageMap = {
+      transactions: 'https://www.kindpng.com/picc/m/471-4710522_money-icon-circle-hd-png-download.png',
+      admissions: 'https://cdn-icons-png.freepik.com/512/10584/10584906.png',
+      salary: 'https://cdn3.vectorstock.com/i/1000x1000/66/62/salary-vector-31396662.jpg',
+      rent: 'https://static.vecteezy.com/system/resources/previews/031/066/791/non_2x/rent-house-icon-vector.jpg',
+      stationary: 'https://static.vecteezy.com/system/resources/previews/024/140/802/non_2x/download-this-premium-icon-of-stationery-in-trendy-style-ready-to-use-vector.jpg',
+      refreshment: 'https://static.vecteezy.com/system/resources/thumbnails/000/177/819/small_2x/Strawberry_Smoothies.jpg',
+      electricity: 'https://cdn3.vectorstock.com/i/1000x1000/47/47/electricity-logo-electric-and-icon-vector-27184747.jpg',
+      repair: 'https://icons.veryicon.com/png/o/education-technology/blue-gray-solid-blend-icon/repair-35.png',
+      equipments: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsjz43Klf80GVH2i8KuQAGskpMSinx1rOZu1_zur0Iu5FYJT0Rbc1lCXW2cbGBm2uHXfw&usqp=CAU',
+      miscallaneous: 'https://static.vecteezy.com/system/resources/previews/021/378/257/non_2x/expense-icon-vector.jpg',
+  };
+  
+  const imageSrc = imageMap[type] || null;
+  const hight = style && style.h ? style.h : null;
     
   return (
     <div className={`bg-white rounded-xl px-4 h-${hight ? hight : 'full'} w-full cursor-pointer hover:bg-slate-200`}>
@@ -54,3 +65,7 @@ function DataCard({type, title, subTitle, tailData, style }) {
 }
 
 export default DataCard
+
+
+
+
