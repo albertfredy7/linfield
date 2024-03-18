@@ -9,7 +9,7 @@ function MobileDateSwitch() {
     };
 
     return (
-        <div className='flex flex-row gap-4 p-2 sm:p-3'>
+        <div className='flex flex-row gap-4 p-2 sm:p-3 '>
             <button 
                 className={`rounded-2xl p-2 sm:p-2 text-xs ${activeButton === 'today' ? 'bg-[#2740CD] text-white' : 'border border-[#767676]'}`}
                 onClick={() => handleButtonClick('today')}
