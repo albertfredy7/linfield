@@ -32,7 +32,7 @@ function MobileNavigation() {
         if (!isOpen) return null;
 
         return (
-            <div className="fixed inset-0 z-10  m-3">
+            <div className="fixed inset-x-0 -bottom-8 z-10 p-3">
                 <div className="flex items-end justify-center min-h-screen">
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose}></div>
                     <div className="inline-block  bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle max-w-lg w-full">
