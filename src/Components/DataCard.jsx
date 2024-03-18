@@ -23,7 +23,7 @@ function DataCard({type, title, subTitle, tailData, style }) {
   const hight = style && style.h ? style.h : null;
     
   return (
-    <div className={`bg-white rounded-xl px-4 h-${hight ? hight : 'full'} w-full cursor-pointer hover:bg-slate-200`}>
+    <div className={`bg-white rounded-xl px-4 py-2 h-${hight ? hight : 'full'} w-full cursor-pointer hover:bg-slate-200`}>
       <div className='grid grid-cols-11 h-full w-full'>
         <div className={`col-span-3 h-full ${dots && 'flex items-center'}`}>
           {dots && (
@@ -31,16 +31,16 @@ function DataCard({type, title, subTitle, tailData, style }) {
           )}
           {imageSrc && (
           <div className={`w-full h-full flex justify-center items-center `}>
-            < img className='h-14 lg:h-20 xl:h-10 3xl:h-16 rounded-full' src={imageSrc} alt="" />
+            < img className='h-12 lg:h-20 xl:h-10 3xl:h-16 rounded-full' src={imageSrc} alt="" />
           </div>
           )}
         </div>
         <div className='col-span-5 h-full  flex flex-col gap-0 justify-center items-center'>
-          <h1 className='font-medium text-xl lg:text-2xl xl:text-sm 3xl:text-xl'>{title}</h1>
-          {subTitle && <h2 className='text-[#666666] text-xl lg:text-2xl xl:text-sm 3xl:text-xl'>{subTitle}</h2>}
+          <h1 className='font-medium text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{title}</h1>
+          {subTitle && <h2 className='text-[#666666] text-md lg:text-2xl xl:text-sm 3xl:text-xl'>{subTitle}</h2>}
         </div>
         <div className='col-span-3  h-full  flex justify-center items-center'>
-          <h1 className='font-semibold text-xl lg:text-2xl xl:text-sm 3xl:text-md'>{tailData}</h1>
+          <h1 className='font-semibold text-lg lg:text-2xl xl:text-sm 3xl:text-md'>{tailData}</h1>
         </div>
       </div>
       {/* <div className='flex flex-row justify-center items-center gap-5 bg-pink-200'>

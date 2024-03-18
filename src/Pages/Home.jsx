@@ -7,13 +7,124 @@ import gmeet from '../assets/meet-logo-new.svg';
 import notion from '../assets/notion.png';
 import DataCard from '../Components/DataCard';
 import DatePicker from '../Components/DatePicker';
+import MobileNavigation from '../Components/MobileNavigation';
+import MobileOverviewCard from '../Components/MobileOverviewCard';
 
 function Home() {
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
+
+
+
         {/* mobile screens */}
-        <div className="block md:hidden ">this is mobile screen</div>
+        <div className="block md:hidden ">
+          <div className='flex flex-col h-screen'>
+
+
+            <div className='flex flex-col items-start pt-10 px-8 py-3'>
+              <h1 className='text-xl sm:text-2xl text-[#2740CD] font-bold '>Hey Nishad 👋</h1>
+              <h2 className='text-[#66666] text-sm text-nowrap '>Everything under your control</h2>
+            </div>
+
+
+
+            <div className='p-3'>
+              <MobileOverviewCard page={'home'} revenue={'₹ 2.02L'} admissions={'3000'} expenses={'₹ 10,000'} />
+            </div>
+
+            <div className='flex gap-3 justify-center items-center p-2'>
+              <Button buttonStyle={`flex items-center gap-2`} icon={gmeet} iconStyle={`h-1/4 w-1/4 lg:h-3/5 lg:w-3/5`} text={`Meet`} textStyle={`text-lg lg:text-2xl font-semibold hover:text-blue-400`} />
+              <Button buttonStyle={`flex items-center gap-2`} icon={notion} iconStyle={`h-1/4 w-1/4 lg:h-3/5 lg:w-3/5`} text={`Notion`} textStyle={`text-lg lg:text-2xl font-semibold hover:text-blue-400`} />
+            </div>
+
+
+            <div className='overflow-y-auto h-full'>
+              {/* Recent transactions */}
+              <div className='px-4 pt-5'>
+                <h4 className="text-lg lg:text-3xl font-semibold">
+                  Recent transactions
+                </h4>
+                <div className='py-3 flex flex-col gap-3'>
+                  <DataCard
+                    type="transactions"
+                    title="Admission Fee"
+                    subTitle="John Doe"
+                    tailData="SSLC"
+                    style={{ h: 'full' }}
+                  />
+                  <DataCard
+                    type="transactions"
+                    title="Tution Fee"
+                    subTitle="John Doe"
+                    tailData="SSLC"
+                    style={{ h: 'full' }}
+                  />
+                  
+                  
+                  <DataCard
+                    type="transactions"
+                    title="Tution Fee"
+                    subTitle="John Doe"
+                    tailData="SSLC"
+                    style={{ h: 'full' }} />
+                  <div className=" px-2 text-md text-blue-600 flex justify-end ">
+                    View more
+                  </div>
+  
+  
+                </div>
+              </div>
+  
+              {/* Recent admissions */}
+              <div className='px-4 py-0 '>
+                <h4 className="text-lg lg:text-3xl font-semibold">
+                  Recent Admisisons
+                </h4>
+                <div className='py-3 flex flex-col gap-3'>
+                  <DataCard
+                    type="admissions"
+                    title="Berlin"
+                    tailData="SSLC"
+                    style={{ h: 'full' }} />
+                  
+                  <DataCard 
+                    type="admissions"
+                    title="Professor"
+                    tailData="SSLC"
+                    style={{ h: 'full' }} />
+                  <DataCard 
+                    type="admissions"
+                    title="Professor"
+                    tailData="SSLC"
+                    style={{ h: 'full' }} />
+                  <DataCard 
+                    type="admissions"
+                    title="Professor"
+                    tailData="SSLC"
+                    style={{ h: 'full' }} />
+                  <div className=" px-2 text-md text-blue-600 flex justify-end ">
+                    View more
+                  </div>
+  
+  
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <div className=''>
+              <MobileNavigation  />
+            </div>
+
+          </div>
+        </div>
+
+
+
 
         {/* tablet screens */}
         <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen"> {/* Parent div contains 2 cols */}
@@ -41,8 +152,8 @@ function Home() {
 
             <div className="grid row-span-4 grid-rows-11 items-center pr-4"> {/* second row contains the data card and quick actions */}
               <div className="row-span-1 h-full flex justify-end gap-6">
-                <Button buttonStyle={`flex items-center gap-2`} icon={gmeet} iconStyle={`h-2/5 w-2/5 lg:h-3/5 lg:w-3/5`} text={`Meet`} textStyle={`text-xl lg:text-2xl font-semibold hover:text-blue-400`}/>
-                <Button buttonStyle={`flex items-center gap-2`} icon={notion} iconStyle={`h-2/5 w-2/5 lg:h-3/5 lg:w-3/5`} text={`Notion`} textStyle={`text-xl lg:text-2xl font-semibold hover:text-blue-400`}/>
+                <Button buttonStyle={`flex items-center gap-2`} icon={gmeet} iconStyle={`h-2/5 w-2/5 lg:h-3/5 lg:w-3/5`} text={`Meet`} textStyle={`text-xl lg:text-2xl font-semibold hover:text-blue-400`} />
+                <Button buttonStyle={`flex items-center gap-2`} icon={notion} iconStyle={`h-2/5 w-2/5 lg:h-3/5 lg:w-3/5`} text={`Notion`} textStyle={`text-xl lg:text-2xl font-semibold hover:text-blue-400`} />
               </div>
               <div className="row-span-5 h-full grid grid-rows-11"> {/* Equal spacing for both transaction DataCard and admissions DataCard components */}
                 <div className="row-span-1 px-7">
@@ -218,10 +329,10 @@ function Home() {
                 </div>
               </div>
               <div className="col-span-1  grid grid-rows-5 px-8 py-4 items-center"> {/* third col of the div */}
-                
+
                 <div className="grid row-span-3 items-end"> {/* first row of the third col, contains the calender */}
                   <div className="w-full h-full 3xl:h-fit">
-                      <DatePicker />
+                    <DatePicker />
                   </div>
                 </div>
                 <div className="grid row-span-1 items-center"> {/* second row of the third col, contains the quick actions */}
@@ -230,8 +341,8 @@ function Home() {
                       Quick actions
                     </h3>
                     <div className="flex gap-4">
-                      <Button buttonStyle={`flex items-center cursor-pointer`} icon={gmeet} iconStyle={`w-3/5 h-3/5 3xl:w-4/5 3xl:h-4/5`} text={`Meet`} textStyle={`text-md 3xl:text-lg hover:text-blue-400`}/>
-                      <Button buttonStyle={`flex items-center cursor-pointer gap-1`} icon={notion} iconStyle={`w-1/2 h-1/2 3xl:w-4/5 3xl:h-4/5`} text={`Notion`} textStyle={`text-md 3xl:text-lg hover:text-blue-400`}/>
+                      <Button buttonStyle={`flex items-center cursor-pointer`} icon={gmeet} iconStyle={`w-3/5 h-3/5 3xl:w-4/5 3xl:h-4/5`} text={`Meet`} textStyle={`text-md 3xl:text-lg hover:text-blue-400`} />
+                      <Button buttonStyle={`flex items-center cursor-pointer gap-1`} icon={notion} iconStyle={`w-1/2 h-1/2 3xl:w-4/5 3xl:h-4/5`} text={`Notion`} textStyle={`text-md 3xl:text-lg hover:text-blue-400`} />
                     </div>
                   </div>
                 </div>

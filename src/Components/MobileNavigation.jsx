@@ -46,7 +46,9 @@ function MobileNavigation() {
     }
 
     return (
-        <div className='fixed bottom-0 bg-white shadow-lg w-full rounded-t-3xl p-5'>
+
+        // remove the fixed  for the bottom navigation for bug fixing
+        <div className=' bottom-0 bg-white shadow-lg w-full rounded-t-3xl p-5'> 
             <div className='flex gap-5 items-center justify-center'>
                 <div className='flex flex-col items-center' onClick={() => navigate('/')}>
                     <HomeIcon fontSize='medium' style={{ color: location.pathname === '/' ? '#2740CD' : '#717171' }} />
@@ -61,7 +63,7 @@ function MobileNavigation() {
                     <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/more' ? '#2740CD' : '#717171' }}>More</p>
                 </div>
                 <div className='flex flex-col items-center' onClick={() => navigate('/expense')}>
-                    <AttachMoneyIcon fontSize='medium' style={{ color: location.pathname === '/expense' ? '#2740CD' : '#717171' }} />
+                    <AttachMoneyIcon fontSize='medium' style={{ color: location.pathname === '/expense' || location.pathname === '/add-expense'  ? '#2740CD' : '#717171' }} />
                     <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/expense' ? '#2740CD' : '#717171' }}>Expense</p>
                 </div>
                 <div className='flex flex-col items-center' onClick={() => navigate('/filter')}>

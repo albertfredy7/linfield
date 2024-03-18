@@ -32,13 +32,14 @@ function DatePicker() {
                 <button onClick={() => changeMonth(1)} className="p-1 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500">&gt;</button>
             </div>
             <div className="grid grid-cols-7 text-sm 3xl:text-lg">
-                <div className="p-2 text-center font-medium text-gray-700">Sun</div>
+                
                 <div className="p-2 text-center font-medium text-gray-700">Mon</div>
                 <div className="p-2 text-center font-medium text-gray-700">Tue</div>
                 <div className="p-2 text-center font-medium text-gray-700">Wed</div>
                 <div className="p-2 text-center font-medium text-gray-700">Thu</div>
                 <div className="p-2 text-center font-medium text-gray-700">Fri</div>
                 <div className="p-2 text-center font-medium text-gray-700">Sat</div>
+                <div className="p-2 text-center font-medium text-gray-700">Sun</div>
                 {generateDaysArray().map((day, index) => {
                     const isToday = day && new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toDateString() === new Date().toDateString();
                     return (
