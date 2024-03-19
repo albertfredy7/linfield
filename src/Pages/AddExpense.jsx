@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Select from 'react-select'
 import MobileNavigation from '../Components/MobileNavigation'
 import Button from '../Components/Button'
+import SidebarNew from '../Components/SidebarNew'
 
 
 
@@ -128,10 +129,10 @@ function AddExpense() {
                             </div>
 
                             <div className='py-5'>
-                                <Button 
-                                buttonStyle={'bg-[#2740CD] text-white p-3 rounded-xl w-full'} 
-                                text={'Add Expense'}
-                                onClick={handleAddExpense()} />
+                                <Button
+                                    buttonStyle={'bg-[#2740CD] text-white p-3 rounded-xl w-full'}
+                                    text={'Add Expense'}
+                                    onClick={handleAddExpense()} />
                             </div>
 
 
@@ -152,21 +153,29 @@ function AddExpense() {
                     </div>
 
                 </div>
-            </div>
+
+                {/* tablet screens */}
+                <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen bg-red-100">
+                    console.log('Tablet screens');
+
+                </div>
 
 
 
 
-            {/* tablet screens */}
-            <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen"> {/* Parent div contains 2 cols */}
-
-            </div>
-
-            {/* pc screens */}
+                {/* pc screens */}
             <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen"> {/* Total 2 cols for pc screens */}
                 {/* <SidebarComponent /> */}
 
             </div>
+            </div>
+
+
+
+
+
+
+
         </div>
 
     )
