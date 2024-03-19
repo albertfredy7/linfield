@@ -82,21 +82,26 @@ function ExpenseTracker() {
             <div className="col-span-2 "> {/* 1st col */}
               <SidebarNew />
             </div>
-            <div className="col-span-6   "> {/* 2nd col */}
-              <div className=" col-span-6 grid grid-rows-5  p-10  h-screen">
-                {/* Expense Tracker Heading */}
+
+            {/* <div className='col-span-6 bg-green-100 grid grid-rows-3'>
+              <div className='row-span-1 bg-green-300'>
+                <h1 className='text-xl p-2'>Expense Tracker</h1>
+              </div>
+              <div className='row-span-2 bg-green-500'>
+
+              </div>
+            </div> */}
+
+            <div className="col-span-6"> 
+              <div className="col-span-6 grid grid-rows-5 p-4 h-screen">
                 <div className='row-span-1  '>
-                  <h1 className="text-3xl font-bold ">Expense Tracker</h1>
-                  {/* Subheading */}
-                  <h2 className="text-lg font-semibold ">Your expenses at a glance</h2>
-                  <div className='p-5'>
+                  <h1 className="text-xl font-semibold">Expense Tracker</h1>
+                  <h2 className="text-lg">Your expenses at a glance</h2>
+                  <div className=''>
                     <MobileDateSwitch />
                   </div>
-
                 </div>
-
-                <div className='row-span-4 flex flex-col gap-3 pt-5 overflow-y-auto h-full bg-red-100 '>
-
+                <div className='row-span-4 flex flex-col gap-3 py-4 overflow-y-auto'>
                   <DataCard title={'Rent'} subTitle={'11.00am'} tailData={'$500'} type={'rent'} />
                   <DataCard title={'Stationary'} subTitle={'11.00am'} tailData={'$500'} type={'stationary'} />
                   <DataCard title={'Refreshment'} subTitle={'11.00am'} tailData={'$500'} type={'refreshment'} />
@@ -109,21 +114,22 @@ function ExpenseTracker() {
                   <DataCard title={'Miscallaneous'} subTitle={'11.00am'} tailData={'$500'} type={'miscallaneous'} />
                 </div>
               </div>
-
-
             </div>
+
+            {/* <div className='col-span-3 bg-red-100'>
+
+            </div> */}
+
+
             <div className=" col-span-3 grid grid-rows-5 pt-5">
               <div className='row-span-1'>
                 <OverviewCard title={'Spend so far'} value={'5000'} />
               </div>
               <div className='flex flex-col h-screen row-span-4 '>
-
-
                 <div className='flex flex-col items-start  px-8  pt-20'>
                   <h1 className='text-2xl sm:text-2xl  font-bold '>Add new expense</h1>
                   <h2 className='text-[#66666] text-sm sm:text-lg  '>Please add details for expense tracking.</h2>
                 </div>
-
                 <div className='px-8 flex flex-col gap-2  py-10 '>
                   <div>
                     <label
@@ -138,8 +144,6 @@ function ExpenseTracker() {
                       class="bg-white border text-gray-600 text-sm  rounded-md block w-full p-2 md:p-4 xl:p-2"
                       placeholder="Enter the amount"
                       required
-
-
                     />
                   </div>
                   <div>
@@ -155,8 +159,6 @@ function ExpenseTracker() {
                       class="bg-white border text-gray-600 text-sm  rounded-md block w-full p-2 md:p-4 xl:p-2"
                       placeholder="Describe the expense"
                       required
-
-
                     />
                   </div>
                   <div>
@@ -196,19 +198,11 @@ function ExpenseTracker() {
                       text={'Add Expense'}
                     />
                   </div>
-
-
                 </div>
-
               </div>
-
-              {/* Expense Form Container */}
-
             </div>
           </div>
         </div>
-
-
       </div>
       {/* <div className='grid grid-cols-5'>
             <div className='w-full '>

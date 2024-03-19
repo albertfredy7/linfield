@@ -235,7 +235,7 @@ function Home() {
         {/* pc screens */}
         <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen"> {/* Total 2 cols for pc screens */}
           {/* <SidebarComponent /> */}
-          <div className="col-span-2 bg-red-100"> {/* 1st col */}
+          <div className="col-span-2"> {/* 1st col */}
             <SidebarNew />
           </div>
           <div className="col-span-9 grid grid-rows-5"> {/* 2nd col */} {/* Inside 2d col 2 rows. */}
