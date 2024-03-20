@@ -32,7 +32,7 @@ function MobileNavigation() {
         if (!isOpen) return null;
 
         return (
-            <div className="fixed inset-x-0 -bottom-8 z-10 p-3">
+            <div className="fixed inset-x-0 -bottom-11 z-10 p-3 w-full">
                 <div className="flex items-end justify-center min-h-screen">
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose}></div>
                     <div className="inline-block  bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle max-w-lg w-full">
@@ -48,8 +48,8 @@ function MobileNavigation() {
     return (
 
         // remove the fixed  for the bottom navigation for bug fixing
-        <div className=' bottom-0 bg-white shadow-lg w-full rounded-t-3xl p-5'> 
-            <div className='flex gap-5 items-center justify-center'>
+        <div className=' bottom-0 bg-[#F2F6F3] shadow-lg w-full h-16 rounded-t-3xl px-5 pt-3'> 
+            <div className='flex gap-5 items-center justify-around'>
                 <div className='flex flex-col items-center' onClick={() => navigate('/')}>
                     <HomeIcon fontSize='medium' style={{ color: location.pathname === '/' ? '#2740CD' : '#717171' }} />
                     <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/' ? '#2740CD' : '#717171' }}>Home</p>
