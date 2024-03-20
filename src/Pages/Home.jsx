@@ -235,7 +235,7 @@ function Home() {
         {/* pc screens */}
         <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen"> {/* Total 2 cols for pc screens */}
           {/* <SidebarComponent /> */}
-          <div className="col-span-2 bg-red-100"> {/* 1st col */}
+          <div className="col-span-2"> {/* 1st col */}
             <SidebarNew />
           </div>
           <div className="col-span-9 grid grid-rows-5"> {/* 2nd col */} {/* Inside 2d col 2 rows. */}
@@ -257,10 +257,10 @@ function Home() {
               />
             </div>
             <div className="row-span-4  pt-2 grid grid-cols-3"> {/* second row is Data cards, which is basically 2 types. Admissions and Transactions. Splitting both in a way both will acquire same space*/}
-              <div className="col-span-2  grid grid-rows-2"> {/* Second row contains 2 cols, first one for data cards that acquire 2x spacing and another contains x spacing for calender and quick actions. This also contains 2 rows one for DataCard referring 'admissions' and second one refers to 'transactions'*/}
-                <div className=" grid grid-rows-8"> {/* Transactions row */}
+              <div className="col-span-2  grid grid-rows-1"> {/* Second row contains 2 cols, first one for data cards that acquire 2x spacing and another contains x spacing for calender and quick actions. This also contains 2 rows one for DataCard referring 'admissions' and second one refers to 'transactions'*/}
+                <div className=" grid grid-rows-8 "> {/* Transactions row */}
                   <div className="row-span-1 flex items-center">
-                    <h3 className="text-md 3xl:text-lg font-semibold px-9">
+                    <h3 className="text-sm 3xl:text-lg font-semibold px-9">
                       Recent transactions
                     </h3>
                   </div>
@@ -293,10 +293,8 @@ function Home() {
                       View more
                     </h3>
                   </div>
-                </div>
-                <div className="grid grid-rows-8"> {/* Admissions row */}
                   <div className="row-span-1 flex items-center">
-                    <h3 className="text-md 3xl:text-lg font-semibold px-9">
+                    <h3 className="text-sm 3xl:text-lg font-semibold px-9">
                       Recent admissions
                     </h3>
                   </div>
@@ -327,8 +325,9 @@ function Home() {
                     </h3>
                   </div>
                 </div>
+                
               </div>
-              <div className="col-span-1  grid grid-rows-5 px-8 py-4 items-center"> {/* third col of the div */}
+              <div className="col-span-1  grid grid-rows-5 px-8 py-4 items-center "> {/* third col of the div */}
 
                 <div className="grid row-span-3 items-end"> {/* first row of the third col, contains the calender */}
                   <div className="w-full h-full 3xl:h-fit">
