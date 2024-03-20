@@ -102,7 +102,7 @@ function SidebarNew() {
                       : ''
                   }`}
                 >
-                  <span className="flex items-center justify-center gap-3 text-md 3xl:text-xl text-nowrap">
+                  <span className="flex items-center justify-center gap-3 text-md 3xl:text-lg text-nowrap">
                     {isTabletScreen ? (
                       item.icon
                     ) : (

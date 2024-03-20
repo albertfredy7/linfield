@@ -28,8 +28,8 @@ function MobileOverviewCard({ item, title, subtitle, page, revenue, admissions, 
                 <div className='bg-[#2740CD] text-white p-4 rounded-3xl flex flex-col items-center justify-center'>
                     <div className='flex gap-10'>
                         <div className='flex flex-col items-center '>
-                            <p className='text-sm font-semibold'>{title}</p>
-                            <p className='text-sm font-semibold'>{subtitle}</p>
+                            <p className='text-lg md:text-sm font-semibold'>{title}</p>
+                            <p className='text-lg md:text-sm font-semibold'>{subtitle}</p>
                         </div>
                     </div>
                 </div>
