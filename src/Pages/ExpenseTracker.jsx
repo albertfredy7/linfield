@@ -41,18 +41,19 @@ function ExpenseTracker() {
           {/* mobile screens */}
           <div className=" block md:hidden ">
             <div className="flex flex-col h-screen">
-              <div className="flex flex-col items-start pt-10 px-8 py-3">
+              <div className="flex flex-col items-center pt-10 px-8 py-3">
                 <h1 className="text-xl sm:text-2xl text-[#2740CD] font-bold ">
                   Hey Nishad 👋
                 </h1>
                 <h2 className="text-[#66666] text-sm text-nowrap ">
                   Track your expenses, start your day right
                 </h2>
-              </div>
-
-              <div className="px-3 py-3">
+                <div className="px-3 py-3">
                 <MobileDateSwitch />
               </div>
+              </div>
+
+              
 
               <div>
                 <MobileOverviewCard title={'Spend so far'} subtitle={'5000'} />
