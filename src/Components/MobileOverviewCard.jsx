@@ -43,7 +43,7 @@ function MobileOverviewCard({ item, title, subtitle, page, revenue, admissions, 
                     <div className='flex gap-10'>
                         <div className='flex flex-col gap-1 items-center '>
                             <MonetizationOnIcon />
-                            <p className='text-md font-semibold'>{revenue}</p>
+                            <p className='text-base font-semibold'>{revenue}</p>
                         </div>
                         <div className='flex flex-col gap-1 items-center '>
                             <SchoolIcon />

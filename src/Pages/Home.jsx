@@ -34,18 +34,18 @@ function Home() {
             </div>
 
             <div className='flex gap-3 justify-center items-center p-2'>
-              <Button buttonStyle={`flex items-center gap-2`} icon={gmeet} iconStyle={`h-1/4 w-1/4 lg:h-3/5 lg:w-3/5`} text={`Meet`} textStyle={`text-lg lg:text-2xl font-semibold hover:text-blue-400`} />
-              <Button buttonStyle={`flex items-center gap-2`} icon={notion} iconStyle={`h-1/4 w-1/4 lg:h-3/5 lg:w-3/5`} text={`Notion`} textStyle={`text-lg lg:text-2xl font-semibold hover:text-blue-400`} />
+              <Button buttonStyle={`flex items-center gap-2`} icon={gmeet} iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`} text={`Meet`} textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`} />
+              <Button buttonStyle={`flex items-center gap-2`} icon={notion} iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`} text={`Notion`} textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`} />
             </div>
 
 
-            <div className='overflow-y-auto h-full'>
+            <div className='overflow-y-auto h-full '>
               {/* Recent transactions */}
-              <div className='px-4 pt-5'>
-                <h4 className="text-lg lg:text-3xl font-semibold">
+              <div className='px-4 pt-5 '>
+                <h4 className="text-base md:text-lg lg:text-3xl font-semibold">
                   Recent transactions
                 </h4>
-                <div className='py-3 flex flex-col gap-3'>
+                <div className='py-3 flex flex-col gap-2'>
                   <DataCard
                     type="transactions"
                     title="Admission Fee"
@@ -68,7 +68,7 @@ function Home() {
                     subTitle="John Doe"
                     tailData="SSLC"
                     style={{ h: 'full' }} />
-                  <div className=" px-2 text-md text-blue-600 flex justify-end ">
+                  <div className=" px-2 text-sm md:text-base text-blue-600 flex justify-end ">
                     View more
                   </div>
   
@@ -77,11 +77,11 @@ function Home() {
               </div>
   
               {/* Recent admissions */}
-              <div className='px-4 py-0 '>
-                <h4 className="text-lg lg:text-3xl font-semibold">
+              <div className='px-4 pb-24 '>
+                <h4 className="text-base md:text-lg lg:text-3xl font-semibold">
                   Recent Admisisons
                 </h4>
-                <div className='py-3 flex flex-col gap-3'>
+                <div className='py-3 flex flex-col gap-2'>
                   <DataCard
                     type="admissions"
                     title="Berlin"
@@ -103,7 +103,7 @@ function Home() {
                     title="Professor"
                     tailData="SSLC"
                     style={{ h: 'full' }} />
-                  <div className=" px-2 text-md text-blue-600 flex justify-end ">
+                  <div className=" px-2 text-sm md:text-md text-blue-600 flex justify-end ">
                     View more
                   </div>
   
@@ -112,11 +112,7 @@ function Home() {
               </div>
             </div>
 
-
-
-
-
-            <div className=''>
+            <div className='fixed bottom-0 right-0 w-full'>
               <MobileNavigation  />
             </div>
 

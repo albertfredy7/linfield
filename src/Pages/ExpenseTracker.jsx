@@ -68,7 +68,7 @@ function ExpenseTracker() {
                 </button>
               </div>
 
-              <div className="px-3 flex flex-col gap-3  overflow-y-auto max-h-full mb-3">
+              <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-20">
                 <DataCard
                   title={'Rent'}
                   subTitle={'11.00am'}
@@ -131,7 +131,7 @@ function ExpenseTracker() {
                 />
               </div>
 
-              <div className="">
+              <div className="fixed bottom-0 right-0 w-full">
                 <MobileNavigation />
               </div>
             </div>
