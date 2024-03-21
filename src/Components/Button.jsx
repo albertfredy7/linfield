@@ -1,10 +1,18 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
-const Button = ({ buttonStyle, onClick, text, icon, iconStyle, textStyle }) => {
+
+const Button = ({ buttonStyle, text, icon, iconStyle, textStyle ,navigateUrl }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(navigateUrl);
+    };
+
     return (
       <button
         className={`${buttonStyle}`}
-        onClick={onClick}
+        onClick={handleClick}
       >
         {icon && <img src={icon} className={`${iconStyle}`} />}
         <h4 className={`${textStyle}`}>{text}</h4>
@@ -12,4 +20,4 @@ const Button = ({ buttonStyle, onClick, text, icon, iconStyle, textStyle }) => {
     );
 };
 
-export default Button
+export default Button;

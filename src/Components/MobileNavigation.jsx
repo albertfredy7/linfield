@@ -67,8 +67,8 @@ function MobileNavigation() {
                     <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/expense' ? '#2740CD' : '#717171' }}>Expense</p>
                 </div>
                 <div className='flex flex-col items-center' onClick={() => navigate('/filter')}>
-                    <FilterAltIcon fontSize='medium' style={{ color: location.pathname === '/filter' ? '#2740CD' : '#717171' }} />
-                    <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/filter' ? '#2740CD' : '#717171' }}>Filter</p>
+                    <FilterAltIcon fontSize='medium' style={{ color: location.pathname === '/filter' || location.pathname === '/applyFilter' ? '#2740CD' : '#717171' }} />
+                    <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/filter' || location.pathname === '/applyFilter' ? '#2740CD' : '#717171' }}>Filter</p>
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
