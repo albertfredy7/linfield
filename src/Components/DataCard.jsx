@@ -54,7 +54,7 @@ function DataCard({ type, title, subTitle, tailData, style }) {
           {subTitle && <h2 className='text-[#666666] text-sm md:text-md lg:text-2xl xl:text-sm 3xl:text-xl'>{subTitle}</h2>}
         </div>
         <div className='col-span-3  h-full  flex justify-center items-center'>
-          <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-md'>{tailData}</h1>
+          <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{tailData}</h1>
         </div>
       </div>
       {isModalOpen && (

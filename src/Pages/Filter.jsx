@@ -277,10 +277,10 @@ function Filter() {
         <div className="block md:hidden bg-[#f0f0f0]">
             <div className='flex flex-col h-screen'>
                 <div className='flex flex-col p-8'>
-                    <h1 className='text-2xl font-bold'>Filter students</h1>
-                    <h1 className='text-sm text-gray-500'>Filter students by Admn No / Mob No</h1>
+                    <h1 className='text-2xl font-bold'>Filter Students</h1>
+                    <h1 className='text-sm text-gray-500'>Filter students based on your criteria</h1>
                 </div>
-                <div className='flex flex-col gap-3 px-6 overflow-y-auto'>
+                <div className='flex flex-col gap-3 px-6 overflow-y-auto scroll-smooth'>
                     <div>
                         <label htmlFor="year" className="block text-sm font-medium text-gray-900 mb-2">Year</label>
                         <Select options={yearOptions} styles={{
@@ -440,8 +440,8 @@ function Filter() {
                             }),
                         }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocSubmitted(e.value)} name="tocSubmitted" controlShouldRenderValue={tocSubmitted ? true : tocSubmitted === false ? true : false} />
                     </div>
-                    <div className='pb-20 flex justify-center items-center pt-5 '>
-                        <Button  text='Apply Filter' buttonStyle='bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md'  />
+                    <div className='pb-20 flex w-full pt-5 '>
+                        <Button  text='Apply Filter' buttonStyle='bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md w-full'  />
                     </div>
 
                 </div>

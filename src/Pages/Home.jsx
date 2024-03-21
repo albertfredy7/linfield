@@ -252,7 +252,7 @@ function Home() {
                 style={{ h: 'full' }}
               />
             </div>
-            <div className="row-span-4  pt-2 grid grid-cols-3"> {/* second row is Data cards, which is basically 2 types. Admissions and Transactions. Splitting both in a way both will acquire same space*/}
+            <div className="row-span-4 pt-2 grid grid-cols-3"> {/* second row is Data cards, which is basically 2 types. Admissions and Transactions. Splitting both in a way both will acquire same space*/}
               <div className="col-span-2  grid grid-rows-1"> {/* Second row contains 2 cols, first one for data cards that acquire 2x spacing and another contains x spacing for calender and quick actions. This also contains 2 rows one for DataCard referring 'admissions' and second one refers to 'transactions'*/}
                 <div className=" grid grid-rows-8 "> {/* Transactions row */}
                   <div className="row-span-1 flex items-center">
