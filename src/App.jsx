@@ -11,6 +11,7 @@ import FilterStudents from './Pages/FilterStudents';
 import CreateTeacher from './Pages/CreateTeacher';
 import UpdateFee from './Pages/UpdateFee';
 import AddExpense from './Pages/AddExpense';
+import Filter from './Pages/Filter';
 
 function App() {
  const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
         <Route path="/add" element={<AddStudent />} />
         <Route path="/modify" element={<ModifyStudent />} />
         <Route path="/filter" element={<FilterStudents />} />
+        <Route path="applyFilter" element={<Filter/>} />
         <Route path="/teacherId" element={<CreateTeacher />} />
         <Route path="/updatefee" element={<UpdateFee />} />
 

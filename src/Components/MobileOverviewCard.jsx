@@ -5,7 +5,7 @@ import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 
 
 
-function MobileOverviewCard({ item, title, subtitle, page, revenue, admissions, expenses }) {
+function MobileOverviewCard({ item, title, subtitle, page, revenue, admissions, expenses,style }) {
     // Check if item prop is provided
     if (item) {
         return (
@@ -25,7 +25,7 @@ function MobileOverviewCard({ item, title, subtitle, page, revenue, admissions, 
         // If item is not provided but title and subtitle are, render them
         return (
             <div className='w-full px-4 '>
-                <div className='bg-[#2740CD] text-white p-4 rounded-3xl flex flex-col items-center justify-center'>
+                <div className={`bg-[#2740CD] text-white p-4 ${style} rounded-3xl flex flex-col items-center justify-center`}>
                     <div className='flex gap-10'>
                         <div className='flex flex-col items-center '>
                             <p className='text-lg md:text-sm font-semibold'>{title}</p>

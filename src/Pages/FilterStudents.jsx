@@ -1,3 +1,14 @@
+import React from 'react'
+import Sidebar from '../Components/Sidebar'
+import SidebarNew from '../Components/SidebarNew'
+import MobileNavigation from '../Components/MobileNavigation'
+import SeachBar from '../Components/SeachBar'
+import OverviewCard from '../Components/OverviewCard'
+import DataCard from '../Components/DataCard'
+import MobileOverviewCard from '../Components/MobileOverviewCard'
+import Button from '../Components/Button'
+import { useNavigate } from 'react-router-dom'
+
 import React from 'react';
 import Sidebar from '../Components/Sidebar';
 import SidebarNew from '../Components/SidebarNew';
@@ -7,6 +18,7 @@ import OverviewCard from '../Components/OverviewCard';
 import DataCard from '../Components/DataCard';
 
 function FilterStudents() {
+ 
 
   const yearOptions = [
     {
@@ -35,8 +47,98 @@ function FilterStudents() {
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
-        <div className="block md:hidden ">
-          <div className="px-6">
+        <div className="block md:hidden  ">
+
+          <div className='flex flex-col h-screen'>
+            <div className='pt-14 px-5 flex flex-col'>
+              <h1 className='text-2xl font-semibold'>Filter Student</h1>
+              <h1 className='text-[#333333] text-sm'>Filter the student based on Admn No / Mobile No </h1>
+            </div>
+  
+            <div className='pt-5'><MobileOverviewCard title={'Total students'} subtitle={'2500'} /></div>
+  
+  
+  
+            <div className='flex justify-between pt-5 pb-5 px-6 gap-8 '>
+              
+              <Button text='Filter' buttonStyle='bg-[#2740CD] text-white px-3 py-1 rounded-xl' navigateUrl={'/applyFilter'} />
+              <SeachBar />
+            </div>
+  
+            <div className='overflow-y-auto flex flex-col gap-3 h-[550px] px-5  pt-5'>
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+              <DataCard
+                type="admissions"
+                title="Professor"
+                tailData="SSLC"
+                style={{ h: 'full' }} />
+            </div>
+          </div>
+
+
+
+
+
+          <div className='fixed bottom-0 right-0 w-full'>
             <MobileNavigation />
           </div>
         </div>
