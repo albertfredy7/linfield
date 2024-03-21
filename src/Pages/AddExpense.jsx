@@ -108,10 +108,10 @@ function AddExpense() {
                                     }}
                                 />
                             </div>
-                            <div>
+                            <div className='w-full bg-red-100'>
                                 <label
                                     for="date"
-                                    class="block text-sm font-medium text-gray-600"
+                                    className="block text-sm font-medium text-gray-600"
                                 >
                                     Date
                                 </label>
@@ -123,7 +123,6 @@ function AddExpense() {
                                     placeholder='Select date'
                                     onChange={(e) => {
                                         setDate(e.target.value)
-
                                     }}
                                 />
                             </div>
