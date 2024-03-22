@@ -74,7 +74,7 @@ function MobileNavigation() {
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
                 {/* Additional navigation items go here */}
                 <div className='grid grid-cols-2 gap-5 p-5 '>
-                    <div className='flex flex-col items-center'><PersonAddAlt1Icon fontSize='medium' />
+                    <div className='flex flex-col items-center' onClick={() => navigate('/add')}><PersonAddAlt1Icon fontSize='medium' />
                         <p className='text-nowrap'>Add Student</p>
                     </div>
                     <div className='flex flex-col items-center'><EditNoteIcon fontSize='medium' />
