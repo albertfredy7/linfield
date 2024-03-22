@@ -428,7 +428,7 @@ function AddStudent() {
           <SidebarNew />
         </div>
         <div className='col-span-9 space-y-8  '>
-          <div className='px-12 pt-10  '>
+          <div className='px-12 pt-10 xl:pt-6  '>
             <h1 className='3xl:text-3xl text-xl  font font-semibold'>Add Student</h1>
             <h1 className='text-[#333333] 3xl:text-lg text-sm'>Enter the details of the student </h1>
           </div>
@@ -565,7 +565,7 @@ function AddStudent() {
 
             </div>
           </div>
-          <div className='p-12 float-end w-1/4 ' >
+          <div className=' pr-3 float-end flex  justify-end w-1/4  ' >
             <Button
               buttonStyle={'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '}
               text={'Add Expense'}
