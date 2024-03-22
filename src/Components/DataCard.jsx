@@ -23,6 +23,7 @@ function DataCard({ type, title, subTitle, tailData, style }) {
   };
 
   const imageSrc = imageMap[type] || null;
+  console.log(imageSrc)
   const height = style && style.h ? style.h : null;
 
   const openModal = (event) => {

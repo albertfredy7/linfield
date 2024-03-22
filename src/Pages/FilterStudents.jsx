@@ -9,13 +9,6 @@ import MobileOverviewCard from '../Components/MobileOverviewCard'
 import Button from '../Components/Button'
 import { useNavigate } from 'react-router-dom'
 
-import React from 'react';
-import Sidebar from '../Components/Sidebar';
-import SidebarNew from '../Components/SidebarNew';
-import MobileNavigation from '../Components/MobileNavigation';
-import SeachBar from '../Components/SeachBar';
-import OverviewCard from '../Components/OverviewCard';
-import DataCard from '../Components/DataCard';
 
 function FilterStudents() {
  
@@ -234,9 +227,7 @@ function FilterStudents() {
               <SeachBar />
             </div>
             <div className='row-span-11 bg-green-500 p-10'>
-              <div className='overflow-y-auto h-full bg-white p-4 rounded-xl'>
-                <h2 className='text-base 3xl:text-2xl font-semibold'>Enter filter condition</h2>
-              </div>
+              
 
             </div>
           </div>

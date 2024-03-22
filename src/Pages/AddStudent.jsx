@@ -131,7 +131,7 @@ function AddStudent() {
               <h1 className='text-2xl font font-semibold'>Add Student</h1>
               <h1 className='text-[#333333] text-md'>Enter the details of the student </h1>
             </div>
-            <div className='pt-10'>
+            <div className='pt-4'>
               <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2">Name</label>
               <input type="text" id="name" className="bg-white border border-white text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="John"
                 value={name}
@@ -247,7 +247,7 @@ function AddStudent() {
               <label htmlFor="admissionFee" className="block text-sm font-medium text-gray-900 mb-2">Admission Fee</label>
               <input type="text" id="admissionFee" className="bg-white border border-white text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="1000" value={admissionFee} onChange={(e) => setAdmissionFee(e.target.value)} required />
             </div>
-            <div className='p-12  '>
+            <div className='w-full  pt-4 pb-8'>
               <Button
                 buttonStyle={'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '}
                 text={'Add Student'}
