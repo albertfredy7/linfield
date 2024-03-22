@@ -468,7 +468,7 @@ function Filter() {
                         {/* <SidebarComponent /> */}
                         <SidebarNew />
                     </div>
-                    <div className='col-span-6 h-full   px-12  3xl:grid-rows-12 overflow-hidden'>
+                    <div className=' col-span-6 h-full px-12  3xl:grid-rows-12 overflow-hidden'>
 
                         <div className='pt-14'>
                             <h1 className='text-2xl lg:text-4xl font-bold'>Filter Students</h1>

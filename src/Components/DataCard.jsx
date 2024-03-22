@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import SchoolIcon from '@mui/icons-material/School';
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 
-function DataCard({ type, title, subTitle, tailData, style }) {
+function DataCard({ type, title, subTitle, tailData, midData, style }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [dotPosition, setDotPosition] = useState({ x: 0, y: 0 });
 
@@ -41,8 +41,8 @@ function DataCard({ type, title, subTitle, tailData, style }) {
 
   return (
     <div className={`relative bg-white rounded-xl px-4 py-2 h-${height ? height : 'full'} w-full cursor-pointer hover:bg-slate-200`}>
-      <div className="grid grid-cols-11 h-full w-full">
-        <div className={`col-span-3 h-full ${dots && 'flex items-center'}`} onClick={openModal}>
+      <div className="grid grid-cols-11  h-full w-full">
+        <div className={`col-span-3  h-full ${dots && 'flex items-center'}`} onClick={openModal}>
           {dots && <MoreVertIcon />}
           {imageSrc && (
             <div className={`w-full h-full flex justify-center items-center `}>
@@ -50,11 +50,14 @@ function DataCard({ type, title, subTitle, tailData, style }) {
             </div>
           )}
         </div>
-        <div className='col-span-5 h-full  flex flex-col gap-0 justify-center items-center'>
+        <div className={`${midData ? 'col-span-4' : 'col-span-5'} h-full  flex flex-col gap-0 justify-center items-center`}>
           <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{title}</h1>
           {subTitle && <h2 className='text-[#666666] text-sm md:text-md lg:text-2xl xl:text-sm 3xl:text-xl'>{subTitle}</h2>}
         </div>
-        <div className='col-span-3  h-full  flex justify-center items-center'>
+        <div className={`${midData ? 'flex' : 'hidden'} col-span-2  h-full justify-center items-center`}>
+          <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{midData}</h1>
+        </div>
+        <div className={`${midData ? 'col-span-2' : 'col-span-3'} h-full flex justify-center items-center`}>
           <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{tailData}</h1>
         </div>
       </div>
