@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import MobileNavigation from '../Components/MobileNavigation'
 import Select from 'react-select'
 import Button from '../Components/Button'
+import SidebarNew from '../Components/SidebarNew'
 
 function Filter() {
     const [admYear, setAdmYear] = useState(null)
@@ -274,184 +275,394 @@ function Filter() {
     ]
 
     return (
-        <div className="block md:hidden bg-[#f0f0f0]">
-            <div className='flex flex-col h-screen'>
-                <div className='flex flex-col p-8'>
-                    <h1 className='text-2xl font-bold'>Filter Students</h1>
-                    <h1 className='text-sm text-gray-500'>Filter students based on your criteria</h1>
+
+        <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
+
+            <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
+
+                {/* mobile screen */}
+                <div className="block md:hidden bg-[#f0f0f0]">
+                    <div className='flex flex-col h-screen'>
+                        <div className='flex flex-col p-8'>
+                            <h1 className='text-2xl font-bold'>Filter Students</h1>
+                            <h1 className='text-sm text-gray-500'>Filter students based on your criteria</h1>
+                        </div>
+                        <div className='flex flex-col gap-3 px-6 overflow-y-auto scroll-smooth'>
+                            <div>
+                                <label htmlFor="year" className="block text-sm font-medium text-gray-900 mb-2">Year</label>
+                                <Select options={yearOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setAdmYear(e.value)} name="feeType" controlShouldRenderValue={admYear ? true : admYear === false ? true : false} />
+                            </div>
+
+                            <div>
+                                <label htmlFor="course" className="block text-sm font-medium text-gray-900 mb-2">Course</label>
+                                <Select options={courseOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setCourse(e.value)} name="feeType" controlShouldRenderValue={course ? true : course === false ? true : false} />
+                            </div>
+                            {course == 'Plustwo' &&
+                                <div>
+                                    <label htmlFor="batch" className="block text-sm font-medium text-gray-900 mb-2">Batch</label>
+                                    <Select options={batchOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setBatch(e.value)} name="feeType" controlShouldRenderValue={batch ? true : batch === false ? true : false} />
+                                </div>}
+
+                            <div>
+                                <label htmlFor="mode" className="block text-sm font-medium text-gray-900 mb-2">Mode</label>
+                                <Select options={modeOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setMode(e.value)} name="feeType" controlShouldRenderValue={mode ? true : mode === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="mode" className="block text-sm font-medium text-gray-900 mb-2">Pending Fee</label>
+                                <Select options={pendingFeeOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setPendingFee(e.value)} name="feeType" controlShouldRenderValue={pendingFee ? true : pendingFee === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="registrationStatus" className="block text-sm font-medium text-gray-900 mb-2">Registration Status</label>
+                                <Select options={registrationStatusOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setRegistrationStatus(e.value)} name="feeType" controlShouldRenderValue={registrationStatus ? true : registrationStatus === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="academicStatus" className="block text-sm font-medium text-gray-900 mb-2">Academic Status</label>
+                                <Select options={academicStatusOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setAcademicStatus(e.value)} name="feeType" controlShouldRenderValue={academicStatus ? true : academicStatus === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="examMonth" className="block text-sm font-medium text-gray-900 mb-2">Exam Month</label>
+                                <Select options={examMonthOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setExamMonth(e.value)} name="feeType" controlShouldRenderValue={examMonth ? true : examMonth === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="examCenter" className="block text-sm font-medium text-gray-900 mb-2">Exam Center</label>
+                                <Select options={examCenterOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setExamCenter(e.value)} name="examCenter" controlShouldRenderValue={examCenter ? true : examCenter === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="tmaRecieved" className="block text-sm font-medium text-gray-900 mb-2">TMA Recieved</label>
+                                <Select options={tmaRecievedOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTmaRecieved(e.value)} name="tmaRecieved" controlShouldRenderValue={tmaRecieved ? true : tmaRecieved === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="tmaSubmitted" className="block text-sm font-medium text-gray-900 mb-2">TMA Submitted</label>
+                                <Select options={tmaSubmittedOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTmaSubmitted(e.value)} name="tmaSubmitted" controlShouldRenderValue={tmaSubmitted ? true : tmaSubmitted === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="tocRecieved" className="block text-sm font-medium text-gray-900 mb-2">TOC Recieved</label>
+                                <Select options={tocRecievedOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocRecieved(e.value)} name="tocRecieved" controlShouldRenderValue={tocRecieved ? true : tocRecieved === false ? true : false} />
+                            </div>
+                            <div>
+                                <label htmlFor="tocSubmitted" className="block text-sm font-medium text-gray-900 mb-2">TOC Submitted</label>
+                                <Select options={tocSubmittedOptions} styles={{
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255, 255, 255)',
+                                    }),
+                                }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocSubmitted(e.value)} name="tocSubmitted" controlShouldRenderValue={tocSubmitted ? true : tocSubmitted === false ? true : false} />
+                            </div>
+                            <div className='pb-20 flex w-full pt-5 '>
+                                <Button text='Apply Filter' buttonStyle='bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md w-full' />
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div className='fixed bottom-0 right-0 w-full'>
+                        <MobileNavigation />
+                    </div>
                 </div>
-                <div className='flex flex-col gap-3 px-6 overflow-y-auto scroll-smooth'>
-                    <div>
-                        <label htmlFor="year" className="block text-sm font-medium text-gray-900 mb-2">Year</label>
-                        <Select options={yearOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setAdmYear(e.value)} name="feeType" controlShouldRenderValue={admYear ? true : admYear === false ? true : false} />
-                    </div>
 
-                    <div>
-                        <label htmlFor="course" className="block text-sm font-medium text-gray-900 mb-2">Course</label>
-                        <Select options={courseOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setCourse(e.value)} name="feeType" controlShouldRenderValue={course ? true : course === false ? true : false} />
-                    </div>
-                    {course == 'Plustwo' &&
-                        <div>
-                            <label htmlFor="batch" className="block text-sm font-medium text-gray-900 mb-2">Batch</label>
-                            <Select options={batchOptions} styles={{
-                                control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    borderRadius: '.5rem',
-                                    padding: '0.2rem',
-                                    borderWidth: '0px',
-                                    backgroundColor: 'RGB(255, 255, 255)',
-                                }),
-                            }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setBatch(e.value)} name="feeType" controlShouldRenderValue={batch ? true : batch === false ? true : false} />
-                        </div>}
 
-                    <div>
-                        <label htmlFor="mode" className="block text-sm font-medium text-gray-900 mb-2">Mode</label>
-                        <Select options={modeOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setMode(e.value)} name="feeType" controlShouldRenderValue={mode ? true : mode === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="mode" className="block text-sm font-medium text-gray-900 mb-2">Pending Fee</label>
-                        <Select options={pendingFeeOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setPendingFee(e.value)} name="feeType" controlShouldRenderValue={pendingFee ? true : pendingFee === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="registrationStatus" className="block text-sm font-medium text-gray-900 mb-2">Registration Status</label>
-                        <Select options={registrationStatusOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setRegistrationStatus(e.value)} name="feeType" controlShouldRenderValue={registrationStatus ? true : registrationStatus === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="academicStatus" className="block text-sm font-medium text-gray-900 mb-2">Academic Status</label>
-                        <Select options={academicStatusOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setAcademicStatus(e.value)} name="feeType" controlShouldRenderValue={academicStatus ? true : academicStatus === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="examMonth" className="block text-sm font-medium text-gray-900 mb-2">Exam Month</label>
-                        <Select options={examMonthOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setExamMonth(e.value)} name="feeType" controlShouldRenderValue={examMonth ? true : examMonth === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="examCenter" className="block text-sm font-medium text-gray-900 mb-2">Exam Center</label>
-                        <Select options={examCenterOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setExamCenter(e.value)} name="examCenter" controlShouldRenderValue={examCenter ? true : examCenter === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="tmaRecieved" className="block text-sm font-medium text-gray-900 mb-2">TMA Recieved</label>
-                        <Select options={tmaRecievedOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTmaRecieved(e.value)} name="tmaRecieved" controlShouldRenderValue={tmaRecieved ? true : tmaRecieved === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="tmaSubmitted" className="block text-sm font-medium text-gray-900 mb-2">TMA Submitted</label>
-                        <Select options={tmaSubmittedOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTmaSubmitted(e.value)} name="tmaSubmitted" controlShouldRenderValue={tmaSubmitted ? true : tmaSubmitted === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="tocRecieved" className="block text-sm font-medium text-gray-900 mb-2">TOC Recieved</label>
-                        <Select options={tocRecievedOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocRecieved(e.value)} name="tocRecieved" controlShouldRenderValue={tocRecieved ? true : tocRecieved === false ? true : false} />
-                    </div>
-                    <div>
-                        <label htmlFor="tocSubmitted" className="block text-sm font-medium text-gray-900 mb-2">TOC Submitted</label>
-                        <Select options={tocSubmittedOptions} styles={{
-                            control: (baseStyles, state) => ({
-                                ...baseStyles,
-                                borderRadius: '.5rem',
-                                padding: '0.2rem',
-                                borderWidth: '0px',
-                                backgroundColor: 'RGB(255, 255, 255)',
-                            }),
-                        }} className="border-white text-sm" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocSubmitted(e.value)} name="tocSubmitted" controlShouldRenderValue={tocSubmitted ? true : tocSubmitted === false ? true : false} />
-                    </div>
-                    <div className='pb-20 flex w-full pt-5 '>
-                        <Button  text='Apply Filter' buttonStyle='bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md w-full'  />
-                    </div>
 
+                {/* tablet screens */}
+                <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen overflow-hidden">
+                    <div className="md:col-span-1 lg:col-span-1">
+                        {/* <SidebarComponent /> */}
+                        <SidebarNew />
+                    </div>
+                    <div className='col-span-6 h-full   px-12  3xl:grid-rows-12 overflow-hidden'>
+
+                        <div className='pt-14'>
+                            <h1 className='text-2xl lg:text-4xl font-bold'>Filter Students</h1>
+                            <h1 className='text-sm lg:text-lg text-[#333333]'>Filter students based on your criteria</h1>
+                        </div>
+                        <div className=' overflow-y-auto h-full scroll-smooth pt-8  gap-3 grid grid-cols-2 space-x-3  '>
+                            <div className='col-span-1 space-y-4 lg:space-y-6'>
+                                <div>
+                                    <label htmlFor="year" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Year</label>
+                                    <Select options={yearOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setAdmYear(e.value)} name="feeType" controlShouldRenderValue={admYear ? true : admYear === false ? true : false} />
+                                </div>
+                                {course == 'Plustwo' &&
+                                    <div>
+                                        <label htmlFor="batch" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Batch</label>
+                                        <Select options={batchOptions} styles={{
+                                            control: (baseStyles, state) => ({
+                                                ...baseStyles,
+                                                borderRadius: '.5rem',
+                                                padding: '0.2rem',
+                                                borderWidth: '0px',
+                                                backgroundColor: 'RGB(255, 255, 255)',
+                                            }),
+                                        }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setBatch(e.value)} name="feeType" controlShouldRenderValue={batch ? true : batch === false ? true : false} />
+                                    </div>}
+
+                                
+                                <div>
+                                    <label htmlFor="mode" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Pending Fee</label>
+                                    <Select options={pendingFeeOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setPendingFee(e.value)} name="feeType" controlShouldRenderValue={pendingFee ? true : pendingFee === false ? true : false} />
+                                </div>
+                                <div>
+                                    <label htmlFor="academicStatus" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Academic Status</label>
+                                    <Select options={academicStatusOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setAcademicStatus(e.value)} name="feeType" controlShouldRenderValue={academicStatus ? true : academicStatus === false ? true : false} />
+                                </div>
+                                <div>
+                                    <label htmlFor="tmaRecieved" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">TMA Recieved</label>
+                                    <Select options={tmaRecievedOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTmaRecieved(e.value)} name="tmaRecieved" controlShouldRenderValue={tmaRecieved ? true : tmaRecieved === false ? true : false} />
+                                </div>
+                                <div>
+                                    <label htmlFor="tmaSubmitted" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">TMA Submitted</label>
+                                    <Select options={tmaSubmittedOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTmaSubmitted(e.value)} name="tmaSubmitted" controlShouldRenderValue={tmaSubmitted ? true : tmaSubmitted === false ? true : false} />
+                                </div>
+                                <div>
+                                    <label htmlFor="tocSubmitted" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">TOC Submitted</label>
+                                    <Select options={tocSubmittedOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocSubmitted(e.value)} name="tocSubmitted" controlShouldRenderValue={tocSubmitted ? true : tocSubmitted === false ? true : false} />
+                                </div>
+
+                            </div>
+
+
+                            <div className='col-span-1 space-y-4 lg:space-y-6'>
+                                <div>
+                                    <label htmlFor="course" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Course</label>
+                                    <Select options={courseOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setCourse(e.value)} name="feeType" controlShouldRenderValue={course ? true : course === false ? true : false} />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="mode" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Mode</label>
+                                    <Select options={modeOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded lg:text-xl text-md" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setMode(e.value)} name="feeType" controlShouldRenderValue={mode ? true : mode === false ? true : false} />
+                                </div>
+
+                                
+
+                                <div>
+                                    <label htmlFor="registrationStatus" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Registration Status</label>
+                                    <Select options={registrationStatusOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setRegistrationStatus(e.value)} name="feeType" controlShouldRenderValue={registrationStatus ? true : registrationStatus === false ? true : false} />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="examMonth" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Exam Month</label>
+                                    <Select options={examMonthOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setExamMonth(e.value)} name="feeType" controlShouldRenderValue={examMonth ? true : examMonth === false ? true : false} />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="examCenter" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Exam Center</label>
+                                    <Select options={examCenterOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setExamCenter(e.value)} name="examCenter" controlShouldRenderValue={examCenter ? true : examCenter === false ? true : false} />
+                                </div>
+                                <div>
+                                    <label htmlFor="tocRecieved" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">TOC Recieved</label>
+                                    <Select options={tocRecievedOptions} styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255, 255, 255)',
+                                        }),
+                                    }} className="border border-gray-200 rounded text-md lg:text-xl" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocRecieved(e.value)} name="tocRecieved" controlShouldRenderValue={tocRecieved ? true : tocRecieved === false ? true : false} />
+                                </div>
+
+                                <div className={`${course === 'Plustwo' ? 'pt-28' : 'pt-14'}`}>
+                                <Button text='Apply Filter' buttonStyle='bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md lg:text-xl w-full' />
+                            </div>
+                            </div>
+
+                            
+
+                            
+                        </div>
+                        
+
+                    </div>
                 </div>
-            </div>
-
-
-            <div className='fixed bottom-0 right-0 w-full'>
-                <MobileNavigation />
             </div>
         </div>
+
     )
 }
 
