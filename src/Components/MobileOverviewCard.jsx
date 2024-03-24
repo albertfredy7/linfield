@@ -43,7 +43,7 @@ function MobileOverviewCard({ item, title, subtitle, page, revenue, admissions, 
                     <div className='flex gap-10'>
                         <div className='flex flex-col gap-1 items-center '>
                             <MonetizationOnIcon />
-                            <p className='text-base font-semibold'>{revenue}</p>
+                            <p className='text-base font-semibold'>₹ {revenue}</p>
                         </div>
                         <div className='flex flex-col gap-1 items-center '>
                             <SchoolIcon />
@@ -51,7 +51,7 @@ function MobileOverviewCard({ item, title, subtitle, page, revenue, admissions, 
                         </div>
                         <div className='flex flex-col gap-1 items-center '>
                             <RequestQuoteIcon />
-                            <p className='text-lg font-semibold'>{expenses}</p>
+                            <p className='text-lg font-semibold'>₹ {expenses}</p>
                         </div>
                     </div>
                 </div>

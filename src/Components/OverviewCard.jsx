@@ -13,8 +13,8 @@ function OverviewCard({title, value, style, number}) {
   return (
     <div className={`w-full px-4 h-${hight}`}>
       <div className={`h-full bg-[#2740CD] text-white p-2 ${style} rounded-3xl flex flex-col items-center justify-center`}>
-        <h2 className='text-md md:text-md lg:text-2xl xl:text-lg 3xl:text-3xl font-medium text-nowrap'>{title}</h2>
-        <p className='text-2xl lg:text-3xl xl:text-2xl 3xl:text-3xl font-bold'> {number ? value : `₹ ${value}`}</p>
+        <h2 className='text-md md:text-lg lg:text-2xl xl:text-lg 3xl:text-3xl font-medium text-nowrap'>{title}</h2>
+        <p className='text-2xl lg:text-3xl xl:text-2xl 3xl:text-3xl font-bold'> {number ? number : `₹ ${value}`}</p>
       </div>
     </div>
   );

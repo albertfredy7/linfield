@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import SchoolIcon from '@mui/icons-material/School';
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 
-function DataCard({ type, title, subTitle, tailData, midData, style }) {
+function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [dotPosition, setDotPosition] = useState({ x: 0, y: 0 });
 
@@ -50,13 +50,12 @@ function DataCard({ type, title, subTitle, tailData, midData, style }) {
             </div>
           )}
         </div>
-        <div className={`${midData ? 'col-span-4' : 'col-span-5'} h-full  flex flex-col gap-0 justify-center items-center`}>
-          <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{title}</h1>
-          {subTitle && <h2 className='text-[#666666] text-sm md:text-md lg:text-2xl xl:text-sm 3xl:text-xl'>{subTitle}</h2>}
+        <div className={`col-span-5 h-full  flex flex-col gap-0 justify-center items-center`}>
+          <h1 className='font-medium text-sm md:text-xl lg:text-2xl xl:text-sm 3xl:text-xl'>{title}</h1>
+          {subTitle && <h2 className='text-[#666666] text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-lg'>{subTitle}</h2>}
         </div>
-        
-        <div className={`${midData ? 'col-span-3' : 'col-span-3'}  xl: h-full flex md:justify-end xl:justify-center   items-center`}>
-          <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{tailData}</h1>
+        <div className={`col-span-3 h-full flex justify-center items-center`}>
+          <h1 className={`font-medium text-sm md:text-xl lg:text-2xl xl:text-sm 3xl:text-2xl ${tailDataStyle && tailDataStyle}`}>{tailData}</h1>
         </div>
       </div>
       {isModalOpen && (
@@ -65,7 +64,7 @@ function DataCard({ type, title, subTitle, tailData, midData, style }) {
             className="fixed inset-0 bg-black bg-opacity-65 z-40"
             onClick={closeModal}
           >
-          <div className="absolute flex flex-col bg-white rounded-lg p-6 shadow-md z-50" style={{ top: dotPosition.y - 54, left: dotPosition.x }}>
+          <div className="absolute flex flex-col bg-white rounded-lg p-6 shadow-md z-50" style={{ top: dotPosition.y - 86, left: dotPosition.x }}>
             <button className="w-full flex justify-between border-b-2 pb-2" onClick={closeModal}>Edit student <EditIcon style={{ color: '#93e9be' }} /></button>
             <button className="w-full flex justify-between gap-4 border-b-2 py-3" onClick={closeModal}>Mark as passed <SchoolIcon style={{ color: '#5390d9' }} /></button>
             <button className="w-full flex justify-between  pt-2" onClick={closeModal}>Mark as failed <NotInterestedOutlinedIcon style={{ color: '#ad2829' }} /></button>
