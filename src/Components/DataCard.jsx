@@ -42,7 +42,7 @@ function DataCard({ type, title, subTitle, tailData, midData, style }) {
   return (
     <div className={`relative bg-white rounded-xl px-4 py-2 h-${height ? height : 'full'} w-full cursor-pointer hover:bg-slate-200`}>
       <div className="grid grid-cols-11  h-full w-full">
-        <div className={`col-span-3  h-full ${dots && 'flex items-center'}`} onClick={openModal}>
+        <div className={`col-span-3   h-full ${dots && 'flex items-center'}`} onClick={openModal}>
           {dots && <MoreVertIcon />}
           {imageSrc && (
             <div className={`w-full h-full flex justify-center items-center `}>
@@ -54,10 +54,8 @@ function DataCard({ type, title, subTitle, tailData, midData, style }) {
           <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{title}</h1>
           {subTitle && <h2 className='text-[#666666] text-sm md:text-md lg:text-2xl xl:text-sm 3xl:text-xl'>{subTitle}</h2>}
         </div>
-        <div className={`${midData ? 'flex' : 'hidden'} col-span-2  h-full justify-center items-center`}>
-          <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{midData}</h1>
-        </div>
-        <div className={`${midData ? 'col-span-2' : 'col-span-3'} h-full flex justify-center items-center`}>
+        
+        <div className={`${midData ? 'col-span-3' : 'col-span-3'}  xl: h-full flex md:justify-end xl:justify-center   items-center`}>
           <h1 className='font-medium text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl'>{tailData}</h1>
         </div>
       </div>

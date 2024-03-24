@@ -108,7 +108,7 @@ function AddExpense() {
                                     }}
                                 />
                             </div>
-                            <div className='w-full bg-red-100'>
+                            <div className='w-full '>
                                 <label
                                     for="date"
                                     className="block text-sm font-medium text-gray-600"
@@ -135,21 +135,15 @@ function AddExpense() {
                             </div>
 
 
+
+                        </div>
+                        <div className='fixed bottom-0 right-0 w-full'>
+                            <MobileNavigation />
                         </div>
 
+
                     </div>
 
-
-
-
-
-
-
-
-
-                    <div className=''>
-                        <MobileNavigation />
-                    </div>
 
                 </div>
 
@@ -164,7 +158,7 @@ function AddExpense() {
                                 <h1 className='text-3xl   font-bold lg:text-4xl '>Add new expense</h1>
                                 <h2 className='text-[#66666] text-lg sm:text-lg lg:text-2xl  '>Please add details for expense tracking.</h2>
                             </div>
-    
+
                             <div className=' flex flex-col gap-2  py-10 '>
                                 <div>
                                     <label
@@ -181,9 +175,9 @@ function AddExpense() {
                                         required
                                         onChange={(e) => {
                                             setAmount(e.target.value)
-    
+
                                         }}
-    
+
                                     />
                                 </div>
                                 <div>
@@ -201,9 +195,9 @@ function AddExpense() {
                                         required
                                         onChange={(e) => {
                                             setDescription(e.target.value)
-    
+
                                         }}
-    
+
                                     />
                                 </div>
                                 <div>
@@ -234,7 +228,7 @@ function AddExpense() {
                                                 fontSize: '1.125rem', // This corresponds to text-lg in Tailwind CSS
                                             }),
                                         }}
-                                        
+
                                     />
                                 </div>
                                 <div>
@@ -252,7 +246,7 @@ function AddExpense() {
                                         placeholder='Select date'
                                         onChange={(e) => {
                                             setDate(e.target.value)
-    
+
                                         }}
                                     />
                                 </div>

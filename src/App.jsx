@@ -12,6 +12,7 @@ import CreateTeacher from './Pages/CreateTeacher';
 import UpdateFee from './Pages/UpdateFee';
 import AddExpense from './Pages/AddExpense';
 import Filter from './Pages/Filter';
+import FeeUpdateForm from './Pages/FeeUpdateForm';
 
 function App() {
  const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
         <Route path="applyFilter" element={<Filter/>} />
         <Route path="/teacherId" element={<CreateTeacher />} />
         <Route path="/updatefee" element={<UpdateFee />} />
+        <Route path="/feeUpdate" element={<FeeUpdateForm />} />
 
         <Route path="/login" element={<Login />} />
       </Routes>
