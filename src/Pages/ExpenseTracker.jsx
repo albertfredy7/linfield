@@ -39,7 +39,7 @@ function ExpenseTracker() {
       <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
         <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6 ">
           {/* mobile screens */}
-          <div className=" block md:hidden ">
+          <div className=" block md:hidden w-screen ">
             <div className="flex flex-col h-screen">
               <div className="flex flex-col items-center pt-10 px-8 py-3">
                 <h1 className="text-xl sm:text-2xl text-[#2740CD] font-bold ">
@@ -48,7 +48,7 @@ function ExpenseTracker() {
                 <h2 className="text-[#66666] text-sm text-nowrap ">
                   Track your expenses, start your day right
                 </h2>
-                <div className="px-3 py-3">
+                <div className=" bg-red-100 justify-center flex items-center">
                 <MobileDateSwitch />
               </div>
               </div>
@@ -155,7 +155,7 @@ function ExpenseTracker() {
                   <h2 className="text-lg lg:text-xl font-semibold ">
                     Your expenses at a glance
                   </h2>
-                  <div className="">
+                  <div className="p-3">
                     <MobileDateSwitch onSelectDateRange={handleDateRangeSelect}/>
                   </div>
                 </div>

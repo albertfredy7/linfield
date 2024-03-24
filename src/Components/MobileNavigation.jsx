@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // icons from material ui
 import HomeIcon from '@mui/icons-material/Home';
@@ -48,7 +48,7 @@ function MobileNavigation() {
     return (
 
         // remove the fixed  for the bottom navigation for bug fixing
-        <div className=' bottom-0 bg-[#F2F6F3] shadow-lg w-full h-16 rounded-t-3xl px-5 pt-3'> 
+        <div className=' bottom-0 bg-[#F2F6F3] shadow-lg w-full h-16 rounded-t-3xl px-5 pt-3'>
             <div className='flex gap-5 items-center justify-around'>
                 <div className='flex flex-col items-center' onClick={() => navigate('/')}>
                     <HomeIcon fontSize='medium' style={{ color: location.pathname === '/' ? '#2740CD' : '#717171' }} />
@@ -63,7 +63,7 @@ function MobileNavigation() {
                     <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/more' ? '#2740CD' : '#717171' }}>More</p>
                 </div>
                 <div className='flex flex-col items-center' onClick={() => navigate('/expense')}>
-                    <AttachMoneyIcon fontSize='medium' style={{ color: location.pathname === '/expense' || location.pathname === '/add-expense'  ? '#2740CD' : '#717171' }} />
+                    <AttachMoneyIcon fontSize='medium' style={{ color: location.pathname === '/expense' || location.pathname === '/add-expense' ? '#2740CD' : '#717171' }} />
                     <p className='text-nowrap text-sm sm:text-md' style={{ color: location.pathname === '/expense' ? '#2740CD' : '#717171' }}>Expense</p>
                 </div>
                 <div className='flex flex-col items-center' onClick={() => navigate('/filter')}>
@@ -83,7 +83,8 @@ function MobileNavigation() {
                     <div className='flex flex-col items-center'><SensorOccupiedIcon fontSize='medium' />
                         <p className='text-nowrap'>Create Teacher</p>
                     </div>
-                    <div className='flex flex-col items-center'><PaymentIcon fontSize='medium' />
+                    <div className='flex flex-col items-center' onClick={() => navigate('/updateFee')}>
+                        <PaymentIcon fontSize='medium' />
                         <p className='text-nowrap'>Update Fee</p>
                     </div>
 

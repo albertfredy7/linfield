@@ -42,7 +42,7 @@ function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
   return (
     <div className={`relative bg-white rounded-xl px-4 py-2 h-${height ? height : 'full'} w-full cursor-pointer hover:bg-slate-200`}>
       <div className="grid grid-cols-11  h-full w-full">
-        <div className={`col-span-3  h-full ${dots && 'flex items-center'}`} onClick={openModal}>
+        <div className={`col-span-3   h-full ${dots && 'flex items-center'}`} onClick={openModal}>
           {dots && <MoreVertIcon />}
           {imageSrc && (
             <div className={`w-full h-full flex justify-center items-center `}>
