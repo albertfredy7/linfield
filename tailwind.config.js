@@ -10,6 +10,7 @@ export default {
     extend: {
       screens: {
         '3xl': '1600px', // Define a custom breakpoint named '3xl'
+        '4xl': '1920px', // Define a custom breakpoint named '3xl'
       },
     },
   },
