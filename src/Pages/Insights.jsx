@@ -11,6 +11,7 @@ import DataCard from '../Components/DataCard';
 import InsightsSwitch from '../Components/InsightsSwitch';
 import DatePicker from '../Components/DatePicker';
 import Button from '../Components/Button';
+import ButtonGroup from '../Components/ButtonGroup';
 
 function Insights() {
   const navigate = useNavigate();
@@ -118,7 +119,129 @@ function Insights() {
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
-        <div className="block md:hidden "></div>
+        <div className="block md:hidden w-full ">
+
+          <div className='flex flex-col h-screen'>
+
+            <div className='p-5'>
+              <h1 className='text-3xl text-center font-semibold'>
+                Insights
+              </h1>
+              <p className='text-center'>All your data is here</p>
+            </div>
+
+
+
+
+
+
+            <div className=' px-5'>
+              <ButtonGroup />
+            </div>
+            <div className='px-10 py-5'>
+              <InsightOverview type={'expenses'} />
+            </div>
+
+            <div className=' p-5'>
+              <MobileDateSwitch />
+            </div>
+
+
+            <div className='flex justify-between items-center py-2 px-5'>
+              <div className=' px-5'>
+                <h1>Recent Transactions</h1>
+              </div>
+              <div className='p-2'>
+                <Button buttonStyle='bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl' text='Add' />
+              </div>
+            </div>
+            <div className='px-3 flex flex-col gap-3  overflow-y-auto pb-20'>
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+
+
+            </div>
+
+
+
+
+            <div className="fixed bottom-0 right-0 w-full">
+              <MobileNavigation />
+            </div>
+          </div>
+
+
+        </div>
 
         {/* tablet screens */}
         <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen">
@@ -364,9 +487,8 @@ function Insights() {
               <div className="col-span-2 bg-violet-200 px-4 py-4 overflow-hidden">
                 <div className="h-full w-full grid grid-rows-9 3xl:grid-rows-8 space-y-3">
                   <div
-                    className={`${
-                      selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
-                    }  bg-green-200 flex items-center justify-center`}
+                    className={`${selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
+                      }  bg-green-200 flex items-center justify-center`}
                   >
                     <button className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-2xl font-medium">
                       Add revenue
@@ -376,22 +498,19 @@ function Insights() {
                     <DatePicker />
                   </div>
                   <div
-                    className={`${
-                      selectedCategory === 'expense'
+                    className={`${selectedCategory === 'expense'
                         ? 'row-span-4'
                         : 'row-span-3'
-                    }  3xl:${
-                      selectedCategory === 'expense'
+                      }  3xl:${selectedCategory === 'expense'
                         ? 'row-span-3'
                         : 'row-span-2'
-                    } bg-white p-3 rounded-xl`}
+                      } bg-white p-3 rounded-xl`}
                   >
                     <div
-                      className={`h-full w-full grid ${
-                        selectedCategory === 'expense'
+                      className={`h-full w-full grid ${selectedCategory === 'expense'
                           ? 'grid-rows-9'
                           : 'grid-rows-5'
-                      } items-center space-y-2 3xl:space-y-1`}
+                        } items-center space-y-2 3xl:space-y-1`}
                     >
                       <div className="row-span-1  flex justify-between items-center">
                         <h2 className="text-sm 3xl:text-base 4xl:text-lg font-semibold">

@@ -6,12 +6,12 @@ const generateData = (type, labels) => (
         {labels.map((label, index) => (
             <>
                 <div key={index} className="text-center px-2">
-                    <p className="text-2xl 3xl:text-4xl text-[#2740CD] font-bold">
+                    <p className="text-xl 3xl:text-4xl text-[#2740CD] font-bold">
                         {type === 'expenses' || type === 'revenue' ? `$${label.amount}` : label.amount}
                     </p>
-                    <p className="text-md font-medium text-[#333333]">{label.text}</p>
+                    <p className="text-xs font-medium text-[#333333] text-nowrap">{label.text}</p>
                 </div>
-                {index < labels.length - 1 && <div><h1 className='text-3xl'>|</h1> </div>}
+                {index < labels.length - 1 && <div><h1 className='text-xl'>|</h1> </div>}
             </>
         ))}
     </>
@@ -41,7 +41,7 @@ function InsightOverview({ type }) {
     const data = dataMapping[type] || <p>No data available</p>;
 
     return (
-        <div className="flex flex-row gap-5 justify-center">
+        <div className="flex flex-row gap-1 px-4 justify-center">
             {data}
         </div>
     );
