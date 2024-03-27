@@ -14,6 +14,7 @@ import Button from '../Components/Button';
 import Select from 'react-select';
 import axios from 'axios';
 import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
+import { duration } from '@mui/material';
 
 function ExpenseTracker() {
   const naviagte = useNavigate();
@@ -22,6 +23,7 @@ function ExpenseTracker() {
   const [category, setCategory] = useState(null);
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
+  const [selectedDuration, setSelectedDuration] = useState('today');
 
   const options = [
     { value: 'Salary', label: 'Salary' },
@@ -42,6 +44,10 @@ function ExpenseTracker() {
   const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(
     currentDate
   );
+
+  const handleDurationChange = (duration) => {
+    setSelectedDuration(duration);
+  };
 
   const handleDateRangeSelect = (dateRange) => {
     console.log(`the date range is ${dateRange}`);
@@ -198,7 +204,9 @@ function ExpenseTracker() {
                   </h2>
                   <div className="p-3">
                     <MobileDateSwitch
+                      duration={selectedDuration}
                       onSelectDateRange={handleDateRangeSelect}
+                      onSelect={handleDurationChange}
                     />
                   </div>
                 </div>

@@ -220,7 +220,7 @@ function Insights() {
                   buttonStyle={'p-4 lg:p-6 lg:px-8 bg-white rounded-lg'}
                   text={'Add revenue'}
                   textStyle={'text-lg lg:text-xl'}
-                  navigateUrl={'/add-revenue'}
+                  navigateUrl={'/addRevenue'}
                 />
               </div>
             </div>

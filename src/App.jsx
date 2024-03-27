@@ -31,7 +31,7 @@ function App() {
         <Route path="/teacherId" element={<CreateTeacher />} />
         <Route path="/updatefee" element={<UpdateFee />} />
         <Route path="/feeUpdate" element={<FeeUpdateForm />} />
-        <Route path="/add-revenue" element={<AddRevenue />} />
+        <Route path="/addRevenue" element={<AddRevenue />} />
 
         <Route path="/login" element={<Login />} />
       </Routes>
