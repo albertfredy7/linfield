@@ -1,4 +1,3 @@
-
 import './App.css';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Insights from './Pages/Insights';
@@ -16,13 +15,11 @@ import FeeUpdateForm from './Pages/FeeUpdateForm';
 import AddRevenue from './Pages/AddRevenue';
 
 function App() {
- const location = useLocation();
- const isLoginRoute = location.pathname === '/login';
- return (
+  const location = useLocation();
+  const isLoginRoute = location.pathname === '/login';
+  return (
     <>
-      
       <Routes>
-
         <Route path="/" element={<Home />} />
         <Route path="/insights" element={<Insights />} />
         <Route path="/expense" element={<ExpenseTracker />} />
@@ -30,7 +27,7 @@ function App() {
         <Route path="/add" element={<AddStudent />} />
         <Route path="/modify" element={<ModifyStudent />} />
         <Route path="/filter" element={<FilterStudents />} />
-        <Route path="applyFilter" element={<Filter/>} />
+        <Route path="applyFilter" element={<Filter />} />
         <Route path="/teacherId" element={<CreateTeacher />} />
         <Route path="/updatefee" element={<UpdateFee />} />
         <Route path="/feeUpdate" element={<FeeUpdateForm />} />
@@ -39,7 +36,7 @@ function App() {
         <Route path="/login" element={<Login />} />
       </Routes>
     </>
- );
+  );
 }
 
 export default App;
