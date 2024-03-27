@@ -7,6 +7,8 @@ import MobileOverviewCard from '../Components/MobileOverviewCard'
 import OverviewCard from '../Components/OverviewCard'
 import InsightOverview from '../Components/InsightOverview'
 import DataCard from '../Components/DataCard'
+import ButtonGroup from '../Components/ButtonGroup'
+import Button from '../Components/Button'
 
 
 function Insights() {
@@ -21,7 +23,126 @@ function Insights() {
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
-        <div className="block md:hidden ">
+        <div className="block md:hidden w-full ">
+
+          <div className='flex flex-col h-screen'>
+
+            <div className='p-5'>
+              <h1 className='text-3xl text-center font-semibold'>
+                Insights
+              </h1>
+              <p className='text-center'>All your data is here</p>
+            </div>
+
+
+
+
+
+
+            <div className=' px-5'>
+              <ButtonGroup />
+            </div>
+            <div className='px-10 py-5'>
+              <InsightOverview type={'expenses'} />
+            </div>
+
+            <div className=' p-5'>
+              <MobileDateSwitch />
+            </div>
+
+
+            <div className='flex justify-between items-center py-2 px-5'>
+              <div className=' px-5'>
+                <h1>Recent Transactions</h1>
+              </div>
+              <div className='p-2'>
+                <Button buttonStyle='bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl' text='Add' />
+              </div>
+            </div>
+            <div className='px-3 flex flex-col gap-3  overflow-y-auto pb-20'>
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+              <DataCard
+                type="transactions"
+                title="Admission Fees"
+                subTitle="John doe"
+                tailData="SSLC"
+              />
+
+
+            </div>
+
+            
+
+
+            <div className="fixed bottom-0 right-0 w-full">
+              <MobileNavigation />
+            </div>
+          </div>
 
 
         </div>
@@ -66,14 +187,14 @@ function Insights() {
                   <div className='row-span-6 grid grid-rows-6  h-full   gap-4 '>
                     <div className='w-full h-full overflow-y-auto bg-red-100'>
                       <div className='space-y-3'>
-                      <DataCard
-                        type="transactions"
-                        title="Admission Fees"
-                        subTitle="John doe"
-                        tailData="SSLC"
-                      />
+                        <DataCard
+                          type="transactions"
+                          title="Admission Fees"
+                          subTitle="John doe"
+                          tailData="SSLC"
+                        />
                       </div>
-                      
+
                     </div>
 
 
