@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
+import { ToastContainer, toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS
 import MobileNavigation from '../Components/MobileNavigation';
 import Button from '../Components/Button';
 import SidebarNew from '../Components/SidebarNew';
+import axios from 'axios';
 
 function AddExpense() {
   const options = [
-    { value: 'salary', label: 'Salary' },
-    { value: 'rent', label: 'Rent' },
-    { value: 'printing_stationary', label: 'Printing & Stationary' },
-    { value: 'refreshment', label: 'Refreshment' },
-    { value: 'electricity', label: 'Electricity' },
-    { value: 'repairs', label: 'Repairs' },
-    { value: 'equipments', label: 'Equipments' },
-    { value: 'miscellaneous', label: 'Miscellaneous Expense' },
+    { value: 'Salary', label: 'Salary' },
+    { value: 'Rent', label: 'Rent' },
+    { value: 'Printing & Stationary', label: 'Printing & Stationary' },
+    { value: 'Refreshment', label: 'Refreshment' },
+    { value: 'Electricity', label: 'Electricity' },
+    { value: 'Repairs', label: 'Repairs' },
+    { value: 'Equipments', label: 'Equipments' },
+    { value: 'Miscellaneous Expense', label: 'Miscellaneous Expense' },
+    { value: 'Exam Fees', label: 'Exam Fees' },
+    { value: 'Registration Fees', label: 'Registration Fees' },
+    { value: 'Error value', label: 'Error value' },
   ];
 
   const [category, setCategory] = useState(null);
@@ -21,8 +27,34 @@ function AddExpense() {
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
 
-  const handleAddExpense = () => {
-    // Add expense to the database
+  const addExpenseHandler = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const { data } = await axios.post(
+        'http://127.0.0.1:5000/api/expense/add',
+        { category, description, amount, date },
+        config
+      );
+
+      if (data.transaction && data.transaction.type) {
+        toast.success('Expense added successfully');
+      }
+    } catch (error) {
+      if (error.response) {
+        // Extracting the error message from the response
+        console.log(error.response.data.message);
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        // Handling other types of errors
+        console.error('An error occurred:', error.message);
+      }
+    }
   };
 
   return (
@@ -111,14 +143,25 @@ function AddExpense() {
                   }}
                 />
               </div>
-
               <div className="py-5">
                 <Button
                   buttonStyle={'bg-[#2740CD] text-white p-3 rounded-xl w-full'}
                   text={'Add Expense'}
-                  onClick={handleAddExpense()}
+                  onClick={addExpenseHandler}
                 />
               </div>
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />{' '}
             </div>
           </div>
 
@@ -237,9 +280,21 @@ function AddExpense() {
                       'bg-[#2740CD] text-white text-lg lg:text-2xl font-medium p-3 rounded-xl w-full '
                     }
                     text={'Add Expense'}
-                    onClick={handleAddExpense()}
+                    onClick={addExpenseHandler}
                   />
                 </div>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="colored"
+                />{' '}
               </div>
             </div>
           </div>

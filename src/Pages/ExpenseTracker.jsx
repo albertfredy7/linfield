@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../Components/Sidebar';
 import SidebarNew from '../Components/SidebarNew';
+import { ToastContainer, toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS
 import MobileNavigation from '../Components/MobileNavigation';
 import MobileDateSwitch from '../Components/MobileDateSwitch';
 import MobileOverviewCard from '../Components/MobileOverviewCard';
@@ -10,18 +12,29 @@ import OverviewCard from '../Components/OverviewCard';
 import DatePicker from '../Components/DatePicker';
 import Button from '../Components/Button';
 import Select from 'react-select';
+import axios from 'axios';
+import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
 
 function ExpenseTracker() {
   const naviagte = useNavigate();
+
+  const [amount, setAmount] = useState(null);
+  const [category, setCategory] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [date, setDate] = useState(null);
+
   const options = [
-    { value: 'salary', label: 'Salary' },
-    { value: 'rent', label: 'Rent' },
-    { value: 'printing_stationary', label: 'Printing & Stationary' },
-    { value: 'refreshment', label: 'Refreshment' },
-    { value: 'electricity', label: 'Electricity' },
-    { value: 'repairs', label: 'Repairs' },
-    { value: 'equipments', label: 'Equipments' },
-    { value: 'miscellaneous', label: 'Miscellaneous Expense' },
+    { value: 'Salary', label: 'Salary' },
+    { value: 'Rent', label: 'Rent' },
+    { value: 'Printing & Stationary', label: 'Printing & Stationary' },
+    { value: 'Refreshment', label: 'Refreshment' },
+    { value: 'Electricity', label: 'Electricity' },
+    { value: 'Repairs', label: 'Repairs' },
+    { value: 'Equipments', label: 'Equipments' },
+    { value: 'Miscellaneous Expense', label: 'Miscellaneous Expense' },
+    { value: 'Exam Fees', label: 'Exam Fees' },
+    { value: 'Registration Fees', label: 'Registration Fees' },
+    { value: 'Error value', label: 'Error value' },
   ];
 
   const currentDate = new Date(Date.now());
@@ -31,8 +44,38 @@ function ExpenseTracker() {
   );
 
   const handleDateRangeSelect = (dateRange) => {
-    console.log(`the date range is ${dateRange}`)
-  }
+    console.log(`the date range is ${dateRange}`);
+  };
+
+  const addExpenseHandler = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const { data } = await axios.post(
+        'http://127.0.0.1:5000/api/expense/add',
+        { category, description, amount, date },
+        config
+      );
+
+      if (data.transaction && data.transaction.type) {
+        toast.success('Expense added successfully');
+      }
+    } catch (error) {
+      if (error.response) {
+        // Extracting the error message from the response
+        console.log(error.response.data.message);
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        // Handling other types of errors
+        console.error('An error occurred:', error.message);
+      }
+    }
+  };
 
   return (
     <>
@@ -49,11 +92,9 @@ function ExpenseTracker() {
                   Track your expenses, start your day right
                 </h2>
                 <div className=" bg-red-100 justify-center flex items-center">
-                <MobileDateSwitch />
+                  <MobileDateSwitch />
+                </div>
               </div>
-              </div>
-
-              
 
               <div>
                 <MobileOverviewCard title={'Spend so far'} subtitle={'5000'} />
@@ -156,7 +197,9 @@ function ExpenseTracker() {
                     Your expenses at a glance
                   </h2>
                   <div className="p-3">
-                    <MobileDateSwitch onSelectDateRange={handleDateRangeSelect}/>
+                    <MobileDateSwitch
+                      onSelectDateRange={handleDateRangeSelect}
+                    />
                   </div>
                 </div>
                 <div className="py-3">
@@ -400,6 +443,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] text-gray-600 bg text-sm 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
                       placeholder="Enter the amount"
                       required
+                      onChange={(e) => setAmount(e.target.value)}
                     />
                   </div>
                   <div className="2xl:block 3xl:hidden pb-3 3xl:pb-0">
@@ -424,6 +468,7 @@ function ExpenseTracker() {
                           fontSize: '14px',
                         }),
                       }}
+                      onChange={(e) => setCategory(e.value)}
                     />
                   </div>
                   <div className="hidden 3xl:block 3xl:space-y-2 pb-3 3xl:pb-0">
@@ -448,6 +493,7 @@ function ExpenseTracker() {
                           fontSize: '18px',
                         }),
                       }}
+                      onChange={(e) => setCategory(e.value)}
                     />
                   </div>
                   <div className="3xl:space-y-2 pb-3 3xl:pb-0">
@@ -462,6 +508,7 @@ function ExpenseTracker() {
                       id="description"
                       className="bg-[#f0f0f0] text-gray-600 text-sm 3xl:text-lg rounded-md block w-full h-16 3xl:h-32 p-2 md:p-4 xl:p-2"
                       placeholder="Describe the expense"
+                      onChange={(e) => setDescription(e.target.value)}
                       required
                     />
                   </div>
@@ -479,6 +526,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] px-3 border text-gray-600 text-sm 3xl:text-lg rounded-md w-full p-2 md:p-4 xl:p-2"
                       required
                       placeholder="Select date"
+                      onChange={(e) => setDate(e.target.value)}
                     />
                   </div>
                 </div>
@@ -486,8 +534,21 @@ function ExpenseTracker() {
                   <Button
                     buttonStyle={`w-full bg-[#5266D7] text-white text-md 3xl:text-xl p-2 md:p-3 xl:p-2 3xl:p-3 rounded-lg`}
                     text={`Add`}
+                    onClick={addExpenseHandler}
                   />
                 </div>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="colored"
+                />{' '}
               </div>
             </div>
             {/* <div className=" col-span-3 grid grid-rows-5 pt-5">

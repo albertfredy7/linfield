@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Components/Sidebar';
 import SidebarNew from '../Components/SidebarNew';
 import MobileNavigation from '../Components/MobileNavigation';
@@ -9,8 +10,11 @@ import InsightOverview from '../Components/InsightOverview';
 import DataCard from '../Components/DataCard';
 import InsightsSwitch from '../Components/InsightsSwitch';
 import DatePicker from '../Components/DatePicker';
+import Button from '../Components/Button';
 
 function Insights() {
+  const navigate = useNavigate();
+
   const data = [
     {
       title: 'Spend So Far',
@@ -69,6 +73,10 @@ function Insights() {
     },
   ];
 
+  const handleClick = () => {
+    navigate('/');
+  };
+
   // const Switch = () => {
   //   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -117,6 +125,105 @@ function Insights() {
           <div className="md:col-span-1 lg:col-span-1">
             {/* <SidebarComponent /> */}
             <SidebarNew />
+          </div>
+          <div className="col-span-6  overflow-hidden py-2 px-4">
+            <div className="w-full h-full  grid grid-rows-7 space-y-2 ">
+              <div className="row-span-1  flex justify-between items-center pr-3 md:space-x-1 lg:space-x-0">
+                <div className="h-full flex flex-col justify-center">
+                  <h2 className="text-3xl font-semibold">Insights</h2>
+                </div>
+                <div className="h-full flex justify-center space-x-4">
+                  <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
+                    <h2 className="text-xl lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
+                      2500
+                    </h2>
+                    <h4 className="lg:text-lg xl:text-base 3xl:text-xl pr-3">
+                      Daily revenue
+                    </h4>
+                    <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
+                  </div>
+                  <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
+                    <h2 className="text-xl  lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
+                      2500
+                    </h2>
+                    <h4 className="lg:text-lg text-base 3xl:text-xl pr-3">
+                      Weekly revenue
+                    </h4>
+                    <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
+                  </div>
+                  <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
+                    <h2 className="text-xl lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
+                      2500
+                    </h2>
+                    <h4 className="lg:text-lg text-base 3xl:text-xl pr-3">
+                      Monthly revenue
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div className="row-span-1  flex flex-col justify-around items-center md:space-y-3">
+                <div className="h-1/2 w-full ">
+                  <InsightsSwitch
+                    category={selectedCategory}
+                    onSelect={handleCategorySelect}
+                  />
+                </div>
+                <MobileDateSwitch
+                  duration={selectedDuration}
+                  onSelect={handleDurationChange}
+                />
+              </div>
+              <div className="row-span-4  overflow-y-auto space-y-2 py-3">
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+                <DataCard
+                  type={'admissions'}
+                  title={`Professor`}
+                  tailData={`SSLC`}
+                />
+              </div>
+              <div className="row-span-1 flex items-center px-2">
+                <Button
+                  buttonStyle={'p-4 lg:p-6 lg:px-8 bg-white rounded-lg'}
+                  text={'Add revenue'}
+                  textStyle={'text-lg lg:text-xl'}
+                  navigateUrl={'/add-revenue'}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -279,17 +386,23 @@ function Insights() {
                         : 'row-span-2'
                     } bg-white p-3 rounded-xl`}
                   >
-                    <div className="h-full w-full grid grid-rows-5 items-center space-y-2 3xl:space-y-1">
+                    <div
+                      className={`h-full w-full grid ${
+                        selectedCategory === 'expense'
+                          ? 'grid-rows-9'
+                          : 'grid-rows-5'
+                      } items-center space-y-2 3xl:space-y-1`}
+                    >
                       <div className="row-span-1  flex justify-between items-center">
                         <h2 className="text-sm 3xl:text-base 4xl:text-lg font-semibold">
-                          Recent admissions
+                          Recent {selectedCategory}
                         </h2>
                         <h5 className="text-xs 3xl:text-sm 4xl:text-base text-blue-600">
                           Last 48 hours
                         </h5>
                       </div>
                       <div className="row-span-2  flex flex-col justify-center">
-                        <div className="relative h-4 3xl:h-7 w-full rounded-lg flex flex-col justify-center">
+                        <div className="relative h-4 3xl:h-5 4xl:h-8 w-full rounded-lg flex flex-col justify-center">
                           <div
                             className="absolute left-0 h-full bg-blue-300 rounded-lg"
                             style={{ width: `${sslcRatio}%` }}
@@ -303,7 +416,7 @@ function Insights() {
                         </div>
                       </div>
                       <div className="row-span-2 ">
-                        <div className="relative h-4 3xl:h-7 w-full rounded-lg flex flex-col justify-center">
+                        <div className="relative h-4 3xl:h-5 4xl:h-8 w-full rounded-lg flex flex-col justify-center">
                           <div
                             className="absolute left-0 h-full bg-blue-300 rounded-lg"
                             style={{ width: `${plusTwoRatio}%` }}
