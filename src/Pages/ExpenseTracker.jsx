@@ -7,7 +7,7 @@ import MobileNavigation from '../Components/MobileNavigation';
 import MobileDateSwitch from '../Components/MobileDateSwitch';
 import MobileOverviewCard from '../Components/MobileOverviewCard';
 import DataCard from '../Components/DataCard';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import OverviewCard from '../Components/OverviewCard';
 import DatePicker from '../Components/DatePicker';
 import Button from '../Components/Button';
@@ -17,7 +17,7 @@ import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
 import { duration } from '@mui/material';
 
 function ExpenseTracker() {
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
 
   const [amount, setAmount] = useState(null);
   const [category, setCategory] = useState(null);
@@ -151,7 +151,7 @@ function ExpenseTracker() {
                 <h1 className="font-medium text-sm">Today, 12 Mar 2024</h1>
                 <button
                   className="bg-[#2740CD] text-white text-sm px-3 py-1 rounded-xl"
-                  onClick={() => naviagte('/add-expense')}
+                  onClick={navigate('/add-expense')}
                 >
                   Add
                 </button>

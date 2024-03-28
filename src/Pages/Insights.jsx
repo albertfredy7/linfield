@@ -120,6 +120,7 @@ function Insights() {
                 <Button
                   buttonStyle="bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl"
                   text="Add"
+                  navigateUrl={'/add-expense'}
                 />
               </div>
             </div>
@@ -331,7 +332,8 @@ function Insights() {
               <div className="col-span-3 h-full grid grid-cols-3 space-x-2">
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    {formatNumber(insightData.dailyData)}
+                    {insightData.admission &&
+                      formatNumber(insightData[selectedCategory].dailyData)}
                   </h2>
                   <h4 className="text-base 3xl:text-xl">
                     Daily {selectedCategory}
@@ -341,7 +343,8 @@ function Insights() {
 
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    {formatNumber(insightData.weeklyData)}
+                    {insightData.admission &&
+                      formatNumber(insightData[selectedCategory].dailyData)}
                   </h2>
                   <h4 className="text-base 3xl:text-xl">
                     Weekly {selectedCategory}
