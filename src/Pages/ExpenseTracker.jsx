@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../Components/Sidebar';
 import SidebarNew from '../Components/SidebarNew';
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
@@ -25,10 +25,13 @@ function ExpenseTracker() {
   const [date, setDate] = useState(null);
   const [selectedDuration, setSelectedDuration] = useState('today');
 
+  const [expenseData, setExpenseData] = useState([]);
+  const [totalExpense, setTotalExpense] = useState(0);
+
   const options = [
     { value: 'Salary', label: 'Salary' },
     { value: 'Rent', label: 'Rent' },
-    { value: 'Printing & Stationary', label: 'Printing & Stationary' },
+    { value: 'Stationary', label: 'Printing & Stationary' },
     { value: 'Refreshment', label: 'Refreshment' },
     { value: 'Electricity', label: 'Electricity' },
     { value: 'Repairs', label: 'Repairs' },
@@ -83,6 +86,41 @@ function ExpenseTracker() {
     }
   };
 
+  const formatNumber = (number) => {
+    if (number >= 100000) {
+      return (number / 100000).toFixed(1) + 'L'; // Convert to lakhs
+    } else if (number >= 1000) {
+      return (number / 1000).toFixed(1) + 'K'; // Convert to thousands
+    } else {
+      return number.toString();
+    }
+  };
+
+  const fetchData = async () => {
+    if (
+      selectedDuration === 'today' ||
+      selectedDuration === 'this_week' ||
+      selectedDuration === 'this_month'
+    ) {
+      const { data } = await axios.get(
+        `http://127.0.0.1:5000/api/expense?duration=${selectedDuration}`
+      );
+      setExpenseData(data.expenses);
+      setTotalExpense(formatNumber(data.totalAmount));
+    } else {
+      const { data } = await axios.get(
+        `http://127.0.0.1:5000/api/expense?duration=custom&start_date=${selectedDuration}&end_date=${selectedDuration}`
+      );
+      setExpenseData(data.expenses);
+      setTotalExpense(formatNumber(data.totalAmount));
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    console.log(expenseData);
+  }, [selectedDuration]);
+
   return (
     <>
       <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
@@ -103,7 +141,10 @@ function ExpenseTracker() {
               </div>
 
               <div>
-                <MobileOverviewCard title={'Spend so far'} subtitle={'5000'} />
+                <MobileOverviewCard
+                  title={'Spend so far'}
+                  subtitle={totalExpense}
+                />
               </div>
 
               <div className="flex justify-between p-5">
@@ -210,10 +251,11 @@ function ExpenseTracker() {
                     />
                   </div>
                 </div>
+                {console.log(`current duration ${selectedDuration}`)}
                 <div className="py-3">
                   <OverviewCard
                     title={'Spend so far'}
-                    value={'5000'}
+                    value={totalExpense}
                     style={'py-10'}
                   />
                 </div>
@@ -231,7 +273,18 @@ function ExpenseTracker() {
                 {/* Set a fixed height and overflow-y-auto for the scrollable area */}
                 <div className="flex-grow overflow-y-auto">
                   <div className="space-y-2">
-                    <div className="row-span-1">
+                    {expenseData.map((x, idx) => {
+                      return (
+                        <div className="row-span-1">
+                          <DataCard
+                            title={x.category}
+                            tailData={x.amount}
+                            type={x.category.toLowerCase().replace(/\s/g, '')}
+                          />
+                        </div>
+                      );
+                    })}
+                    {/* <div className="row-span-1">
                       <DataCard
                         title={'Rent'}
                         subTitle={'11.00am'}
@@ -326,7 +379,7 @@ function ExpenseTracker() {
                         tailData={'$500'}
                         type={'rent'}
                       />
-                    </div>
+                    </div> */}
 
                     {/* Add other DataCard components */}
                   </div>
@@ -354,12 +407,25 @@ function ExpenseTracker() {
                     Your expenses at a glance
                   </h2>
                 </div>
-                <MobileDateSwitch />
+                <MobileDateSwitch
+                  duration={selectedDuration}
+                  onSelectDateRange={handleDateRangeSelect}
+                  onSelect={handleDurationChange}
+                />
               </div>
               <div className="row-span-3 3xl:row-span-4 pb-3 px-3 h-full">
                 <div className=" w-full h-full overflow-y-auto">
                   <div className="space-y-3">
-                    <DataCard
+                    {expenseData.map((x, idx) => {
+                      return (
+                        <DataCard
+                          title={x.category}
+                          tailData={x.amount}
+                          type={x.category.toLowerCase().replace(/\s/g, '')}
+                        />
+                      );
+                    })}
+                    {/* <DataCard
                       title={'Rent'}
                       subTitle={'11.00am'}
                       tailData={'$500'}
@@ -418,14 +484,14 @@ function ExpenseTracker() {
                       subTitle={'11.00am'}
                       tailData={'$500'}
                       type={'miscallaneous'}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-span-3 grid grid-rows-12 gap-10 overflow-hidden">
               <div className="row-span-3 py-4 px-2">
-                <OverviewCard title={'Spend so far'} value={'5000'} />
+                <OverviewCard title={'Spend so far'} value={totalExpense} />
               </div>
               <div className="row-span-9 bg-white  px-10 py-6 rounded-xl overflow-y-auto">
                 <div className="row-span-1 flex flex-col justify-center space-y-1 overflow-hidden 3xl:pb-4">
@@ -537,6 +603,7 @@ function ExpenseTracker() {
                       onChange={(e) => setDate(e.target.value)}
                     />
                   </div>
+                  {console.log(date)}
                 </div>
                 <div className="row-span-1 w-full  flex flex-col justify-center 3xl:pt-8">
                   <Button
@@ -558,6 +625,8 @@ function ExpenseTracker() {
                   theme="colored"
                 />{' '}
               </div>
+              {console.log(expenseData)}
+              {console.log(totalExpense)}
             </div>
             {/* <div className=" col-span-3 grid grid-rows-5 pt-5">
               <div className='row-span-1'>

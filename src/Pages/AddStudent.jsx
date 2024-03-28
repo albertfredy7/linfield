@@ -178,14 +178,12 @@ function AddStudent() {
       console.log(`student data ${data.name}`);
 
       if (data && data.message) {
-        console.log(`error ${data.message}`);
-        window.alert('error');
-        // toast.error(data.message);
+        // console.log(`error ${data.message}`);
+        // window.alert('error');
+        toast.error(data.message);
         return;
       } else if (data && data.name) {
-        console.log(`success`);
-        window.alert('success');
-        // toast.success('stduent added successfully');
+        toast.success('stduent added successfully');
       }
     }
   };

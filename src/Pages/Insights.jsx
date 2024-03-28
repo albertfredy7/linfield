@@ -12,6 +12,7 @@ import InsightsSwitch from '../Components/InsightsSwitch';
 import DatePicker from '../Components/DatePicker';
 import Button from '../Components/Button';
 import ButtonGroup from '../Components/ButtonGroup';
+import axios from 'axios';
 
 function Insights() {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ function Insights() {
 
   const [selectedCategory, setSelectedCategory] = useState('revenue');
   const [selectedDuration, setSelectedDuration] = useState('today');
+
+  const [insightData, setInsightData] = useState({});
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -42,18 +45,6 @@ function Insights() {
   const totalAdmissions = sslcAdmissions + plusTwoAdmissions;
   const sslcRatio = (sslcAdmissions / totalAdmissions) * 100;
   const plusTwoRatio = (plusTwoAdmissions / totalAdmissions) * 100;
-
-  //incasse of expenses
-  // let salaryExpense = 20000;
-  // let refreshmentsExpense = 10000;
-  // let transportationExpense = 5000;
-  // let miscellaneousExpense = 15000;
-
-  // let totalExpense =
-  //   salaryExpense +
-  //   refreshmentsExpense +
-  //   transportationExpense +
-  //   miscellaneousExpense;
 
   const expensData = [
     {
@@ -78,84 +69,61 @@ function Insights() {
     navigate('/');
   };
 
-  // const Switch = () => {
-  //   const [activeIndex, setActiveIndex] = useState(0);
+  const formatNumber = (number) => {
+    if (number >= 100000) {
+      return (number / 100000).toFixed(1) + 'L'; // Convert to lakhs
+    } else if (number >= 1000) {
+      return (number / 1000).toFixed(1) + 'K'; // Convert to thousands
+    } else {
+      return number;
+    }
+  };
 
-  //   const handleClick = (index) => {
-  //     setActiveIndex(index);
-  //   };
-
-  //   return (
-  //     <div className="w-3/4 h-full grid grid-cols-3 bg-white rounded-l-xl rounded-r-xl">
-  //       <button
-  //         className={`col-span-1 rounded-xl ${
-  //           activeIndex === 0 ? 'bg-blue-200' : ''
-  //         }`}
-  //         onClick={() => handleClick(0)}
-  //       >
-  //         Revenue
-  //       </button>
-  //       <button
-  //         className={`col-span-1 rounded-xl ${
-  //           activeIndex === 1 ? 'bg-blue-200' : ''
-  //         }`}
-  //         onClick={() => handleClick(1)}
-  //       >
-  //         Admissions
-  //       </button>
-  //       <button
-  //         className={`col-span-1 rounded-xl ${
-  //           activeIndex === 2 ? 'bg-blue-200' : ''
-  //         }`}
-  //         onClick={() => handleClick(2)}
-  //       >
-  //         Expenses
-  //       </button>
-  //     </div>
-  //   );
-  // };
+  useEffect(() => {
+    const fetchInsightsData = async () => {
+      const { data } = await axios.get(
+        'http://127.0.0.1:5000/api/transactions/info'
+      );
+      console.log(data);
+      setInsightData(data);
+    };
+    fetchInsightsData();
+  }, [selectedCategory]);
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         <div className="block md:hidden w-full ">
-
-          <div className='flex flex-col h-screen'>
-
-            <div className='p-5'>
-              <h1 className='text-3xl text-center font-semibold'>
-                Insights
-              </h1>
-              <p className='text-center'>All your data is here</p>
+          <div className="flex flex-col h-screen">
+            <div className="p-5">
+              <h1 className="text-3xl text-center font-semibold">Insights</h1>
+              <p className="text-center">All your data is here</p>
             </div>
 
-
-
-
-
-
-            <div className=' px-5'>
+            <div className=" px-5">
               <ButtonGroup />
             </div>
-            <div className='px-10 py-5'>
+            <div className="px-10 py-5">
               <InsightOverview type={'expenses'} />
             </div>
 
-            <div className=' p-5'>
+            <div className=" p-5">
               <MobileDateSwitch />
             </div>
 
-
-            <div className='flex justify-between items-center py-2 px-5'>
-              <div className=' px-5'>
+            <div className="flex justify-between items-center py-2 px-5">
+              <div className=" px-5">
                 <h1>Recent Transactions</h1>
               </div>
-              <div className='p-2'>
-                <Button buttonStyle='bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl' text='Add' />
+              <div className="p-2">
+                <Button
+                  buttonStyle="bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl"
+                  text="Add"
+                />
               </div>
             </div>
-            <div className='px-3 flex flex-col gap-3  overflow-y-auto pb-20'>
+            <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-20">
               <DataCard
                 type="transactions"
                 title="Admission Fees"
@@ -228,19 +196,12 @@ function Insights() {
                 subTitle="John doe"
                 tailData="SSLC"
               />
-
-
             </div>
-
-
-
 
             <div className="fixed bottom-0 right-0 w-full">
               <MobileNavigation />
             </div>
           </div>
-
-
         </div>
 
         {/* tablet screens */}
@@ -258,28 +219,31 @@ function Insights() {
                 <div className="h-full flex justify-center space-x-4">
                   <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                     <h2 className="text-xl lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                      2500
+                      {insightData.admission &&
+                        formatNumber(insightData[selectedCategory].dailyData)}
                     </h2>
                     <h4 className="lg:text-lg xl:text-base 3xl:text-xl pr-3">
-                      Daily revenue
+                      Daily {selectedCategory}
                     </h4>
                     <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
                   </div>
                   <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                     <h2 className="text-xl  lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                      2500
+                      {insightData.admission &&
+                        formatNumber(insightData[selectedCategory].weeklyData)}
                     </h2>
                     <h4 className="lg:text-lg text-base 3xl:text-xl pr-3">
-                      Weekly revenue
+                      Weekly {selectedCategory}
                     </h4>
                     <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
                   </div>
                   <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                     <h2 className="text-xl lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                      2500
+                      {insightData.admission &&
+                        formatNumber(insightData[selectedCategory].monthlyData)}
                     </h2>
                     <h4 className="lg:text-lg text-base 3xl:text-xl pr-3">
-                      Monthly revenue
+                      Monthly {selectedCategory}
                     </h4>
                   </div>
                 </div>
@@ -367,25 +331,31 @@ function Insights() {
               <div className="col-span-3 h-full grid grid-cols-3 space-x-2">
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    2500
+                    {formatNumber(insightData.dailyData)}
                   </h2>
-                  <h4 className="text-base 3xl:text-xl">Daily revenue</h4>
+                  <h4 className="text-base 3xl:text-xl">
+                    Daily {selectedCategory}
+                  </h4>
                   <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
                 </div>
 
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    2500
+                    {formatNumber(insightData.weeklyData)}
                   </h2>
-                  <h4 className="text-base 3xl:text-xl">Weekly revenue</h4>
+                  <h4 className="text-base 3xl:text-xl">
+                    Weekly {selectedCategory}
+                  </h4>
                   <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
                 </div>
 
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    2500
+                    {formatNumber(insightData.monthlyData)}
                   </h2>
-                  <h4 className="text-base 3xl:text-xl">Monthly revenue</h4>
+                  <h4 className="text-base 3xl:text-xl">
+                    Monthly {selectedCategory}
+                  </h4>
                 </div>
               </div>
             </div>
@@ -487,8 +457,9 @@ function Insights() {
               <div className="col-span-2 bg-violet-200 px-4 py-4 overflow-hidden">
                 <div className="h-full w-full grid grid-rows-9 3xl:grid-rows-8 space-y-3">
                   <div
-                    className={`${selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
-                      }  bg-green-200 flex items-center justify-center`}
+                    className={`${
+                      selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
+                    }  bg-green-200 flex items-center justify-center`}
                   >
                     <button className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-2xl font-medium">
                       Add revenue
@@ -498,19 +469,22 @@ function Insights() {
                     <DatePicker />
                   </div>
                   <div
-                    className={`${selectedCategory === 'expense'
+                    className={`${
+                      selectedCategory === 'expense'
                         ? 'row-span-4'
                         : 'row-span-3'
-                      }  3xl:${selectedCategory === 'expense'
+                    }  3xl:${
+                      selectedCategory === 'expense'
                         ? 'row-span-3'
                         : 'row-span-2'
-                      } bg-white p-3 rounded-xl`}
+                    } bg-white p-3 rounded-xl`}
                   >
                     <div
-                      className={`h-full w-full grid ${selectedCategory === 'expense'
+                      className={`h-full w-full grid ${
+                        selectedCategory === 'expense'
                           ? 'grid-rows-9'
                           : 'grid-rows-5'
-                        } items-center space-y-2 3xl:space-y-1`}
+                      } items-center space-y-2 3xl:space-y-1`}
                     >
                       <div className="row-span-1  flex justify-between items-center">
                         <h2 className="text-sm 3xl:text-base 4xl:text-lg font-semibold">
