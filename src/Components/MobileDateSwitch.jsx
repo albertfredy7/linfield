@@ -50,10 +50,18 @@ import React, { useState, useRef } from 'react';
 // }
 
 function MobileDateSwitch({ duration, onSelect }) {
+  // Function to check if a string is a valid date
+  const isValidDate = (value) => {
+    // Create a new Date object from the input value
+    const date = new Date(value);
+    // Check if the date is valid
+    return !isNaN(date.getTime());
+  };
+
   return (
     <div className="flex flex-row gap-5">
       <button
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
           duration === 'today'
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676]'
@@ -63,33 +71,34 @@ function MobileDateSwitch({ duration, onSelect }) {
         Today
       </button>
       <button
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
-          duration === 'thisWeek'
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
+          duration === 'this_week'
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676]'
         }`}
-        onClick={() => onSelect('thisWeek')}
+        onClick={() => onSelect('this_week')}
       >
         Weekly
       </button>
       <button
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
-          duration === 'thisMonth'
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
+          duration === 'this_month'
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676]'
         }`}
-        onClick={() => onSelect('thisMonth')}
+        onClick={() => onSelect('this_month')}
       >
         Monthly
       </button>
       <input
         type="date"
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
-          duration === 'calendar'
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
+          isValidDate(duration)
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676] bg-transparent'
         }`}
         placeholder="Select date"
+        onChange={(e) => onSelect(e.target.value)}
       />
     </div>
   );
