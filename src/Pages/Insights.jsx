@@ -20,19 +20,14 @@ function Insights() {
   const [amount, setAmount] = useState(null);
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
+
   const revenueCategories = [
     { value: 'excess_registration', label: 'Excess amount of Registration' },
     { value: 'excess_toc', label: 'Excess amount of TOC' },
     { value: 'old_students_fee', label: 'Old Students Fee' },
     { value: 'commissions', label: 'Commissions' },
-    { value: 'others', label: 'Others' }
-  ]
-
-  console.log(category, amount, description, date);
-
-
-
-
+    { value: 'others', label: 'Others' },
+  ];
 
   const navigate = useNavigate();
 
@@ -40,7 +35,6 @@ function Insights() {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
-
   };
 
   const handleCloseModal = () => {
@@ -110,6 +104,7 @@ function Insights() {
       const { data } = await axios.get(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/info'
       );
+      console.log('your pussy');
       console.log(data);
       setInsightData(data);
     };
@@ -123,8 +118,8 @@ function Insights() {
   const handleAddRevenue = () => {
     // backend part
 
-    handleCloseModal()
-  }
+    handleCloseModal();
+  };
 
   // const Switch = () => {
   //   const [activeIndex, setActiveIndex] = useState(0);
@@ -163,79 +158,77 @@ function Insights() {
   //   );
   // };
 
-
   const Modal = ({ isOpen, onClose, children }) => {
-
     if (!isOpen) return null;
 
     return (
-      <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" aria-modal="true">
+      <div
+        className="fixed z-10 inset-0 overflow-y-auto"
+        aria-labelledby="modal-title"
+        aria-modal="true"
+      >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+          <div
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            aria-hidden="true"
+          ></div>
+          <span
+            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+            aria-hidden="true"
+          >
+            &#8203;
+          </span>
           <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               {children}
             </div>
-
           </div>
         </div>
       </div>
     );
   };
 
-
-
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
+        {/* mobile screens */}
         <div className="block md:hidden w-full ">
-
-          <div className='flex flex-col h-screen'>
-
-            <div className='p-5'>
-              <h1 className='text-3xl text-center font-semibold'>
-                Insights
-              </h1>
-              <p className='text-center'>All your data is here</p>
+          <div className="flex flex-col h-screen">
+            <div className="p-5">
+              <h1 className="text-3xl text-center font-semibold">Insights</h1>
+              <p className="text-center">All your data is here</p>
             </div>
 
-
-
-
-
-
-            <div className=' px-5'>
-              <ButtonGroup />
+            <div className=" px-5 bg-red-100">
+              <InsightsSwitch
+                category={selectedCategory}
+                onSelect={handleCategorySelect}
+              />
             </div>
-            <div className='px-10 py-5'>
+            <div className="px-10 py-5">
               <InsightOverview type={'expenses'} />
             </div>
 
-            <div className=' p-5'>
+            <div className=" p-5">
               <MobileDateSwitch
                 duration={selectedDuration}
                 onSelect={handleDurationChange}
               />
             </div>
 
-
-            <div className='flex justify-between items-center py-2 px-5'>
-              <div className=' px-5'>
+            <div className="flex justify-between items-center py-2 px-5">
+              <div className=" px-5">
                 <h1>Recent Transactions</h1>
               </div>
               <div className="p-2">
                 <Button
                   buttonStyle="bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl"
                   text="Add"
-                  navigateUrl={'/add-expense'}
                 />
-              <div className='p-2'>
-                <Button buttonStyle='bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl' text='Add' />
               </div>
             </div>
-            <div className='px-3 flex flex-col gap-3  overflow-y-auto pb-20'>
+            <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-20">
               <DataCard
                 type="transactions"
                 title="Admission Fees"
@@ -308,24 +301,17 @@ function Insights() {
                 subTitle="John doe"
                 tailData="SSLC"
               />
-
-
             </div>
-
-
-
 
             <div className="fixed bottom-0 right-0 w-full">
               <MobileNavigation />
             </div>
           </div>
-
-
         </div>
 
         {/* tablet screens */}
-         {/* tablet screens */}
-         <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen">
+        {/* tablet screens */}
+        <div className="hidden md:grid md:grid-cols-7 lg:grid-cols-7 xl:hidden p-4 w-screen h-screen">
           <div className="md:col-span-1 lg:col-span-1">
             {/* <SidebarComponent /> */}
             <SidebarNew />
@@ -464,7 +450,7 @@ function Insights() {
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
                     {insightData.admission &&
-                      formatNumber(insightData[selectedCategory].dailyData)}
+                      formatNumber(insightData[selectedCategory].weeklyData)}
                   </h2>
                   <h4 className="text-base 3xl:text-xl">
                     Weekly {selectedCategory}
@@ -474,7 +460,8 @@ function Insights() {
 
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    {formatNumber(insightData.monthlyData)}
+                    {insightData.admission &&
+                      formatNumber(insightData[selectedCategory].monthlyData)}
                   </h2>
                   <h4 className="text-base 3xl:text-xl">
                     Monthly {selectedCategory}
@@ -580,8 +567,9 @@ function Insights() {
               <div className="col-span-2 bg-violet-200 px-4 py-4 overflow-hidden">
                 <div className="h-full w-full grid grid-rows-9 3xl:grid-rows-8 space-y-3">
                   <div
-                    className={`${selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
-                      }  bg-green-200 flex items-center justify-center`}
+                    className={`${
+                      selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
+                    }  bg-green-200 flex items-center justify-center`}
                   >
                     <button className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-2xl font-medium">
                       Add revenue
@@ -591,19 +579,22 @@ function Insights() {
                     <DatePicker />
                   </div>
                   <div
-                    className={`${selectedCategory === 'expense'
+                    className={`${
+                      selectedCategory === 'expense'
                         ? 'row-span-4'
                         : 'row-span-3'
-                      }  3xl:${selectedCategory === 'expense'
+                    }  3xl:${
+                      selectedCategory === 'expense'
                         ? 'row-span-3'
                         : 'row-span-2'
-                      } bg-white p-3 rounded-xl`}
+                    } bg-white p-3 rounded-xl`}
                   >
                     <div
-                      className={`h-full w-full grid ${selectedCategory === 'expense'
+                      className={`h-full w-full grid ${
+                        selectedCategory === 'expense'
                           ? 'grid-rows-9'
                           : 'grid-rows-5'
-                        } items-center space-y-2 3xl:space-y-1`}
+                      } items-center space-y-2 3xl:space-y-1`}
                     >
                       <div className="row-span-1  flex justify-between items-center">
                         <h2 className="text-sm 3xl:text-base 4xl:text-lg font-semibold">
