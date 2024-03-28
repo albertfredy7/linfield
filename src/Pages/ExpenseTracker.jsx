@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../Components/Sidebar';
 import SidebarNew from '../Components/SidebarNew';
 import MobileNavigation from '../Components/MobileNavigation';
@@ -10,9 +10,20 @@ import OverviewCard from '../Components/OverviewCard';
 import DatePicker from '../Components/DatePicker';
 import Button from '../Components/Button';
 import Select from 'react-select';
+import axios from 'axios';
 
 function ExpenseTracker() {
-  const naviagte = useNavigate();
+
+  const navigate = useNavigate();
+
+  const [amount, setAmount] = useState(null);
+  const [category, setCategory] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [date, setDate] = useState(null);
+  const [selectedDuration, setSelectedDuration] = useState('today');
+
+  const [expenseData, setExpenseData] = useState([]);
+  const [totalExpense, setTotalExpense] = useState(0);
   const options = [
     { value: 'salary', label: 'Salary' },
     { value: 'rent', label: 'Rent' },
@@ -31,8 +42,77 @@ function ExpenseTracker() {
   );
 
   const handleDateRangeSelect = (dateRange) => {
-    console.log(`the date range is ${dateRange}`)
-  }
+    console.log(`the date range is ${dateRange}`);
+  };
+
+  const handleDurationChange = (duration) => {
+    setSelectedDuration(duration);
+  };
+
+  const addExpenseHandler = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const { data } = await axios.post(
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
+        { category, description, amount, date },
+        config
+      );
+
+      if (data.transaction && data.transaction.type) {
+        toast.success('Expense added successfully');
+      }
+    } catch (error) {
+      if (error.response) {
+        // Extracting the error message from the response
+        console.log(error.response.data.message);
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        // Handling other types of errors
+        console.error('An error occurred:', error.message);
+      }
+    }
+  };
+
+  const formatNumber = (number) => {
+    if (number >= 100000) {
+      return (number / 100000).toFixed(1) + 'L'; // Convert to lakhs
+    } else if (number >= 1000) {
+      return (number / 1000).toFixed(1) + 'K'; // Convert to thousands
+    } else {
+      return number.toString();
+    }
+  };
+
+  const fetchData = async () => {
+    if (
+      selectedDuration === 'today' ||
+      selectedDuration === 'this_week' ||
+      selectedDuration === 'this_month'
+    ) {
+      const { data } = await axios.get(
+        `https://lobster-app-yjjm5.ondigitalocean.app/api/expense?duration=${selectedDuration}`
+      );
+      setExpenseData(data.expenses);
+      setTotalExpense(formatNumber(data.totalAmount));
+    } else {
+      const { data } = await axios.get(
+        `https://lobster-app-yjjm5.ondigitalocean.app/api/expense?duration=custom&start_date=${selectedDuration}&end_date=${selectedDuration}`
+      );
+      setExpenseData(data.expenses);
+      setTotalExpense(formatNumber(data.totalAmount));
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    console.log(expenseData);
+  }, [selectedDuration]);
 
   return (
     <>
@@ -49,11 +129,11 @@ function ExpenseTracker() {
                   Track your expenses, start your day right
                 </h2>
                 <div className=" bg-red-100 justify-center flex items-center">
-                <MobileDateSwitch />
-              </div>
+                  <MobileDateSwitch />
+                </div>
               </div>
 
-              
+
 
               <div>
                 <MobileOverviewCard title={'Spend so far'} subtitle={'5000'} />
@@ -156,7 +236,7 @@ function ExpenseTracker() {
                     Your expenses at a glance
                   </h2>
                   <div className="p-3">
-                    <MobileDateSwitch onSelectDateRange={handleDateRangeSelect}/>
+                    <MobileDateSwitch onSelect={handleDateRangeSelect} />
                   </div>
                 </div>
                 <div className="py-3">
@@ -303,7 +383,7 @@ function ExpenseTracker() {
                     Your expenses at a glance
                   </h2>
                 </div>
-                <MobileDateSwitch />
+                <MobileDateSwitch onSelect={handleDurationChange} duration={selectedDuration} />
               </div>
               <div className="row-span-3 3xl:row-span-4 pb-3 px-3 h-full">
                 <div className=" w-full h-full overflow-y-auto">

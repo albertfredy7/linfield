@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-function ButtonGroup() {
-    const [selectedButton, setSelectedButton] = useState('revenue');
+function ButtonGroup({category,onSelect}) {
+    const [selectedButton, setSelectedButton] = useState(category);
 
     const handleClick = (button) => {
         setSelectedButton(button);

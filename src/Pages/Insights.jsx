@@ -163,6 +163,8 @@ function Insights() {
   //   );
   // };
 
+  console.log(selectedDuration, selectedCategory);
+
 
   const Modal = ({ isOpen, onClose, children }) => {
 
@@ -225,8 +227,8 @@ function Insights() {
               <div className=' px-5'>
                 <h1>Recent Transactions</h1>
               </div>
-              <div className='p-2'>
-                <Button buttonStyle='bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl' text='Add' />
+              <div className='p-2 '>
+                <Button buttonStyle='bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl' text='Add' navigateUrl={'/addRevenue'} />
               </div>
             </div>
             <div className='px-3 flex flex-col gap-3  overflow-y-auto pb-20'>
@@ -364,10 +366,11 @@ function Insights() {
               </div>
               <div className="row-span-1  flex flex-col justify-around items-center md:space-y-3">
                 <div className="h-1/2 w-full ">
-                  <InsightsSwitch
+                  {/* <InsightsSwitch
                     category={selectedCategory}
                     onSelect={handleCategorySelect}
-                  />
+                  /> */}
+                  <ButtonGroup/>
                 </div>
                 <MobileDateSwitch
                   duration={selectedDuration}
@@ -430,14 +433,14 @@ function Insights() {
 
         {/* pc screens */}
         {/* pc screens */}
-        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen bg-green-100 overflow-hidden">
+        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen overflow-hidden">
           <div className="col-span-2">
             {/* 1st col */}
             <SidebarNew />
           </div>
 
           <div className="col-span-9 grid grid-rows-5 3xl:grid-rows-6 pl-8 pr-2 overflow-hidden">
-            <div className="row-span-1 grid grid-cols-6 items-center pt-4 pb-7  bg-red-100 px-4">
+            <div className="row-span-1 grid grid-cols-6 items-center pt-4 pb-7  ">
               <div className="col-span-1 h-full flex flex-col justify-center">
                 <h2 className="text-xl 3xl:text-3xl font-semibold">Insights</h2>
                 <h4 className="text-base 3xl:text-xl">Linfield at a glance</h4>
@@ -446,7 +449,8 @@ function Insights() {
               <div className="col-span-3 h-full grid grid-cols-3 space-x-2">
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    {formatNumber(insightData.dailyData)}
+                  {insightData.admission &&
+                        formatNumber(insightData[selectedCategory].dailyData)}
                   </h2>
                   <h4 className="text-base 3xl:text-xl">
                     Daily {selectedCategory}
@@ -456,7 +460,8 @@ function Insights() {
 
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    {formatNumber(insightData.weeklyData)}
+                  {insightData.admission &&
+                        formatNumber(insightData[selectedCategory].weeklyData)}
                   </h2>
                   <h4 className="text-base 3xl:text-xl">
                     Weekly {selectedCategory}
@@ -466,7 +471,8 @@ function Insights() {
 
                 <div className="col-span-1 h-full flex flex-col justify-center items-center relative">
                   <h2 className="text-xl 3xl:text-2xl text-blue-600 font-semibold">
-                    {formatNumber(insightData.monthlyData)}
+                  {insightData.admission &&
+                        formatNumber(insightData[selectedCategory].monthlyData)}
                   </h2>
                   <h4 className="text-base 3xl:text-xl">
                     Monthly {selectedCategory}
@@ -474,18 +480,19 @@ function Insights() {
                 </div>
               </div>
             </div>
-            <div className="row-span-4 3xl:row-span-5 bg-blue-400 grid grid-cols-7 space-x-4 ">
-              <div className="col-span-5 bg-green-200 h-full w-full overflow-hidden">
-                <div className="h-full grid grid-rows-7 bg-yellow-200">
-                  <div className="row-span-2 3xl:row-span-2 bg-red-500">
-                    <div className="h-full grid grid-rows-2 xl:space-y-3 3xl:space-y-0 bg-orange-400">
-                      <div className="row-span-1 h-5/6 bg-orange-100 flex justify-center items-center">
+            <div className="row-span-4 3xl:row-span-5  grid grid-cols-7 space-x-4 ">
+              <div className="col-span-5 h-full w-full overflow-hidden">
+                <div className="h-full grid grid-rows-7 ">
+                  <div className="row-span-2 3xl:row-span-2 ">
+                    <div className="h-full grid grid-rows-2 xl:space-y-3 3xl:space-y-0 ">
+                      <div className="row-span-1 h-5/6  flex justify-center items-center">
                         <InsightsSwitch
                           category={selectedCategory}
                           onSelect={handleCategorySelect}
                         />
+                        
                       </div>
-                      <div className="row-span-1 bg-orange-300 flex items-center px-4">
+                      <div className="row-span-1  flex items-center px-4">
                         <MobileDateSwitch
                           duration={selectedDuration}
                           onSelect={handleDurationChange}
@@ -493,7 +500,7 @@ function Insights() {
                       </div>
                     </div>
                   </div>
-                  <div className="row-span-5 3xl:row-span-5 bg-red-300 h-full overflow-y-auto space-y-2 px-4 py-2">
+                  <div className="row-span-5 3xl:row-span-5  h-full overflow-y-auto space-y-2 px-4 py-2">
                     <DataCard
                       type={'admissions'}
                       title={'professor'}
@@ -569,17 +576,17 @@ function Insights() {
                 <div className="h-24 w-full bg-indigo-200"></div>
                 <div className="h-24 w-full bg-indigo-200"></div>
               </div> */}
-              <div className="col-span-2 bg-violet-200 px-4 py-4 overflow-hidden">
+              <div className="col-span-2 0 px-4 py-4 overflow-hidden">
                 <div className="h-full w-full grid grid-rows-9 3xl:grid-rows-8 space-y-3">
                   <div
                     className={`${selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
-                      }  bg-green-200 flex items-center justify-center`}
+                      }   flex items-center justify-center`}
                   >
                     <button className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-2xl font-medium">
                       Add revenue
                     </button>
                   </div>
-                  <div className="row-span-4 bg-green-300">
+                  <div className="row-span-4">
                     <DatePicker />
                   </div>
                   <div
@@ -611,7 +618,7 @@ function Insights() {
                             className="absolute left-0 h-full bg-blue-300 rounded-lg"
                             style={{ width: `${sslcRatio}%` }}
                           ></div>
-                          <div className="absolute inset-x-full bg-red-100 flex items-center justify-end text-black text-sm 3xl:text-lg">
+                          <div className="absolute inset-x-full  flex items-center justify-end text-black text-sm 3xl:text-lg">
                             {sslcAdmissions}
                           </div>
                         </div>
@@ -635,7 +642,7 @@ function Insights() {
                       </div>
                     </div>
                   </div>
-                  <div className="row-span-1 bg-green-500"></div>
+                  <div className="row-span-1"></div>
                 </div>
               </div>
             </div>
