@@ -177,10 +177,10 @@ function AddExpense() {
             {/* First col is acquired by the sidebar component */}
             <SidebarNew />
           </div>
-          <div className="md:col-span-6 lg:col-span-6 p-10 flex  justify-center items-center">
+          <div className="md:col-span-6 lg:col-span-6 p-10">
             {' '}
             {/* Second col is acquired by the main content */}
-            <div className="p-20 w-full bg-white  rounded-2xl">
+            <div className=" w-full rounded-2xl">
               <div className="flex flex-col items-start   ">
                 <h1 className="text-3xl   font-bold lg:text-4xl ">
                   Add new expense

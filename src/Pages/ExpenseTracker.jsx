@@ -22,6 +22,7 @@ function ExpenseTracker() {
   const [category, setCategory] = useState(null);
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
+  const [selectedDuration, setSelectedDuration] = useState('today');
 
   const options = [
     { value: 'Salary', label: 'Salary' },
@@ -45,6 +46,10 @@ function ExpenseTracker() {
 
   const handleDateRangeSelect = (dateRange) => {
     console.log(`the date range is ${dateRange}`);
+  };
+
+  const handleDurationChange = (duration) => {
+    setSelectedDuration(duration);
   };
 
   const addExpenseHandler = async () => {
@@ -198,7 +203,8 @@ function ExpenseTracker() {
                   </h2>
                   <div className="p-3">
                     <MobileDateSwitch
-                      onSelectDateRange={handleDateRangeSelect}
+                      duration={selectedDuration}
+                      onSelect={handleDurationChange}
                     />
                   </div>
                 </div>

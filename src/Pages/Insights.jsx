@@ -12,9 +12,39 @@ import InsightsSwitch from '../Components/InsightsSwitch';
 import DatePicker from '../Components/DatePicker';
 import Button from '../Components/Button';
 import ButtonGroup from '../Components/ButtonGroup';
+import Select from 'react-select';
 
 function Insights() {
+  const [category, setCategory] = useState(null);
+  const [amount, setAmount] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [date, setDate] = useState(null);
+  const revenueCategories = [
+    { value: 'excess_registration', label: 'Excess amount of Registration' },
+    { value: 'excess_toc', label: 'Excess amount of TOC' },
+    { value: 'old_students_fee', label: 'Old Students Fee' },
+    { value: 'commissions', label: 'Commissions' },
+    { value: 'others', label: 'Others' }
+  ]
+
+  console.log(category, amount, description, date);
+
+
+
+
+
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const data = [
     {
@@ -78,6 +108,12 @@ function Insights() {
     navigate('/');
   };
 
+  const handleAddRevenue = () => {
+    // backend part
+
+    handleCloseModal()
+  }
+
   // const Switch = () => {
   //   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -115,6 +151,29 @@ function Insights() {
   //   );
   // };
 
+
+  const Modal = ({ isOpen, onClose, children }) => {
+
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" aria-modal="true">
+        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+          <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              {children}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
@@ -143,7 +202,10 @@ function Insights() {
             </div>
 
             <div className=' p-5'>
-              <MobileDateSwitch />
+              <MobileDateSwitch
+                duration={selectedDuration}
+                onSelect={handleDurationChange}
+              />
             </div>
 
 
@@ -252,7 +314,7 @@ function Insights() {
           <div className="col-span-6  overflow-hidden py-2 px-4">
             <div className="w-full h-full  grid grid-rows-7 space-y-2 ">
               <div className="row-span-1  flex justify-between items-center pr-3 md:space-x-1 lg:space-x-0">
-                <div className="h-full flex flex-col justify-center">
+                <div className="h-full flex flex-col justify-center px-5 lg:px-3">
                   <h2 className="text-3xl font-semibold">Insights</h2>
                 </div>
                 <div className="h-full flex justify-center space-x-4">
@@ -260,7 +322,7 @@ function Insights() {
                     <h2 className="text-xl lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
                       2500
                     </h2>
-                    <h4 className="lg:text-lg xl:text-base 3xl:text-xl pr-3">
+                    <h4 className="lg:text-md xl:text-base 3xl:text-xl pr-3 text-nowrap">
                       Daily revenue
                     </h4>
                     <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
@@ -269,7 +331,7 @@ function Insights() {
                     <h2 className="text-xl  lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
                       2500
                     </h2>
-                    <h4 className="lg:text-lg text-base 3xl:text-xl pr-3">
+                    <h4 className="lg:text-md text-base 3xl:text-xl pr-3 text-nowrap">
                       Weekly revenue
                     </h4>
                     <div className="absolute inset-t-0 right-0 h-1/2 border-l border-gray-400"></div>
@@ -278,7 +340,7 @@ function Insights() {
                     <h2 className="text-xl lg:text-2xl xl:text-xl 3xl:text-2xl text-blue-600 font-semibold">
                       2500
                     </h2>
-                    <h4 className="lg:text-lg text-base 3xl:text-xl pr-3">
+                    <h4 className="lg:text-md text-base 3xl:text-xl pr-3 text-nowrap">
                       Monthly revenue
                     </h4>
                   </div>
@@ -286,10 +348,11 @@ function Insights() {
               </div>
               <div className="row-span-1  flex flex-col justify-around items-center md:space-y-3">
                 <div className="h-1/2 w-full ">
-                  <InsightsSwitch
+                  {/* <InsightsSwitch
                     category={selectedCategory}
                     onSelect={handleCategorySelect}
-                  />
+                  /> */}
+                  <ButtonGroup />
                 </div>
                 <MobileDateSwitch
                   duration={selectedDuration}
@@ -343,7 +406,7 @@ function Insights() {
                   buttonStyle={'p-4 lg:p-6 lg:px-8 bg-white rounded-lg'}
                   text={'Add revenue'}
                   textStyle={'text-lg lg:text-xl'}
-                  navigateUrl={'/add-revenue'}
+                  navigateUrl={'/addRevenue'}
                 />
               </div>
             </div>
@@ -351,14 +414,14 @@ function Insights() {
         </div>
 
         {/* pc screens */}
-        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen bg-green-100 overflow-hidden">
+        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen overflow-hidden">
           <div className="col-span-2">
             {/* 1st col */}
             <SidebarNew />
           </div>
 
           <div className="col-span-9 grid grid-rows-5 3xl:grid-rows-6 pl-8 pr-2 overflow-hidden">
-            <div className="row-span-1 grid grid-cols-6 items-center pt-4 pb-7  bg-red-100 px-4">
+            <div className="row-span-1 grid grid-cols-6 items-center pt-4 pb-7   px-4">
               <div className="col-span-1 h-full flex flex-col justify-center">
                 <h2 className="text-xl 3xl:text-3xl font-semibold">Insights</h2>
                 <h4 className="text-base 3xl:text-xl">Linfield at a glance</h4>
@@ -389,18 +452,19 @@ function Insights() {
                 </div>
               </div>
             </div>
-            <div className="row-span-4 3xl:row-span-5 bg-blue-400 grid grid-cols-7 space-x-4 ">
-              <div className="col-span-5 bg-green-200 h-full w-full overflow-hidden">
-                <div className="h-full grid grid-rows-7 bg-yellow-200">
-                  <div className="row-span-2 3xl:row-span-2 bg-red-500">
-                    <div className="h-full grid grid-rows-2 xl:space-y-3 3xl:space-y-0 bg-orange-400">
-                      <div className="row-span-1 h-5/6 bg-orange-100 flex justify-center items-center">
-                        <InsightsSwitch
+            <div className="row-span-4 3xl:row-span-5  grid grid-cols-7 space-x-4 ">
+              <div className="col-span-5  h-full w-full overflow-hidden">
+                <div className="h-full grid grid-rows-7 ">
+                  <div className="row-span-2 3xl:row-span-2">
+                    <div className="h-full grid grid-rows-2 xl:space-y-3 3xl:space-y-0 ">
+                      <div className="row-span-1 h-5/6  flex justify-center items-center">
+                        {/* <InsightsSwitch
                           category={selectedCategory}
                           onSelect={handleCategorySelect}
-                        />
+                        /> */}
+                        <ButtonGroup />
                       </div>
-                      <div className="row-span-1 bg-orange-300 flex items-center px-4">
+                      <div className="row-span-1  flex items-center px-4">
                         <MobileDateSwitch
                           duration={selectedDuration}
                           onSelect={handleDurationChange}
@@ -408,7 +472,7 @@ function Insights() {
                       </div>
                     </div>
                   </div>
-                  <div className="row-span-5 3xl:row-span-5 bg-red-300 h-full overflow-y-auto space-y-2 px-4 py-2">
+                  <div className="row-span-5 3xl:row-span-5  h-full overflow-y-auto space-y-2 px-4 py-2">
                     <DataCard
                       type={'admissions'}
                       title={'professor'}
@@ -484,23 +548,104 @@ function Insights() {
                 <div className="h-24 w-full bg-indigo-200"></div>
                 <div className="h-24 w-full bg-indigo-200"></div>
               </div> */}
-              <div className="col-span-2 bg-violet-200 px-4 py-4 overflow-hidden">
+              <div className="col-span-2  px-4 py-4 overflow-hidden">
                 <div className="h-full w-full grid grid-rows-9 3xl:grid-rows-8 space-y-3">
                   <div
                     className={`${selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
-                      }  bg-green-200 flex items-center justify-center`}
+                      }   flex items-center justify-center`}
                   >
-                    <button className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-2xl font-medium">
+                    {/* <button className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-xl font-medium">
                       Add revenue
-                    </button>
+                    </button> */}
+
+                    <div className='w-full' onClick={() => { handleOpenModal() }}><Button buttonStyle="bg-white p-4 text-lg rounded-xl w-full" text="Add Revenue" /></div>
+                    {isModalOpen && (
+                      <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" aria-modal="true">
+                        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                          <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                              <div className=''>
+                                <h1 className='text-2xl  font-semibold'>Add new revenue</h1>
+                                <h1 className='text-sm  font-base text-[#333333]'>Please add details for revenue tracking.</h1>
+                              </div>
+                              <div className='flex flex-col gap-4'>
+                                {/* form */}
+                                <div>
+                                  <label
+                                    htmlFor="category"
+                                    className="block text-sm font-medium text-gray-600 pb-2 pt-8"
+                                  >
+                                    Category
+                                  </label>
+                                  <Select
+                                    options={revenueCategories}
+                                    styles={{
+                                      control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        borderRadius: '.5rem',
+                                        padding: '0.2rem',
+                                        borderWidth: '0px',
+                                        backgroundColor: 'RGB(255,255,255)',
+                                      }),
+                                    }}
+                                    className="border border-gray-200 rounded"
+                                    closeMenuOnSelect={true}
+                                    isSearchable={false}
+                                    name="category"
+                                    onChange={(e) => setCategory(e.value)}
+                                  />
+                                </div>
+
+                                <div>
+                                  <label htmlFor="amount" className="block text-sm font-medium text-gray-600 pb-2">Amount</label>
+                                  <input
+                                    type="text"
+                                    id="amount"
+                                    className="bg-white text-gray-600 border border-gray-200 rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                                    placeholder="1000"
+                                    // Make sure this is the state variable holding the amount
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    value={amount}
+                                    required
+                                  />
+                                </div>
+
+                                <div>
+                                  <label htmlFor="description" className="block text-sm font-medium text-gray-600 pb-2">Description</label>
+                                  <input type="text" id="description" className="bg-white text-gray-600 border border-gray-200   rounded-lg block w-full p-2.5 focus:outline-blue-400" placeholder="Description"
+                                    required onChange={(e) => setDescription(e.target.value)} />
+                                </div>
+
+                                <div>
+                                  <label htmlFor="date" className="block text-sm font-medium text-gray-600 pb-2">Date</label>
+                                  <input type="date" id="date" className="bg-white text-gray-600 border border-gray-200   rounded-lg block w-full p-2.5 focus:outline-blue-400" placeholder="Date" onChange={(e) => setDate(e.target.value)}
+                                    required />
+                                </div>
+
+                                <div className='flex items-center justify-center pt-5' onClick={()=>{handleAddRevenue()}}>
+                                  <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 w-full rounded-xl" />
+                                </div>
+                              </div>
+
+
+
+
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="row-span-4 bg-green-300">
+                  <div className="row-span-4 ">
                     <DatePicker />
                   </div>
                   <div
                     className={`${selectedCategory === 'expense'
-                        ? 'row-span-4'
-                        : 'row-span-3'
+                      ? 'row-span-4'
+                      : 'row-span-3'
                       }  3xl:${selectedCategory === 'expense'
                         ? 'row-span-3'
                         : 'row-span-2'
@@ -508,8 +653,8 @@ function Insights() {
                   >
                     <div
                       className={`h-full w-full grid ${selectedCategory === 'expense'
-                          ? 'grid-rows-9'
-                          : 'grid-rows-5'
+                        ? 'grid-rows-9'
+                        : 'grid-rows-5'
                         } items-center space-y-2 3xl:space-y-1`}
                     >
                       <div className="row-span-1  flex justify-between items-center">
@@ -540,7 +685,7 @@ function Insights() {
                             className="absolute left-0 h-full bg-blue-300 rounded-lg"
                             style={{ width: `${plusTwoRatio}%` }}
                           ></div>
-                          <div className="absolute inset-x-full bg-red-100 flex items-center justify-end text-black text-sm 3xl:text-lg">
+                          <div className="absolute inset-x-full  flex items-center justify-end text-black text-sm 3xl:text-lg">
                             {plusTwoAdmissions}
                           </div>
                         </div>
@@ -550,7 +695,7 @@ function Insights() {
                       </div>
                     </div>
                   </div>
-                  <div className="row-span-1 bg-green-500"></div>
+                  <div className="row-span-1 "></div>
                 </div>
               </div>
             </div>

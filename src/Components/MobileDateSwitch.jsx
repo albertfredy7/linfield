@@ -53,7 +53,7 @@ function MobileDateSwitch({ duration, onSelect }) {
   return (
     <div className="flex flex-row gap-5">
       <button
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
           duration === 'today'
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676]'
@@ -63,7 +63,7 @@ function MobileDateSwitch({ duration, onSelect }) {
         Today
       </button>
       <button
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
           duration === 'thisWeek'
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676]'
@@ -73,7 +73,7 @@ function MobileDateSwitch({ duration, onSelect }) {
         Weekly
       </button>
       <button
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
           duration === 'thisMonth'
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676]'
@@ -84,7 +84,7 @@ function MobileDateSwitch({ duration, onSelect }) {
       </button>
       <input
         type="date"
-        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
+        className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-md rounded-xl ${
           duration === 'calendar'
             ? 'bg-[#2740CD] text-white'
             : 'border border-[#767676] bg-transparent'
