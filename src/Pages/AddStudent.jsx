@@ -124,29 +124,105 @@ function AddStudent() {
     },
   ];
 
-  const addStudentHandler = async (event) => {
-    if (email !== confirmEmail) {
-      toast.error('emails doesnt match');
-      return;
-    } else if (
-      !place ||
-      !admYear ||
-      !course ||
-      !intake ||
-      !mode ||
-      !phoneNum ||
-      !parentNum ||
-      !dob ||
-      !email ||
-      !branch ||
-      !admCoordinator ||
-      !admissionFee ||
-      !email ||
+  // const addStudentHandler = async (event) => {
+  //   if (
+  //     !place ||
+  //     !admYear ||
+  //     !course ||
+  //     !intake ||
+  //     !mode ||
+  //     !phoneNum ||
+  //     !parentNum ||
+  //     !dob ||
+  //     !email ||
+  //     !branch ||
+  //     !admCoordinator ||
+  //     !admissionFee ||
+  //     !email ||
+  //     !confirmEmail
+  //   ) {
+  //     toast.error('Please fill all fields to continue');
+  //     return;
+  //   } else if (email !== confirmEmail) {
+  //     toast.error('emails doesnt match');
+  //     return;
+  //   }
+  //   else {
+  //     const requestData = {
+  //       name,
+  //       place,
+  //       year: admYear,
+  //       course,
+  //       intake,
+  //       mode,
+  //       phoneNumber: phoneNum,
+  //       parentNumber: parentNum,
+  //       dob,
+  //       email,
+  //       branch,
+  //       admissionCoordinator: admCoordinator,
+  //       admissionFee,
+  //     };
+
+  //     const config = {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     };
+
+  //     const { data } = await axios.post(
+  //       'https://lobster-app-yjjm5.ondigitalocean.app/api/students/nios',
+  //       requestData,
+  //       config
+  //     );
+
+  //     console.log(`student data ${data.name}`);
+
+  //     if (data && data.message) {
+  //       console.log(`error ${data.message}`);
+  //       // window.alert('error');
+  //       toast.error(data.message);
+  //       return;
+  //     } else if (data && data.name) {
+  //       console.log(`success`);
+  //       // window.alert('success');
+  //       toast.success('stduent added successfully');
+  //     }
+  //   }
+  // };
+
+
+  const addStudentHandler = () => {
+    console.log('add student handler');
+   
+    if (
+      !place &&
+      !admYear &&
+      !course && 
+      !intake &&
+      !mode &&
+      !phoneNum &&
+      !parentNum &&
+      !dob &&
+      !email &&
+      !branch &&
+      !admCoordinator &&
+      !admissionFee &&
+      !email &&
       !confirmEmail
     ) {
+      console.log('test error');
       toast.error('Please fill all fields to continue');
-      return;
-    } else {
+      navigate('/add');
+      
+    }
+    else if (email !== confirmEmail) {
+      console.log('2nd test error ');
+      toast.error('emails doesnt match');
+      
+    }
+
+    else{
       const requestData = {
         name,
         place,
@@ -162,30 +238,62 @@ function AddStudent() {
         admissionCoordinator: admCoordinator,
         admissionFee,
       };
-
+  
       const config = {
         headers: {
           'Content-Type': 'application/json',
         },
       };
-
-      const { data } = await axios.post(
-        'http://127.0.0.1:5000/api/students/nios',
+  
+      axios.post(
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/nios',
         requestData,
         config
-      );
+      )
+        .then(response => {
+          const data = response.data;
+          console.log(`student data ${data.name}`);
+  
+          if (data && data.message) {
+            console.log(`error ${data.message}`);
+            toast.error(data.message);
+            return;
+          } else if (data && data.name) {
+            console.log(`success`);
+            toast.success('student added successfully');
+  
+            // Reset all states to their initial values
+            setName('');
+            setPlace('');
+            setCourse(null);
+            setBatch(null);
+            setIntake(null);
+            setMode(null);
+            setPhoneNum('');
+            setParentNum('');
+            setDob('');
+            setEmail('');
+            setConfirmEmail('');
+            setBranch(null);
+            setAdmCoordinator('');
+            setAdmYear(null);
+            setAdmissionFee(null);
+  
+  
+            setTimeout(() => {
+              navigate('/');
+            }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
+          }
+          
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          toast.error('An error occurred while adding the student.');
+        });
 
-      console.log(`student data ${data.name}`);
-
-      if (data && data.message) {
-        // console.log(`error ${data.message}`);
-        // window.alert('error');
-        toast.error(data.message);
-        return;
-      } else if (data && data.name) {
-        toast.success('stduent added successfully');
-      }
     }
+
+    
   };
 
   return (
@@ -547,6 +655,18 @@ function AddStudent() {
             <SidebarNew />
           </div>
           <div className="md:col-span-6 lg:col-span-6 ">
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
             <div className="p-12">
               <h1 className="text-3xl lg:text-5xl font font-semibold">
                 Add Student
@@ -680,9 +800,8 @@ function AddStudent() {
               </div>
 
               <div
-                className={`grid ${
-                  course === 'Plustwo' ? 'grid-cols-5' : 'grid-cols-4'
-                } gap-5`}
+                className={`grid ${course === 'Plustwo' ? 'grid-cols-5' : 'grid-cols-4'
+                  } gap-5`}
               >
                 {course === 'Plustwo' && (
                   <div className="col-span-1">
@@ -897,19 +1016,9 @@ function AddStudent() {
                 >
                   fuck
                 </button>
+
               </div>
-              <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              />
+
             </div>
           </div>
         </div>
@@ -1256,13 +1365,13 @@ function AddStudent() {
                 </div>
               </div>
             </div>
-            <div className=" pr-3 float-end flex  justify-end w-1/4  ">
+            <div className=" pr-3 float-end flex  justify-end " onClick={() => addStudentHandler()} >
               <Button
                 buttonStyle={
                   'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '
                 }
                 text={'Add Student'}
-                onClick={() => addStudentHandler()}
+
               />
               <ToastContainer
                 position="top-right"
@@ -1274,7 +1383,8 @@ function AddStudent() {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="colored"
+                theme="light"
+
               />
             </div>
           </div>
