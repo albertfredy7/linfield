@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../Components/Button';
 import Select from 'react-select';
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
@@ -30,13 +30,20 @@ function AddExpense() {
 
     try {
       const { data } = await axios.post(
-        'http://127.0.0.1:5000/api/expense/add',
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
         { category, description, amount, date },
         config
       );
 
+      console.log(data);
+
       if (data.transaction && data.transaction.type) {
+        console.log('iam working');
         toast.success('Expense added successfully');
+        setCategory(null);
+        setAmount(null);
+        setDescription(null);
+        setCategory(null);
       }
     } catch (error) {
       if (error.response) {
@@ -53,13 +60,24 @@ function AddExpense() {
 
   return (
     <div className="flex flex-col h-screen row-span-4 ">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />{' '}
       <div className="flex flex-col items-start  px-8  pt-20">
         <h1 className="text-2xl sm:text-2xl  font-bold ">Add new expense</h1>
         <h2 className="text-[#66666] text-sm sm:text-lg  ">
           Please add details for expense tracking.
         </h2>
       </div>
-
       <div className="px-8 flex flex-col gap-2  py-10 ">
         <div>
           <label for="amount" class="block text-sm font-medium text-gray-600">
@@ -113,20 +131,8 @@ function AddExpense() {
           <Button
             buttonStyle={'bg-[#2740CD] text-white p-3 rounded-xl w-full'}
             text={'Add Expense'}
-            onClick={addExpenseHandler}
+            onClick={() => addExpenseHandler()}
           />
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />{' '}
         </div>
       </div>
     </div>

@@ -29,6 +29,7 @@ function AddStudent() {
   const [admYear, setAdmYear] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [admissionFee, setAdmissionFee] = useState(null);
+  const [utrNumber, setUtrNumber] = useState(null);
 
   const changeBatch = (e) => {
     setBatch(e.value);
@@ -124,81 +125,13 @@ function AddStudent() {
     },
   ];
 
-  // const addStudentHandler = async (event) => {
-  //   if (
-  //     !place ||
-  //     !admYear ||
-  //     !course ||
-  //     !intake ||
-  //     !mode ||
-  //     !phoneNum ||
-  //     !parentNum ||
-  //     !dob ||
-  //     !email ||
-  //     !branch ||
-  //     !admCoordinator ||
-  //     !admissionFee ||
-  //     !email ||
-  //     !confirmEmail
-  //   ) {
-  //     toast.error('Please fill all fields to continue');
-  //     return;
-  //   } else if (email !== confirmEmail) {
-  //     toast.error('emails doesnt match');
-  //     return;
-  //   }
-  //   else {
-  //     const requestData = {
-  //       name,
-  //       place,
-  //       year: admYear,
-  //       course,
-  //       intake,
-  //       mode,
-  //       phoneNumber: phoneNum,
-  //       parentNumber: parentNum,
-  //       dob,
-  //       email,
-  //       branch,
-  //       admissionCoordinator: admCoordinator,
-  //       admissionFee,
-  //     };
-
-  //     const config = {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     };
-
-  //     const { data } = await axios.post(
-  //       'https://lobster-app-yjjm5.ondigitalocean.app/api/students/nios',
-  //       requestData,
-  //       config
-  //     );
-
-  //     console.log(`student data ${data.name}`);
-
-  //     if (data && data.message) {
-  //       console.log(`error ${data.message}`);
-  //       // window.alert('error');
-  //       toast.error(data.message);
-  //       return;
-  //     } else if (data && data.name) {
-  //       console.log(`success`);
-  //       // window.alert('success');
-  //       toast.success('stduent added successfully');
-  //     }
-  //   }
-  // };
-
-
   const addStudentHandler = () => {
     console.log('add student handler');
-   
+
     if (
       !place &&
       !admYear &&
-      !course && 
+      !course &&
       !intake &&
       !mode &&
       !phoneNum &&
@@ -209,20 +142,16 @@ function AddStudent() {
       !admCoordinator &&
       !admissionFee &&
       !email &&
-      !confirmEmail
+      !confirmEmail &&
+      !utrNumber
     ) {
       console.log('test error');
       toast.error('Please fill all fields to continue');
       navigate('/add');
-      
-    }
-    else if (email !== confirmEmail) {
+    } else if (email !== confirmEmail) {
       console.log('2nd test error ');
       toast.error('emails doesnt match');
-      
-    }
-
-    else{
+    } else {
       const requestData = {
         name,
         place,
@@ -237,31 +166,29 @@ function AddStudent() {
         branch,
         admissionCoordinator: admCoordinator,
         admissionFee,
+        utrNumber,
       };
-  
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
         },
       };
-  
-      axios.post(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/nios',
-        requestData,
-        config
-      )
-        .then(response => {
+
+      axios
+        .post('http://127.0.0.1:5000/api/students/nios', requestData, config)
+        .then((response) => {
           const data = response.data;
           console.log(`student data ${data.name}`);
-  
+
           if (data && data.message) {
             console.log(`error ${data.message}`);
             toast.error(data.message);
             return;
           } else if (data && data.name) {
             console.log(`success`);
-            toast.success('student added successfully');
-  
+            window.alert('student added successfully');
+
             // Reset all states to their initial values
             setName('');
             setPlace('');
@@ -278,22 +205,18 @@ function AddStudent() {
             setAdmCoordinator('');
             setAdmYear(null);
             setAdmissionFee(null);
-  
-  
+            setUtrNumber(null);
+
             setTimeout(() => {
               navigate('/');
             }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
           }
-          
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error:', error);
           toast.error('An error occurred while adding the student.');
         });
-
     }
-
-    
   };
 
   return (
@@ -624,6 +547,22 @@ function AddStudent() {
                 required
               />
             </div>
+            <div>
+              <label
+                htmlFor="utrNumber"
+                className="block text-sm font-medium text-gray-900 mb-2"
+              >
+                Utr Number
+              </label>
+              <input
+                type="text"
+                id="utrNumber"
+                className="bg-white border border-white text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                placeholder="Enter the utr numnber"
+                onChange={(e) => setUtrNumber(e.target.value)}
+                required
+              />
+            </div>
             <div
               className="w-full pt-4 pb-4 bg-red-100"
               onClick={() => addStudentHandler()}
@@ -800,8 +739,9 @@ function AddStudent() {
               </div>
 
               <div
-                className={`grid ${course === 'Plustwo' ? 'grid-cols-5' : 'grid-cols-4'
-                  } gap-5`}
+                className={`grid ${
+                  course === 'Plustwo' ? 'grid-cols-5' : 'grid-cols-4'
+                } gap-5`}
               >
                 {course === 'Plustwo' && (
                   <div className="col-span-1">
@@ -990,7 +930,7 @@ function AddStudent() {
                     required
                   />
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-1">
                   <label
                     htmlFor="admissionFee"
                     className="block text-sm lg:text-lg font-medium text-gray-900"
@@ -1006,6 +946,22 @@ function AddStudent() {
                     required
                   />
                 </div>
+                <div className="col-span-1">
+                  <label
+                    htmlFor="utrNumber"
+                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                  >
+                    UTR number
+                  </label>
+                  <input
+                    type="text"
+                    id="utrNumber"
+                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg  rounded-lg block w-full p-2.5"
+                    placeholder="Enter UTR number"
+                    onChange={(e) => setUtrNumber(e.target.value)}
+                    required
+                  />
+                </div>
               </div>
               <div className="flex justify-center items-center p-10">
                 <button
@@ -1014,11 +970,9 @@ function AddStudent() {
                   }
                   onClick={() => addStudentHandler()}
                 >
-                  fuck
+                  Add student
                 </button>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -1363,15 +1317,32 @@ function AddStudent() {
                     }
                   />
                 </div>
+                <div>
+                  <label
+                    for="utrNumber"
+                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                  >
+                    UTR number
+                  </label>
+                  <input
+                    type="text"
+                    id="utrNumber"
+                    onChange={(e) => setUtrNumber(e.target.value)}
+                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2"
+                    placeholder="Enter UTR number"
+                  />
+                </div>
               </div>
             </div>
-            <div className=" pr-3 float-end flex  justify-end " onClick={() => addStudentHandler()} >
+            <div
+              className=" pr-3 float-end flex  justify-end "
+              onClick={() => addStudentHandler()}
+            >
               <Button
                 buttonStyle={
                   'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '
                 }
                 text={'Add Student'}
-
               />
               <ToastContainer
                 position="top-right"
@@ -1384,7 +1355,6 @@ function AddStudent() {
                 draggable
                 pauseOnHover
                 theme="light"
-
               />
             </div>
           </div>

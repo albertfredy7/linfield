@@ -61,7 +61,7 @@ function ExpenseTracker() {
 
     try {
       const { data } = await axios.post(
-        'http://127.0.0.1:5000/api/expense/add',
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
         { category, description, amount, date },
         config
       );
@@ -99,14 +99,14 @@ function ExpenseTracker() {
       selectedDuration === 'this_month'
     ) {
       const { data } = await axios.get(
-        `http://127.0.0.1:5000/api/expense?duration=${selectedDuration}`
+        `https://lobster-app-yjjm5.ondigitalocean.app/api/expense?duration=${selectedDuration}`
       );
       console.log(data);
       setExpenseData(data.expenses);
       setTotalExpense(formatNumber(data.totalAmount));
     } else {
       const { data } = await axios.get(
-        `http://127.0.0.1:5000/api/expense?duration=custom&start_date=${selectedDuration}&end_date=${selectedDuration}`
+        `https://lobster-app-yjjm5.ondigitalocean.app/api/expense?duration=custom&start_date=${selectedDuration}&end_date=${selectedDuration}`
       );
       setExpenseData(data.expenses);
       setTotalExpense(formatNumber(data.totalAmount));
