@@ -380,7 +380,7 @@ function FilterStudents() {
               <h1 className='text-[#333333] text-sm'>Filter the student based on Admn No / Mobile No </h1>
             </div>
 
-            <div className='pt-5'><MobileOverviewCard title={'Total students'} subtitle={'2500'} /></div>
+            <div className='pt-5'><MobileOverviewCard title={'Total students'} subtitle={totalStudents} /></div>
 
 
 
@@ -438,7 +438,7 @@ function FilterStudents() {
             </div>
 
             <div className="row-span-1   ">
-            <OverviewCard title={'Total Students'} totalAdmission={totalStudents} />
+            <OverviewCard title={'Total Students'} number={totalStudents} />
             </div>
 
             <div className='row-span-1 flex justify-between  gap-5 pt-5 lg:pt-8 px-5 items-center'>
@@ -497,7 +497,7 @@ function FilterStudents() {
             </div>
 
             <div className="row-span-2 3xl:row-span-3  py-3">
-              <OverviewCard title={'Total Students'} value={totalStudents} number={true} />
+              <OverviewCard title={'Total Students'} number={totalStudents} />
             </div>
 
             <div className="row-span-4 3xl:row-span-8 pt-4">
