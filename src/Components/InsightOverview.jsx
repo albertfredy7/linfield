@@ -36,7 +36,7 @@ const dataMapping = {
     ]),
 };
 
-function InsightOverview({ type }) {
+function InsightOverview({ type , insightData}) {
     // Use the type prop to look up the corresponding data in the mapping object
     const data = dataMapping[type] || <p>No data available</p>;
 

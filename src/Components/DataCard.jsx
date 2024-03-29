@@ -76,7 +76,7 @@ function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
         <div
           className={`col-span-5 h-full  flex flex-col gap-0 justify-center items-center`}
         >
-          <h1 className="text-sm md:text-xl lg:text-2xl xl:text-sm 3xl:text-xl">
+          <h1 className="text-lg md:text-xl lg:text-2xl xl:text-sm 3xl:text-xl">
             {title}
           </h1>
           {subTitle && (
