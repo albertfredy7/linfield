@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../Components/Sidebar'
 import SidebarNew from '../Components/SidebarNew'
 import MobileNavigation from '../Components/MobileNavigation'
@@ -9,6 +9,9 @@ import MobileOverviewCard from '../Components/MobileOverviewCard'
 import Button from '../Components/Button'
 import { useNavigate } from 'react-router-dom'
 import Select from 'react-select'
+import axios from 'axios'
+import toast, { Toaster } from 'react-hot-toast'
+import { set } from 'date-fns'
 
 
 
@@ -29,6 +32,8 @@ function FilterStudents() {
   const [tmaSubmitted, setTmaSubmitted] = useState(null)
   const [tocRecieved, setTocRecieved] = useState(null)
   const [tocSubmitted, setTocSubmitted] = useState(null)
+  const [studentData, setStudentData] = useState([])
+  const [totalStudents, setTotalStudents] = useState(0)
 
 
   const yearOptions = [
@@ -284,12 +289,90 @@ function FilterStudents() {
       label: 'No'
     }
   ]
+  const performSearch = async (query) => {
+    try {
+      const response = await axios.get(`https://lobster-app-yjjm5.ondigitalocean.app/api/students/search/${query}`);
+      // Check if the response data is an object
+      if (typeof response.data === 'object' && response.data !== null) {
+        // Wrap the object in an array
+        setStudentData([response.data]);
+      } else if (Array.isArray(response.data)) {
+        // If the response data is an array, set it directly
+        setStudentData(response.data);
+      } else {
+        // If the response data is neither an object nor an array, log an error or set studentData to an empty array
+        console.error('Error: response.data is not an object or an array');
+        setStudentData([]);
+      }
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      toast.error('No student data available');
+      // Set studentData to an empty array in case of an error
+
+      setStudentData([]);
+    }
+  };
+
+  const applyFilter = async () => {
+    // Create an object to hold the filter criteria
+    const filterCriteria = {};
+
+    // Add filter criteria to the object if they are not null
+    if (admYear !== null) filterCriteria.year = admYear;
+    if (course !== null) filterCriteria.course = course;
+    if (batch !== null) filterCriteria.batch = batch;
+    if (mode !== null) filterCriteria.mode = mode;
+    if (pendingFee !== null) filterCriteria.pendingFee = pendingFee;
+    if (registrationStatus !== null) filterCriteria.registrationStatus = registrationStatus;
+    if (academicStatus !== null) filterCriteria.academicStatus = academicStatus;
+    if (examMonth !== null) filterCriteria.examMonth = examMonth;
+    if (examCenter !== null) filterCriteria.examCenter = examCenter;
+    if (tmaRecieved !== null) filterCriteria.tmaReceived = tmaRecieved;
+    if (tmaSubmitted !== null) filterCriteria.tmaSubmitted = tmaSubmitted;
+    if (tocRecieved !== null) filterCriteria.tocRecieved = tocRecieved;
+    if (tocSubmitted !== null) filterCriteria.tocSubmitted = tocSubmitted;
+
+    try {
+      // Send a POST request to the filter API endpoint with the filter criteria
+      const response = await axios.post('https://lobster-app-yjjm5.ondigitalocean.app/api/students/filterStudents', filterCriteria);
+
+      // Update the studentData state with the filtered results
+      setStudentData(response.data);
+    } catch (error) {
+      console.error('Error applying filter:', error);
+      toast.error('Failed to apply filter');
+    }
+  };
+
+  const fetchTotalStudents = async () => {
+    try {
+      const response = await axios.get('https://lobster-app-yjjm5.ondigitalocean.app/api/students/totalAdmissions')
+      setTotalStudents(response.data.numberOfAdmissions);
+    }
+    catch (error) {
+      console.error('Error fetching total students:', error);
+      toast.error('Failed to fetch total students');
+    }
+  }
+
+  useEffect(() => {
+    fetchTotalStudents();
+    applyFilter();
+  }, [])
+
+
+  console.log(studentData);
+  console.log(totalStudents);
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         <div className="block md:hidden  ">
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+          />
 
           <div className='flex flex-col h-screen'>
             <div className='pt-14 px-5 flex flex-col'>
@@ -304,75 +387,24 @@ function FilterStudents() {
             <div className='flex justify-between pt-5 pb-5 px-6 gap-8 '>
 
               <Button text='Filter' buttonStyle='bg-[#2740CD] text-white px-3 py-1 rounded-xl' navigateUrl={'/applyFilter'} />
-              <SeachBar />
+              <SeachBar onSearch={performSearch} />
             </div>
 
             <div className='overflow-y-auto flex flex-col gap-3 h-[550px] px-5  pt-5'>
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
-              <DataCard
-                type="admissions"
-                title="Professor"
-                tailData="SSLC"
-                style={{ h: 'full' }} />
+              {studentData.length > 0 ?
+                studentData.map((student, index) => (
+                  <DataCard
+                    key={index}
+                    type="admissions"
+                    title={student.name}
+                    tailData={student.course}
+                  />
+                )) : <div className='text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center'>
+                  <img src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif" className='mix-blend-multiply w-4/6' alt="" />
+                  <h1 className='text-center'>No student data available</h1>
+                </div>
+
+              }
             </div>
           </div>
 
@@ -392,6 +424,10 @@ function FilterStudents() {
             <SidebarNew />
           </div>
           <div className="col-span-6 h-full  px-12 grid grid-rows-9 3xl:grid-rows-12 overflow-hidden ">
+            <Toaster
+              position="top-center"
+              reverseOrder={false}
+            />
             <div className="row-span-1 3xl:row-span-2 flex flex-col justify-center 3xl:justify-center px-4 ">
               <h1 className="text-xl md:text-3xl lg:text-4xl 3xl:text-4xl font-semibold pt-10">
                 Filter students
@@ -402,69 +438,37 @@ function FilterStudents() {
             </div>
 
             <div className="row-span-1   ">
-              <OverviewCard title={'Total Students'} value={2500} number={true} />
+            <OverviewCard title={'Total Students'} totalAdmission={totalStudents} />
             </div>
 
             <div className='row-span-1 flex justify-between  gap-5 pt-5 lg:pt-8 px-5 items-center'>
               <Button text='Filter' buttonStyle='bg-[#2740CD] h-1/2 text-white px-6 py-2  lg:text-xl rounded-xl' navigateUrl={'/applyFilter'} />
-              <div className='w-3/4'><SeachBar /></div>
+              <div className='w-3/4'><SeachBar onSearch={performSearch} /></div>
 
             </div>
 
-            
+
 
             <div className="row-span-6">
-            <div className="overflow-y-auto h-full p-4">
+              <div className="overflow-y-auto h-full p-4">
                 <div className="space-y-3">
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
+                  {studentData.length > 0 ?
+                    studentData.map((student, index) => (
+                      <DataCard
+                        key={index}
+                        type="admissions"
+                        title={student.name}
+                        tailData={student.course}
+                      />
+                    )) : <div className='text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center'>
+                      <img src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif" className='mix-blend-multiply w-4/6' alt="" />
+                      <h1 className='text-center'>No student data available</h1>
+                    </div>
+
+                  }
+                  <Toaster
+                    position="top-center"
+                    reverseOrder={false}
                   />
                 </div>
               </div>
@@ -480,6 +484,10 @@ function FilterStudents() {
 
           <div className="col-span-6 h-full  px-12 grid grid-rows-7 3xl:grid-rows-12 overflow-hidden">
             <div className="row-span-1 3xl:row-span-2 flex flex-col justify-center 3xl:justify-center px-4">
+              <Toaster
+                position="top-center"
+                reverseOrder={false}
+              />
               <h1 className="text-xl 3xl:text-3xl font-semibold">
                 Filter students
               </h1>
@@ -489,62 +497,31 @@ function FilterStudents() {
             </div>
 
             <div className="row-span-2 3xl:row-span-3  py-3">
-              <OverviewCard title={'Total Students'} value={2500} number={true} />
+              <OverviewCard title={'Total Students'} value={totalStudents} number={true} />
             </div>
 
             <div className="row-span-4 3xl:row-span-8 pt-4">
               <div className="overflow-y-auto h-full p-4">
                 <div className="space-y-3">
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
+                  {studentData.length > 0 ?
+                    studentData.map((student, index) => (
+                      <DataCard
+                        key={index}
+                        type="admissions"
+                        title={student.name}
+                        tailData={student.course}
+                      />
+                    )) : <div className='text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center'>
+                      <img src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif" className='mix-blend-multiply w-4/6' alt="" />
+                      <h1 className='text-center'>No student data available</h1>
+                    </div>
+
+                  }
+                  <Toaster
+                    position="top-center"
+                    reverseOrder={false}
                   />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                  />
+
                 </div>
               </div>
             </div>
@@ -552,7 +529,7 @@ function FilterStudents() {
 
           <div className="col-span-3 h-full  grid grid-rows-12 overflow-hidden">
             <div className='row-span-2  flex flex-col justify-center items-center px-4'>
-              <SeachBar />
+              <SeachBar onSearch={performSearch} />
             </div>
             <div className='row-span-11  px-5 py-2'>
               <div className=' h-full flex flex-col bg-white p-12 rounded-xl'>
@@ -838,7 +815,7 @@ function FilterStudents() {
                     }} className="border border-gray-200 rounded text-md 3xl:hidden xl:block" closeMenuOnSelect={true} isSearchable={false} onChange={(e) => setTocSubmitted(e.value)} name="tocSubmitted" controlShouldRenderValue={tocSubmitted ? true : tocSubmitted === false ? true : false} />
                   </div>
                   <div className=' flex w-full pt-5 '>
-                    <Button text='Apply Filter' buttonStyle='bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md w-full' />
+                    <Button text='Apply Filter' buttonStyle='bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md w-full' onClick={applyFilter} />
                   </div>
                 </div>
               </div>

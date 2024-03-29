@@ -59,7 +59,7 @@ function MobileDateSwitch({ duration, onSelect }) {
   };
 
   return (
-    <div className="flex flex-row gap-5">
+    <div className="flex flex-row gap-2 px-4 py-3">
       <button
         className={`py-2 px-4 3xl:py-3 3xl:px-5 text-xs sm:text-base lg:text-lg xl:text-sm 3xl:text-lg rounded-xl ${
           duration === 'today'

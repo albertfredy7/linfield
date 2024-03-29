@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../Components/Sidebar';
 import SidebarNew from '../Components/SidebarNew';
 import MobileNavigation from '../Components/MobileNavigation';
 import MobileDateSwitch from '../Components/MobileDateSwitch';
 import MobileOverviewCard from '../Components/MobileOverviewCard';
 import DataCard from '../Components/DataCard';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import OverviewCard from '../Components/OverviewCard';
 import DatePicker from '../Components/DatePicker';
 import Button from '../Components/Button';
 import Select from 'react-select';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS
 
 function ExpenseTracker() {
-
   const navigate = useNavigate();
 
   const [amount, setAmount] = useState(null);
@@ -24,15 +25,16 @@ function ExpenseTracker() {
 
   const [expenseData, setExpenseData] = useState([]);
   const [totalExpense, setTotalExpense] = useState(0);
+
   const options = [
-    { value: 'salary', label: 'Salary' },
-    { value: 'rent', label: 'Rent' },
-    { value: 'printing_stationary', label: 'Printing & Stationary' },
-    { value: 'refreshment', label: 'Refreshment' },
-    { value: 'electricity', label: 'Electricity' },
-    { value: 'repairs', label: 'Repairs' },
-    { value: 'equipments', label: 'Equipments' },
-    { value: 'miscellaneous', label: 'Miscellaneous Expense' },
+    { value: 'Salary', label: 'Salary' },
+    { value: 'Rent', label: 'Rent' },
+    { value: 'Printing & Stationary', label: 'Printing & Stationary' },
+    { value: 'Refreshment', label: 'Refreshment' },
+    { value: 'Electricity', label: 'Electricity' },
+    { value: 'Repairs', label: 'Repairs' },
+    { value: 'Equipments', label: 'Equipments' },
+    { value: 'Miscellaneous Expense', label: 'Miscellaneous Expense' },
   ];
 
   const currentDate = new Date(Date.now());
@@ -41,13 +43,14 @@ function ExpenseTracker() {
     currentDate
   );
 
+  const handleDurationChange = (duration) => {
+    console.log(duration);
+    setSelectedDuration(duration);
+  };
+
   const handleDateRangeSelect = (dateRange) => {
     console.log(`the date range is ${dateRange}`);
   };
-
-  const handleDurationChange = (duration) => {
-    setSelectedDuration(duration);
-  };
 
   const addExpenseHandler = async () => {
     const config = {
@@ -98,6 +101,7 @@ function ExpenseTracker() {
       const { data } = await axios.get(
         `https://lobster-app-yjjm5.ondigitalocean.app/api/expense?duration=${selectedDuration}`
       );
+      console.log(data);
       setExpenseData(data.expenses);
       setTotalExpense(formatNumber(data.totalAmount));
     } else {
@@ -111,7 +115,6 @@ function ExpenseTracker() {
 
   useEffect(() => {
     fetchData();
-    console.log(expenseData);
   }, [selectedDuration]);
 
   return (
@@ -128,35 +131,39 @@ function ExpenseTracker() {
                 <h2 className="text-[#66666] text-sm text-nowrap ">
                   Track your expenses, start your day right
                 </h2>
-                <div className=" bg-red-100 justify-center flex items-center">
-                  <MobileDateSwitch />
+                <div className="justify-center flex items-center">
+                  <MobileDateSwitch
+                    duration={selectedDuration}
+                    onSelect={handleDurationChange}
+                  />
                 </div>
               </div>
-
-
-
               <div>
-                <MobileOverviewCard title={'Spend so far'} subtitle={'5000'} />
+                <MobileOverviewCard
+                  title={'Spend so far'}
+                  subtitle={totalExpense}
+                />
               </div>
-
               <div className="flex justify-between p-5">
                 <h1 className="font-medium text-sm">Today, 12 Mar 2024</h1>
                 <button
                   className="bg-[#2740CD] text-white text-sm px-3 py-1 rounded-xl"
-                  onClick={() => naviagte('/add-expense')}
+                  onClick={() => navigate('/add-expense')}
                 >
                   Add
                 </button>
               </div>
-
               <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-20">
-                <DataCard
-                  title={'Rent'}
-                  subTitle={'11.00am'}
-                  tailData={'$500'}
-                  type={'rent'}
-                />
-                <DataCard
+                {expenseData.map((x, idx) => {
+                  return (
+                    <DataCard
+                      title={x.category}
+                      tailData={x.amount}
+                      type={x.category.toLowerCase()}
+                    />
+                  );
+                })}
+                {/* <DataCard
                   title={'Stationary'}
                   subTitle={'11.00am'}
                   tailData={'$500'}
@@ -208,10 +215,21 @@ function ExpenseTracker() {
                   title={'Miscallaneous'}
                   subTitle={'11.00am'}
                   tailData={'$500'}
-                  type={'miscallaneous'}
-                />
+                  type={'miscallaneous'} */}
+                {/* /> */}
               </div>
-
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />{' '}
               <div className="fixed bottom-0 right-0 w-full">
                 <MobileNavigation />
               </div>
@@ -236,13 +254,17 @@ function ExpenseTracker() {
                     Your expenses at a glance
                   </h2>
                   <div className="p-3">
-                    <MobileDateSwitch onSelect={handleDateRangeSelect} />
+                    <MobileDateSwitch
+                      duration={selectedDuration}
+                      onSelectDateRange={handleDateRangeSelect}
+                      onSelect={handleDurationChange}
+                    />
                   </div>
                 </div>
                 <div className="py-3">
                   <OverviewCard
                     title={'Spend so far'}
-                    value={'5000'}
+                    value={totalExpense}
                     style={'py-10'}
                   />
                 </div>
@@ -252,7 +274,7 @@ function ExpenseTracker() {
                   </h1>
                   <button
                     className="bg-[#2740CD] text-white text-md lg:text-xl xl:text-md px-4 py-2 rounded-xl"
-                    onClick={() => naviagte('/add-expense')}
+                    onClick={() => navigate('/add-expense')}
                   >
                     Add
                   </button>
@@ -260,7 +282,18 @@ function ExpenseTracker() {
                 {/* Set a fixed height and overflow-y-auto for the scrollable area */}
                 <div className="flex-grow overflow-y-auto">
                   <div className="space-y-2">
-                    <div className="row-span-1">
+                    {expenseData.map((x, idx) => {
+                      return (
+                        <div className="row-span-1">
+                          <DataCard
+                            title={x.category}
+                            tailData={x.amount}
+                            type={x.category.toLowerCase()}
+                          />
+                        </div>
+                      );
+                    })}
+                    {/* <div className="row-span-1">
                       <DataCard
                         title={'Rent'}
                         subTitle={'11.00am'}
@@ -347,18 +380,22 @@ function ExpenseTracker() {
                         tailData={'$500'}
                         type={'rent'}
                       />
-                    </div>
-                    <div className="row-span-1">
-                      <DataCard
-                        title={'Rent'}
-                        subTitle={'11.00am'}
-                        tailData={'$500'}
-                        type={'rent'}
-                      />
-                    </div>
+                    </div> */}
 
                     {/* Add other DataCard components */}
                   </div>
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                  />{' '}
                 </div>
               </div>
             </div>
@@ -383,12 +420,25 @@ function ExpenseTracker() {
                     Your expenses at a glance
                   </h2>
                 </div>
-                <MobileDateSwitch onSelect={handleDurationChange} duration={selectedDuration} />
+                <MobileDateSwitch
+                  duration={selectedDuration}
+                  onSelect={handleDurationChange}
+                />
+                {console.log(selectedDuration)}
               </div>
               <div className="row-span-3 3xl:row-span-4 pb-3 px-3 h-full">
                 <div className=" w-full h-full overflow-y-auto">
                   <div className="space-y-3">
-                    <DataCard
+                    {expenseData.map((x, idx) => {
+                      return (
+                        <DataCard
+                          title={x.category}
+                          tailData={x.amount}
+                          type={x.category.toLowerCase()}
+                        />
+                      );
+                    })}
+                    {/* <DataCard
                       title={'Rent'}
                       subTitle={'11.00am'}
                       tailData={'$500'}
@@ -447,7 +497,7 @@ function ExpenseTracker() {
                       subTitle={'11.00am'}
                       tailData={'$500'}
                       type={'miscallaneous'}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -480,6 +530,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] text-gray-600 bg text-sm 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
                       placeholder="Enter the amount"
                       required
+                      onChange={(e) => setAmount(e.target.value)}
                     />
                   </div>
                   <div className="2xl:block 3xl:hidden pb-3 3xl:pb-0">
@@ -504,6 +555,7 @@ function ExpenseTracker() {
                           fontSize: '14px',
                         }),
                       }}
+                      onChange={(e) => setCategory(e.value)}
                     />
                   </div>
                   <div className="hidden 3xl:block 3xl:space-y-2 pb-3 3xl:pb-0">
@@ -528,6 +580,7 @@ function ExpenseTracker() {
                           fontSize: '18px',
                         }),
                       }}
+                      onChange={(e) => setCategory(e.value)}
                     />
                   </div>
                   <div className="3xl:space-y-2 pb-3 3xl:pb-0">
@@ -543,6 +596,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] text-gray-600 text-sm 3xl:text-lg rounded-md block w-full h-16 3xl:h-32 p-2 md:p-4 xl:p-2"
                       placeholder="Describe the expense"
                       required
+                      onChange={(e) => setDescription(e.target.value)}
                     />
                   </div>
                   <div className="3xl:space-y-2 pb-3 3xl:pb-0">
@@ -559,6 +613,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] px-3 border text-gray-600 text-sm 3xl:text-lg rounded-md w-full p-2 md:p-4 xl:p-2"
                       required
                       placeholder="Select date"
+                      onChange={(e) => setDate(e.target.value)}
                     />
                   </div>
                 </div>
@@ -566,112 +621,26 @@ function ExpenseTracker() {
                   <Button
                     buttonStyle={`w-full bg-[#5266D7] text-white text-md 3xl:text-xl p-2 md:p-3 xl:p-2 3xl:p-3 rounded-lg`}
                     text={`Add`}
+                    onClick={addExpenseHandler}
                   />
                 </div>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="colored"
+                />{' '}
               </div>
             </div>
-            {/* <div className=" col-span-3 grid grid-rows-5 pt-5">
-              <div className='row-span-1'>
-                <OverviewCard title={'Spend so far'} value={'5000'} />
-              </div>
-              <div className='flex flex-col h-screen row-span-4 p-5 '>
-
-
-                <div className='pt-8'>
-                  <div className='bg-white rounded-2xl '>
-                    <div className='flex flex-col items-start  px-8  pt-20 '>
-                      <h1 className='text-2xl sm:text-2xl  font-bold '>Add new expense</h1>
-                      <h2 className='text-[#66666] text-sm sm:text-lg  '>Please add details for expense tracking.</h2>
-                    </div>
-
-                    <div className='px-8 flex flex-col gap-2  py-10 '>
-                      <div>
-                        <label
-                          for="amount"
-                          class="block text-sm font-medium text-gray-600"
-                        >
-                          Amount
-                        </label>
-                        <input
-                          type="text"
-                          id="amount"
-                          class="bg-white border text-gray-600 text-sm  rounded-md block w-full p-2 md:p-4 xl:p-2"
-                          placeholder="Enter the amount"
-                          required
-
-
-                        />
-                      </div>
-                      <div>
-                        <label
-                          for="description"
-                          class="block text-sm font-medium text-gray-600"
-                        >
-                          Description
-                        </label>
-                        <input
-                          type="text"
-                          id="description"
-                          class="bg-white border text-gray-600 text-sm  rounded-md block w-full p-2 md:p-4 xl:p-2"
-                          placeholder="Describe the expense"
-                          required
-
-
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="category"
-                          className="block text-sm font-medium text-gray-600"
-                        >
-                          Category
-                        </label>
-                        <Select
-                          options={options}
-                          id='category'
-                          isSearchable={false}
-
-                        />
-                      </div>
-                      <div>
-                        <label
-                          for="date"
-                          class="block text-sm font-medium text-gray-600"
-                        >
-                          Date
-                        </label>
-                        <input
-                          type="date"
-                          id="date"
-                          className="bg-white px-3 border text-gray-600 text-sm  rounded-md w-full p-2 md:p-4 xl:p-2"
-                          required
-                          placeholder='Select date'
-
-                        />
-                      </div>
-
-                      <div className='py-5'>
-                        <Button
-                          buttonStyle={'bg-[#2740CD] text-white p-3 rounded-xl w-full'}
-                          text={'Add Expense'}
-                        />
-                      </div>
-
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
-      {/* <div className='grid grid-cols-5'>
-            <div className='w-full '>
-                <Sidebar />
-            </div>
-            <div>Home</div>
-        </div> */}
     </>
   );
 }

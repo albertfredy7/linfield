@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import { ToastContainer, toast } from 'react-toastify'; // Import toast
-import 'react-toastify/dist/ReactToastify.css'; // Import CSS
+// import { ToastContainer, toast } from 'react-toastify'; // Import toast
+// import 'react-toastify/dist/ReactToastify.css'; // Import CSS
+
+import toast, { Toaster } from 'react-hot-toast';
 import MobileNavigation from '../Components/MobileNavigation';
 import Button from '../Components/Button';
 import SidebarNew from '../Components/SidebarNew';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function AddExpense() {
+  const navigate = useNavigate()
   const options = [
     { value: 'Salary', label: 'Salary' },
     { value: 'Rent', label: 'Rent' },
@@ -27,34 +31,38 @@ function AddExpense() {
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
 
-  const addExpenseHandler = async () => {
+  const addExpenseHandler = () => {
+    console.log('inside expense handler');
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
 
-    try {
-      const { data } = await axios.post(
-        'http://127.0.0.1:5000/api/expense/add',
-        { category, description, amount, date },
-        config
-      );
-
-      if (data.transaction && data.transaction.type) {
-        toast.success('Expense added successfully');
-      }
-    } catch (error) {
-      if (error.response) {
-        // Extracting the error message from the response
-        console.log(error.response.data.message);
-        const errorMessage = error.response.data.message;
-        toast.error(errorMessage);
-      } else {
-        // Handling other types of errors
-        console.error('An error occurred:', error.message);
-      }
-    }
+    axios.post(
+      'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
+      { category, description, amount, date },
+      config
+    )
+      .then(({ data }) => {
+        if (data.transaction && data.transaction.type) {
+          //  toast.success('Expense added successfully');
+          alert('Expense added successfully');
+          navigate('/expense')
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          // Extracting the error message from the response
+          console.log(error.response.data.message);
+          const errorMessage = error.response.data.message;
+          //  toast.error(errorMessage);
+          alert(errorMessage);
+        } else {
+          // Handling other types of errors
+          console.error('An error occurred:', error.message);
+        }
+      });
   };
 
   return (
@@ -150,7 +158,7 @@ function AddExpense() {
                   onClick={addExpenseHandler}
                 />
               </div>
-              <ToastContainer
+              {/* <ToastContainer
                 position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -161,7 +169,10 @@ function AddExpense() {
                 draggable
                 pauseOnHover
                 theme="colored"
-              />{' '}
+              />{' '} */}
+              <Toaster
+                position="top-center"
+              />
             </div>
           </div>
 
@@ -283,7 +294,7 @@ function AddExpense() {
                     onClick={addExpenseHandler}
                   />
                 </div>
-                <ToastContainer
+                {/* <ToastContainer
                   position="top-right"
                   autoClose={5000}
                   hideProgressBar={false}
@@ -294,7 +305,32 @@ function AddExpense() {
                   draggable
                   pauseOnHover
                   theme="colored"
-                />{' '}
+                />{' '} */}
+                <Toaster
+                  position="top-center"
+                  reverseOrder={false}
+                  gutter={8}
+                  containerClassName=""
+                  containerStyle={{}}
+                  toastOptions={{
+                    // Define default options
+                    className: '',
+                    duration: 5000,
+                    style: {
+                      background: '#363636',
+                      color: '#fff',
+                    },
+
+                    // Default options for specific types
+                    success: {
+                      duration: 3000,
+                      theme: {
+                        primary: 'green',
+                        secondary: 'black',
+                      },
+                    },
+                  }}
+                />
               </div>
             </div>
           </div>
