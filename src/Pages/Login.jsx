@@ -3,8 +3,8 @@ import logo from '../assets/logo.png';
 import student from '../assets/4760260.jpg';
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS
-import {useSelector, useDispatch} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Button from '../Components/Button';
 import { teacherLogin } from '../actions/teacherActions';
 
@@ -12,22 +12,22 @@ const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const teacherLoginData = useSelector(state => state.teacherLogin)
-  const {loading, teacherInfo, error} = teacherLoginData
+  const teacherLoginData = useSelector((state) => state.teacherLogin);
+  const { loading, teacherInfo, error } = teacherLoginData;
 
   useEffect(() => {
-    if(teacherInfo) {
-      toast.success('Login successful')
+    if (teacherInfo) {
+      toast.success('Login successful');
       setTimeout(() => {
-        navigate('/')
-      }, 1000)
-    } else if(error) {
-      toast.error(error)
+        navigate('/');
+      }, 1000);
+    } else if (error) {
+      toast.error(error);
     }
-  }, [teacherInfo, error])
+  }, [teacherInfo, error]);
 
   const handleSubmit = (event) => {
     console.log('Email:', email);
@@ -36,10 +36,10 @@ const Login = () => {
       toast.error('Please enter both email and password'); // Use toast for error message
       return;
     } else {
-        console.log('im the else condition')
-      dispatch(teacherLogin(email, password))
+      console.log('im the else condition');
+      dispatch(teacherLogin(email, password));
     }
-    
+
     // For demonstration purposes, let's assume the submission fails
     // toast.error('An error occurred during login.'); // Use toast for error message
   };
@@ -112,7 +112,11 @@ const Login = () => {
             </label>
           </div>
           <div className="w-full xl:w-1/2 pt-2 md:pt-2 px-2">
-            <Button buttonStyle={`w-full bg-[#5266D7] text-white text-lg p-2 md:p-3 xl:p-2 rounded-lg`} onClick={handleSubmit} text={`Login`} />
+            <Button
+              buttonStyle={`w-full bg-[#5266D7] text-white text-lg p-2 md:p-3 xl:p-2 rounded-lg`}
+              onClick={handleSubmit}
+              text={`Login`}
+            />
           </div>
           <ToastContainer
             position="top-right"

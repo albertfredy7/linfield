@@ -1,13 +1,11 @@
 import axios from "axios";
 import {STUDENT_FILTER_REQUEST,STUDENT_FILTER_SUCCESS,STUDENT_FILTER_FAIL} from '../constants/filterConstants'
 
-export const  filterStudents = (email, password) => async (dispatch) => {
-
-    console.log('buddy you are at the actions page')
+export const  filterStudents = ({filterObject}) => async (dispatch) => {
 
     try {
       dispatch({
-        type: TEACHER_LOGIN_REQUEST,
+        type: STUDENT_FILTER_REQUEST,
       })
   
       const config = {
@@ -17,22 +15,19 @@ export const  filterStudents = (email, password) => async (dispatch) => {
       }
   
       const { data } = await axios.post(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/teachers/login',
-        { email, password },
+        'http://127.0.0.1:5000/api/students/filterStudents',
+        filterObject,
         config
       )
-
-      console.log(`printing the data ${data}`)
   
       dispatch({
-        type: TEACHER_LOGIN_SUCCESS,
+        type: STUDENT_FILTER_SUCCESS,
         payload: data,
       })
   
-      localStorage.setItem('teacherInfo', JSON.stringify(data))
     } catch (error) {
       dispatch({
-        type: TEACHER_LOGIN_FAIL,
+        type: STUDENT_FILTER_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
