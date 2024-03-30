@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Select from 'react-select';
 import Button from '../Components/Button';
 import SidebarNew from '../Components/SidebarNew';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function AddRevenue() {
 
@@ -10,12 +12,48 @@ function AddRevenue() {
     const [description, setDescription] = useState(null);
     const [date, setDate] = useState(null);
     const revenueCategories = [
-        { value: 'excess_registration', label: 'Excess amount of Registration' },
-        { value: 'excess_toc', label: 'Excess amount of TOC' },
-        { value: 'old_students_fee', label: 'Old Students Fee' },
-        { value: 'commissions', label: 'Commissions' },
-        { value: 'others', label: 'Others' }
+        { value: 'Excess amount of Registration', label: 'Excess amount of Registration' },
+        { value: 'Excess amount of TOC', label: 'Excess amount of TOC' },
+        { value: 'Old Students Fee', label: 'Old Students Fee' },
+        { value: 'Commissions', label: 'Commissions' },
+        { value: 'Others', label: 'Others' }
     ]
+    const navigate = useNavigate();
+
+    const handleAddRevenue = async () => {
+        try {
+            const revenueData = {
+                category: category,
+                amount: amount,
+                description: description,
+                date: date,
+            };
+
+            const response = await axios.post(
+                'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/addRevenue',
+                revenueData
+            );
+
+            // Handle the response from the API
+            if (response.status >= 200 && response.status < 300) {
+                // Successfully added revenue
+                console.log('Revenue added successfully:', response.data);
+                // You can also update the state or UI here if needed
+                setCategory(null);
+                setAmount(null);
+                setDescription(null);
+                setDate(null);
+
+                navigate('/insights')
+
+            } else {
+                // Handle error
+                console.error('Failed to add revenue:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error adding revenue:', error);
+        }
+    };
     return (
         <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
             <div className="h-full w-full block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
@@ -69,7 +107,7 @@ function AddRevenue() {
                                         required />
                                 </div>
                                 <div className='flex items-center justify-center pt-5'>
-                                    <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl" />
+                                    <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl" onClick={handleAddRevenue} />
                                 </div>
                             </div>
 
@@ -131,7 +169,7 @@ function AddRevenue() {
                             </div>
 
                             <div className='flex items-center justify-center pt-5'>
-                                <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 w-full rounded-xl" />
+                                <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 w-full rounded-xl" onClick={handleAddRevenue} />
                             </div>
 
                         </div>

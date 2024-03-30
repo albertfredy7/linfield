@@ -28,6 +28,20 @@ function Home() {
     }
   };
 
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    };
+    return date.toLocaleString('en-US', options);
+  };
+
   useEffect(() => {
     const getRevenue = async () => {
       const { data } = await axios.get(
@@ -58,7 +72,9 @@ function Home() {
     const getRecentTransactions = async () => {
       const { data } = await axios.get(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/recentTransactions'
+        
       );
+      console.log(data)
       setRecentTransactions(data);
     };
     getRecentTransactions();
@@ -149,11 +165,10 @@ function Home() {
                           x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
                         }
                         style={{ h: 'full' }}
-                        tailDataStyle={`${
-                          x.type === 'credit'
+                        tailDataStyle={`${x.type === 'credit'
                             ? 'text-green-500 font-semibold'
                             : 'text-red-500 font-semibold'
-                        }`}
+                          }`}
                       />
                     );
                   })}
@@ -309,11 +324,10 @@ function Home() {
                           x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
                         }
                         style={{ h: 'full' }}
-                        tailDataStyle={`${
-                          x.type === 'credit'
+                        tailDataStyle={`${x.type === 'credit'
                             ? 'text-green-500 font-semibold'
                             : 'text-red-500 font-semibold'
-                        }`}
+                          }`}
                       />
                     </div>
                   );
@@ -454,22 +468,21 @@ function Home() {
                     </h3>
                   </div>
                   {
-                    recentTransactions.slice(0,3).reverse().map((x, index) => {
+                    recentTransactions.slice(0, 3).reverse().map((x, index) => {
 
                       const formatDate = (dateString) => {
-                        const date = new Date(dateString);
-                        const day = date.getDate();
-                        const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
-                        const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
-    
-                        // Ensure leading zero for single-digit day and month
-                        const formattedDay = day < 10 ? '0' + day : day;
-                        const formattedMonth = month < 10 ? '0' + month : month;
-    
-                        return `${formattedDay}-${formattedMonth}-${year}`;
-                      };
-    
+                        const createdAtDate = new Date(dateString);
+                        const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString('default', { month: 'short' })} ${createdAtDate.getFullYear()}`;
+                        const formattedTime = createdAtDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+                       
+                        return `${formattedDate} || ${formattedTime}`;
+                       };
+
+
                       const formattedDate = formatDate(x.date);
+                      console.log(formattedDate);
+
+                      console.log(x);
 
                       return (
                         <div className=" row-span-2 pl-9 pr-4 pb-2">
@@ -480,18 +493,19 @@ function Home() {
                             subTitle={
                               x.type === 'debit'
                                 ? formattedDate
-                                : `${x.studentName} (${x.studentAdmissionNumber})`
+                                // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
+                                : x.studentName ? `${x.studentName} (${x.studentAdmissionNumber})` : formattedDate
+
                             }
                             tailData={
                               x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
                             }
-                            tailDataStyle={`${
-                              x.type === 'credit'
+                            tailDataStyle={`${x.type === 'credit'
                                 ? 'text-green-600 font-semibold'
                                 : 'text-red-500 font-semibold'
-                            }`}
+                              }`}
                           />
-                      </div>
+                        </div>
                       )
                     })
                   }
@@ -529,7 +543,7 @@ function Home() {
                       Recent admissions
                     </h3>
                   </div>
-                  {recentAdmissions.slice(0,3).reverse().map((x, index) => {
+                  {recentAdmissions.slice(0, 3).reverse().map((x, index) => {
                     return (
                       <div className=" row-span-2 pl-9 pr-4 pb-2">
                         <DataCard
@@ -537,7 +551,7 @@ function Home() {
                           title={x.name}
                           tailData={x.course}
                         />
-                    </div>
+                      </div>
                     )
                   })}
                   {/* <div className=" row-span-2 pl-9 pr-4 pb-2">
