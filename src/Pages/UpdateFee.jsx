@@ -8,10 +8,12 @@ import Select from 'react-select';
 import Button from '../Components/Button';
 import MobileNavigation from '../Components/MobileNavigation';
 import FeeStatus from '../Components/FeeStatus';
+import axios from 'axios';
 
 function UpdateFee() {
   const [feeType, setFeeType] = useState(null);
   const [paymentType, setPaymentType] = useState(null);
+  const [feeName, setFeeName] = useState(null);
   const [isFocused, setIsFocused] = useState(true);
   const [studentDetails, setStudentDetails] = useState(null);
   const [amount, setAmount] = useState(null);
@@ -48,6 +50,10 @@ function UpdateFee() {
       label: 'Third term fee',
       value: 'thirdTerm',
     },
+    {
+      label: 'Custom fee',
+      value: 'customFee',
+    },
   ];
 
   const paymentOptions = [
@@ -67,6 +73,52 @@ function UpdateFee() {
       value: 'fullPayment',
     },
   ];
+
+  const updateFeeHandler = async () => {
+    let number = 1063;
+
+    let feeBody = {};
+
+    feeBody.number = 1063;
+
+    if (!number || !feeType || !amount || !utrNumber) {
+      window.alert('please enter all details');
+      return;
+    } else {
+      if (feeType === 'firstTerm') {
+        feeBody.installmentNumber = 1;
+      } else if (feeType === 'secondTerm') {
+        feeBody.installmentNumber = 2;
+      } else if (feeType === 'thirdTerm') {
+        feeBody.installmentNumber = 3;
+      }
+      if (feeName) {
+        feeBody.feeName = feeName;
+      }
+      feeBody.feeType = feeType;
+      feeBody.amount = amount;
+      feeBody.utrNumber = utrNumber;
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.put(
+      'http://127.0.0.1:5000/api/students/fees/nios',
+      feeBody,
+      config
+    );
+
+    if (data.status === 'success') {
+      window.alert('success');
+    } else if (data.message && !data.status) {
+      window.alert(data.message);
+    }
+  };
+
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
@@ -401,7 +453,7 @@ function UpdateFee() {
               </div>
               <div className="3xl:row-span-4 xl:row-span-4 overflow-hidden ">
                 <h1 className="text-lg font-semibold ps-5 pb-2 pt-2">
-                  Recent Transactions{' '}
+                  Recent Transactions
                 </h1>
                 <div className="h-full overflow-y-auto flex flex-col gap-3 px-5 3xl:pb-14  ">
                   <DataCard
@@ -450,11 +502,214 @@ function UpdateFee() {
               </div>
             </div>
           </div>
-          <div className="col-span-3 h-full  grid grid-rows-11 overflow-hidden  pt-12">
+          <div className="col-span-3 h-full overflow-hidden flex flex-col justify-center space-y-8 px-6">
+            <SeachBar />
+
+            <div className="flex flex-col justify-center">
+              <div className="bg-white rounded-2xl p-5">
+                <div className="flex flex-col px-3 py-3">
+                  <h1 className="xl:text-xl 4xl:text-xl font-semibold">
+                    Enter fee details to update
+                  </h1>
+                  {/* <h1 className="xl:text-sm 3xl:text-lg font-base text-[#333333]">
+                    Update the fee of the student
+                  </h1> */}
+                </div>
+
+                <div className="2xl:gap-1 xl:gap-5 px-3 pt-3 space-y-2 4xl:space-y-4">
+                  <div className="space-y-1 3xl:hidden">
+                    <label
+                      for="feeType"
+                      class="block xl:text-sm  text-gray-900 "
+                    >
+                      Select payment type
+                    </label>
+                    <Select
+                      options={paymentOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '0.9rem',
+                        }),
+                      }}
+                      className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 4xl:text-md text-gray-600 rounded-xl"
+                      closeMenuOnSelect={true}
+                      isSearchable={false}
+                      onChange={(e) => setPaymentType(e.value)}
+                      name="feeType"
+                      controlShouldRenderValue={
+                        feeType ? true : feeType === false ? true : false
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1 hidden 3xl:block">
+                    <label
+                      for="feeType"
+                      class="block xl:text-sm 3xl:text-lg 4xl:text-lg text-gray-900 "
+                    >
+                      Select payment type
+                    </label>
+                    <Select
+                      options={paymentOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '1.03rem',
+                        }),
+                      }}
+                      className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-md text-gray-600 rounded-xl"
+                      closeMenuOnSelect={true}
+                      isSearchable={false}
+                      onChange={(e) => setPaymentType(e.value)}
+                      name="feeType"
+                      controlShouldRenderValue={
+                        feeType ? true : feeType === false ? true : false
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1 3xl:hidden">
+                    <label
+                      for="paymentType"
+                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                    >
+                      Select fee type
+                    </label>
+                    <Select
+                      options={feeOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '.9rem',
+                        }),
+                      }}
+                      className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
+                      closeMenuOnSelect={true}
+                      isSearchable={false}
+                      name="paymentType"
+                      onChange={(e) => setFeeType(e.value)}
+                      controlShouldRenderValue={
+                        paymentType
+                          ? true
+                          : paymentType === false
+                          ? true
+                          : false
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1 hidden 3xl:block">
+                    <label
+                      for="paymentType"
+                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                    >
+                      Select fee type
+                    </label>
+                    <Select
+                      options={feeOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '1.03rem',
+                        }),
+                      }}
+                      className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
+                      closeMenuOnSelect={true}
+                      isSearchable={false}
+                      name="paymentType"
+                      onChange={(e) => setFeeType(e.value)}
+                      controlShouldRenderValue={
+                        paymentType
+                          ? true
+                          : paymentType === false
+                          ? true
+                          : false
+                      }
+                    />
+                  </div>
+                  {feeType === 'customFee' && (
+                    <div className="space-y-1">
+                      <label
+                        for="feeName"
+                        class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      >
+                        Custom fee name
+                      </label>
+                      <input
+                        type="text"
+                        id="feeName"
+                        className="bg-[#f0f0f0] text-gray-600 border border-gray-200 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="Enter custom fee"
+                        onChange={(e) => setFeeName(e.target.value)}
+                        required
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-1">
+                    <label
+                      for="amount"
+                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                    >
+                      Amount
+                    </label>
+                    <input
+                      type="text"
+                      id="amount"
+                      class="bg-[#f0f0f0] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                      placeholder="1000"
+                      onChange={(e) => setAmount(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label
+                      for="utrNo"
+                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg font-medium text-gray-900 "
+                    >
+                      Enter the UTR number
+                    </label>
+                    <input
+                      type="text"
+                      id="UtrNo"
+                      class="bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-sm rounded-lg block w-full p-2.5"
+                      placeholder="CHJSU2UHBSA"
+                      value={utrNumber}
+                      onChange={(e) => setUtrNumber(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="flex items-end py-3">
+                    <Button
+                      text={'Update Fee'}
+                      buttonStyle={
+                        'bg-[#2740CD] text-white rounded-lg  flex items-center justify-center px-2 py-2 text-md lg:text-xl xl:text-sm 3xl:text-lg  w-full'
+                      }
+                      onClick={updateFeeHandler}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <div className="col-span-3 h-full  grid grid-rows-11 overflow-hidden  pt-12 bg-red-200">
             <div className="  row-span-1 px-5 ">
               <SeachBar />
             </div>
-            <div className="row-span-10  3xl:row-span-9  p-8 ">
+            <div className="row-span-10  3xl:row-span-9 px-8 py-3">
               <div className="bg-white h-full grid grid-rows-6  rounded-2xl p-5 ">
                 <div className="flex flex-col p-5 row-span-1 ">
                   <h1 className="xl:text-lg 3xl:text-3xl font-semibold">
@@ -465,7 +720,7 @@ function UpdateFee() {
                   </h1>
                 </div>
 
-                <div className=" xl:row-span-5 3xl:row-span-4 grid xl:grid-rows-5 3xl:grid-rows-5 2xl:gap-1 xl:gap-5  px-3 xl:pt-3">
+                <div className=" xl:row-span-5 3xl:row-span-4 grid xl:grid-rows-6 3xl:grid-rows-6 2xl:gap-1 xl:gap-5  px-3 xl:pt-3">
                   <div class=" row-span-1">
                     <label
                       for="feeType"
@@ -561,18 +816,36 @@ function UpdateFee() {
                       required
                     />
                   </div>
+                  <div class="row-span-1">
+                    <label
+                      for="utrNo"
+                      class="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
+                    >
+                      Enter the UTR number
+                    </label>
+                    <input
+                      type="text"
+                      id="UtrNo"
+                      class="bg-[#f0f0f0] 2xl:text-sm xl:text-xs text-gray-600 border border-gray-200   text-sm rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                      placeholder="CHJSU2UHBSA"
+                      value={utrNumber}
+                      onChange={(e) => setUtrNumber(e.target.value)}
+                      required
+                    />
+                  </div>
                   <div className="row-span-1  flex items-end pb-5 ">
                     <Button
                       text={'Update Fee'}
                       buttonStyle={
                         'bg-[#2740CD] text-white rounded-lg  flex items-center justify-center px-2 py-2 text-md lg:text-xl xl:text-sm 2xl:text-md 3xl:text-base  w-full'
                       }
+                      onClick={updateFeeHandler}
                     />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* <div className='grid grid-cols-5'>
