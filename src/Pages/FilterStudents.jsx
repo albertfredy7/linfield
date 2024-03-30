@@ -12,8 +12,16 @@ import Select from 'react-select';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { set } from 'date-fns';
+import { useSelector, useDispatch } from 'react-redux';
+import { filterStudents } from '../actions/studentFilterActions';
 
 function FilterStudents() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const filterStudentsData = useSelector((state) => state.studentFilter);
+  const { loading, filteredStudents } = filterStudentsData;
+
   const [admYear, setAdmYear] = useState(null);
   const [course, setCourse] = useState(null);
   const [batch, setBatch] = useState(null);
@@ -93,27 +101,27 @@ function FilterStudents() {
   ];
   const pendingFeeOptions = [
     {
-      value: 'admissionFee',
+      value: 'admissionFees',
       label: 'Admission Fee',
     },
     {
-      value: 'registrationFee',
+      value: 'registrationFees',
       label: 'Registration Fee',
     },
     {
-      value: 'examFee',
+      value: 'examFees',
       label: 'Exam Fee',
     },
     {
-      value: 'firstTermFee',
+      value: 'firstTerm',
       label: 'First Term Fee',
     },
     {
-      value: 'secondTermFee',
+      value: 'secondTerm',
       label: 'Second Term Fee',
     },
     {
-      value: 'thirdTermFee',
+      value: 'thirdTerm',
       label: 'Third Term Fee',
     },
   ];
@@ -131,155 +139,123 @@ function FilterStudents() {
 
   const academicStatusOptions = [
     {
-      value: 'pass',
+      value: 'Pass',
       label: 'Pass',
     },
     {
-      value: 'fail',
+      value: 'Fail',
       label: 'Fail',
     },
     {
-      value: 'cancelled',
+      value: 'Cancelled',
       label: 'Cancelled',
     },
     {
-      value: 'partiallyCancelled',
+      value: 'PartiallyCancelled',
       label: 'Partially Cancelled',
+    },
+    {
+      value: 'Pursuing',
+      label: 'Pursuing',
     },
   ];
   const examMonthOptions = [
     {
-      value: 'january',
+      value: 'January',
       label: 'January',
     },
     {
-      value: 'february',
+      value: 'February',
       label: 'February',
     },
     {
-      value: 'march',
+      value: 'March',
       label: 'March',
     },
     {
-      value: 'april',
+      value: 'April',
       label: 'April',
     },
     {
-      value: 'may',
+      value: 'May',
       label: 'May',
     },
     {
-      value: 'june',
+      value: 'June',
       label: 'June',
     },
     {
-      value: 'july',
+      value: 'July',
       label: 'July',
     },
     {
-      value: 'august',
+      value: 'August',
       label: 'August',
     },
     {
-      value: 'september',
+      value: 'September',
       label: 'September',
     },
     {
-      value: 'october',
+      value: 'October',
       label: 'October',
     },
     {
-      value: 'november',
+      value: 'November',
       label: 'November',
     },
     {
-      value: 'december',
+      value: 'December',
       label: 'December',
     },
   ];
   const examCenterOptions = [
     {
-      value: 'center1',
-      label: 'Center 1',
-    },
-    {
-      value: 'center2',
-      label: 'Center 2',
-    },
-    {
-      value: 'center3',
-      label: 'Center 3',
-    },
-    {
-      value: 'center4',
-      label: 'Center 4',
-    },
-    {
-      value: 'center5',
-      label: 'Center 5',
-    },
-    {
-      value: 'center6',
-      label: 'Center 6',
-    },
-    {
-      value: 'center7',
-      label: 'Center 7',
-    },
-    {
-      value: 'center8',
-      label: 'Center 8',
-    },
-    {
-      value: 'center9',
-      label: 'Center 9',
-    },
-    {
-      value: 'center10',
-      label: 'Center 10',
+      value: 'Palakkad',
+      label: 'Palakkad',
     },
   ];
 
   const tmaRecievedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
 
   const tmaSubmittedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
 
   const tocRecievedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
   const tocSubmittedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
   const performSearch = async (query) => {
@@ -328,19 +304,21 @@ function FilterStudents() {
     if (tocRecieved !== null) filterCriteria.tocRecieved = tocRecieved;
     if (tocSubmitted !== null) filterCriteria.tocSubmitted = tocSubmitted;
 
-    try {
-      // Send a POST request to the filter API endpoint with the filter criteria
-      const response = await axios.post(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/filterStudents',
-        filterCriteria
-      );
+    dispatch(filterStudents({ filterObject: filterCriteria }));
 
-      // Update the studentData state with the filtered results
-      setStudentData(response.data);
-    } catch (error) {
-      console.error('Error applying filter:', error);
-      toast.error('Failed to apply filter');
-    }
+    // try {
+    //   // Send a POST request to the filter API endpoint with the filter criteria
+    //   const response = await axios.post(
+    //     'https://lobster-app-yjjm5.ondigitalocean.app/api/students/filterStudents',
+    //     filterCriteria
+    //   );
+
+    //   // Update the studentData state with the filtered results
+    //   setStudentData(response.data);
+    // } catch (error) {
+    //   console.error('Error applying filter:', error);
+    //   toast.error('Failed to apply filter');
+    // }
   };
 
   const fetchTotalStudents = async () => {
@@ -357,14 +335,20 @@ function FilterStudents() {
 
   useEffect(() => {
     fetchTotalStudents();
-    applyFilter();
+    // applyFilter();
   }, []);
 
-  console.log(studentData);
-  console.log(totalStudents);
+  useEffect(() => {
+    if (filteredStudents && filteredStudents.length > 0) {
+      setStudentData(filteredStudents);
+    }
+  }, [filteredStudents]);
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
+      {console.log(
+        filteredStudents && filteredStudents.length > 0 && filteredStudents[0]
+      )}
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         <div className="block md:hidden  ">
@@ -440,10 +424,7 @@ function FilterStudents() {
             </div>
 
             <div className="row-span-1   ">
-              <OverviewCard
-                title={'Total Students'}
-                totalAdmission={totalStudents}
-              />
+              <OverviewCard title={'Total Students'} number={totalStudents} />
             </div>
 
             <div className="row-span-1 flex justify-between  gap-5 pt-5 lg:pt-8 px-5 items-center">

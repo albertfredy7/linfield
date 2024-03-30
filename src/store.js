@@ -3,9 +3,11 @@ import {thunk} from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { teacherLoginReducer } from './reducers/teacherReducers';
 import { createStore, combineReducers } from 'redux';
+import {studentFilterReducer } from './reducers/filterReducer'
 
 const reducer = combineReducers({
-  teacherLogin: teacherLoginReducer
+  teacherLogin: teacherLoginReducer,
+  studentFilter: studentFilterReducer
 });
 
 const userInfoFromStorage = localStorage.getItem('teacherInfo')
