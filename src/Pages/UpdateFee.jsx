@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../Components/Sidebar';
 import SidebarNew from '../Components/SidebarNew';
 import MobileOverviewCard from '../Components/MobileOverviewCard';
@@ -9,17 +9,21 @@ import Button from '../Components/Button';
 import MobileNavigation from '../Components/MobileNavigation';
 import FeeStatus from '../Components/FeeStatus';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+import { format } from 'date-fns';
 
 function UpdateFee() {
   const [feeType, setFeeType] = useState(null);
-  const [paymentType, setPaymentType] = useState(null);
   const [feeName, setFeeName] = useState(null);
+  const [paymentType, setPaymentType] = useState(null);
   const [isFocused, setIsFocused] = useState(true);
   const [studentDetails, setStudentDetails] = useState(null);
   const [amount, setAmount] = useState(null);
   const [utrNumber, setUtrNumber] = useState(null);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [studentData, setStudentData] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
   const [number, setNumber] = useState(null);
   const [student, setStudent] = useState(null);
@@ -74,12 +78,69 @@ function UpdateFee() {
     },
   ];
 
+  const performSearch = async (query) => {
+    try {
+      const response = await axios.get(
+        `https://lobster-app-yjjm5.ondigitalocean.app/api/students/search/${query}`
+      );
+      const data = response.data;
+      setSearchValue(query);
+
+      // Validate the response data
+      if (Array.isArray(data)) {
+        setStudentData(data);
+        if (data.length > 0) {
+          // Extract the admissionNumber from the first result
+          const admissionNumber = data[0].admissionNumber;
+          // Perform the second API call using the admissionNumber
+          const transactionsResponse = await axios.get(
+            `https://lobster-app-yjjm5.ondigitalocean.app/api/students/studentTransactions/${admissionNumber}`
+          );
+          // Assuming the response contains the transactions data
+          setTransactions(transactionsResponse.data);
+        } else {
+          // Clear transactions if no student data is found
+          setTransactions([]);
+        }
+      } else if (typeof data === 'object' && data !== null) {
+        // If the response is an object, wrap it in an array
+        setStudentData([data]);
+        console.log(data.admissionNumber);
+        if (data.admissionNumber) {
+          // Perform the second API call using the admissionNumber from the object
+          const transactionsResponse = await axios.get(
+            `https://lobster-app-yjjm5.ondigitalocean.app/api/students/studentTransactions/${data.admissionNumber}`
+          );
+          // Assuming the response contains the transactions data
+          setTransactions(transactionsResponse.data);
+        } else {
+          // Clear transactions if the object does not contain a valid admissionNumber
+          setTransactions([]);
+        }
+      } else {
+        console.error('Error: response.data is not an object or an array');
+        setStudentData([]);
+        // Clear transactions if the response is not valid
+        setTransactions([]);
+      }
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      toast.error('No student data available');
+      setStudentData([]);
+      // Clear transactions on error
+      setTransactions([]);
+    }
+  };
+
+  console.log(searchValue);
+
   const updateFeeHandler = async () => {
-    let number = 1063;
+    let number = searchValue;
+    console.log(number);
 
     let feeBody = {};
 
-    feeBody.number = 1063;
+    feeBody.number = number;
 
     if (!number || !feeType || !amount || !utrNumber) {
       window.alert('please enter all details');
@@ -107,7 +168,7 @@ function UpdateFee() {
     };
 
     const { data } = await axios.put(
-      'http://127.0.0.1:5000/api/students/fees/nios',
+      'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
       feeBody,
       config
     );
@@ -119,6 +180,10 @@ function UpdateFee() {
     }
   };
 
+  useEffect(() => {}, []);
+
+  console.log(studentData);
+  console.log(transactions);
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
@@ -144,13 +209,27 @@ function UpdateFee() {
             </div>
 
             <div className="row-span-1 flex justify-center items-center ">
-              <SeachBar />
+              <SeachBar onSearch={performSearch} />
             </div>
-            {student && (
-              <div className="row-span-1 px-5 ">
-                <DataCard type="admissions" title="Berlin" tailData="SSLC" />
-              </div>
-            )}
+
+            <div className="row-span-1 px-5 ">
+              {studentData.length > 0 ? (
+                studentData.map((student, index) => (
+                  <DataCard
+                    key={index}
+                    type="admissions"
+                    title={student.name}
+                    tailData={student.course}
+                  />
+                ))
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <h1 className="text-lg font-semibold text-[#333333]">
+                    No student data available
+                  </h1>
+                </div>
+              )}
+            </div>
 
             <div className="row-span-3  h-full sm:h-4/5 p-3">
               {/* <div className="grid grid-cols-3 gap-5 h-full  bg-white p-6  rounded-2xl">
@@ -220,48 +299,32 @@ function UpdateFee() {
               <h1 className="text-md p-2 ">Recent Transactions</h1>
               <div className="overflow-y-auto scroll-smooth h-full  pb-10">
                 <div className="space-y-3">
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="24 Mar 2023"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="24 Mar 2023"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="24 Mar 2023"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="24 Mar 2023"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="24 Mar 2023"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="24 Mar 2023"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
+                  {transactions && transactions.length > 0 ? (
+                    transactions.map((transaction, index) => (
+                      <DataCard
+                        key={index}
+                        type="transactions"
+                        title={transaction.purpose}
+                        subTitle={format(
+                          new Date(transaction.date),
+                          'dd MMM yyyy , hh:mm a'
+                        )}
+                        midData={transaction.utrNumber}
+                        tailData={transaction.amount}
+                      />
+                    ))
+                  ) : (
+                    <div>
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply"
+                        alt=""
+                      />
+                      <h1 className="text-center text-lg font-semibold text-[#333333]">
+                        No transactions available
+                      </h1>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -278,6 +341,7 @@ function UpdateFee() {
             <SidebarNew />
           </div>
           <div className="col-span-6 h-full  px-12 grid grid-rows-9 3xl:grid-rows-12 overflow-hidden ">
+            <Toaster position="top-center" reverseOrder={false} />
             <div className="row-span-1 3xl:row-span-2 flex flex-col justify-center 3xl:justify-center px-4 ">
               <div className="flex justify-between">
                 <div>
@@ -302,12 +366,27 @@ function UpdateFee() {
 
             <div className="row-span-1  pt-5 lg:pt-8 px-5 ">
               <div className="">
-                <SeachBar />
+                <SeachBar onSearch={performSearch} />
               </div>
             </div>
 
             <div className="row-span-1 h-4/5   ">
-              <DataCard type="admissions" title="Berlin" tailData="SSLC" />
+              {studentData.length > 0 ? (
+                studentData.map((student, index) => (
+                  <DataCard
+                    key={index}
+                    type="admissions"
+                    title={student.name}
+                    tailData={student.course}
+                  />
+                ))
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <h1 className="text-lg font-semibold text-[#333333]">
+                    No student data available
+                  </h1>
+                </div>
+              )}
             </div>
 
             {/* <div className="row-span-2 grid grid-cols-3 gap-5 h-full bg-white p-8 rounded-2xl lg:p-12 ">
@@ -359,69 +438,32 @@ function UpdateFee() {
               <h1 className="text-lg lg:text-xl pb-2">Recent Transactions</h1>
               <div className="overflow-y-auto h-full p-4">
                 <div className="space-y-3">
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
+                  {transactions && transactions.length > 0 ? (
+                    transactions.map((transaction, index) => (
+                      <DataCard
+                        key={index}
+                        type="transactions"
+                        title={transaction.purpose}
+                        subTitle={format(
+                          new Date(transaction.date),
+                          'dd MMM yyyy , hh:mm a'
+                        )}
+                        midData={transaction.utrNumber}
+                        tailData={transaction.amount}
+                      />
+                    ))
+                  ) : (
+                    <div>
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply"
+                        alt=""
+                      />
+                      <h1 className="text-center text-lg font-semibold lead text-[#333333]">
+                        No transactions available
+                      </h1>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -434,6 +476,7 @@ function UpdateFee() {
             <SidebarNew />
           </div>
           <div className="col-span-6 px-8 grid  3xl:grid-rows-10 xl:grid-rows-8  space-y-4 overflow-hidden pt-6 ">
+            <Toaster position="top-center" reverseOrder={false} />
             <div className="row-span-1 ">
               <div className="flex flex-col gap-0  px-5  ">
                 <h1 className="text-xl 3xl:text-3xl font-semibold">
@@ -445,7 +488,22 @@ function UpdateFee() {
               </div>
             </div>
             <div className="row-span-1 h-full`   px-5 ">
-              <DataCard type="admissions" title="Berlin" tailData="SSLC" />
+              {studentData.length > 0 ? (
+                studentData.map((student, index) => (
+                  <DataCard
+                    key={index}
+                    type="admissions"
+                    title={student.name}
+                    tailData={student.course}
+                  />
+                ))
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <h1 className="text-lg font-semibold text-[#333333]">
+                    No student data available
+                  </h1>
+                </div>
+              )}
             </div>
             <div className="3xl:row-span-8 xl:row-span-6  h-full grid grid-rows-8">
               <div className="3xl:row-span-4 xl:row-span-4 3xl:p-10 xl:p-5 ">
@@ -453,57 +511,41 @@ function UpdateFee() {
               </div>
               <div className="3xl:row-span-4 xl:row-span-4 overflow-hidden ">
                 <h1 className="text-lg font-semibold ps-5 pb-2 pt-2">
-                  Recent Transactions
+                  Recent Transactions{' '}
                 </h1>
-                <div className="h-full overflow-y-auto flex flex-col gap-3 px-5 3xl:pb-14  ">
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle={'23 Mar 2024'}
-                    midData={'CDHVHJGH122'}
-                    tailData="SSLC"
-                  />
+                <div className="h-full overflow-y-auto flex flex-col gap-3 px-5 3xl:pb-14   ">
+                  {transactions && transactions.length > 0 ? (
+                    transactions.map((transaction, index) => (
+                      <DataCard
+                        key={index}
+                        type="transactions"
+                        title={transaction.purpose}
+                        subTitle={format(
+                          new Date(transaction.date),
+                          'dd MMM yyyy , hh:mm a'
+                        )}
+                        midData={transaction.utrNumber}
+                        tailData={transaction.amount}
+                      />
+                    ))
+                  ) : (
+                    <div className=" xl:flex xl:flex-col justify-center items-center">
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply xl:w-1/2"
+                        alt=""
+                      />
+                      <h1 className="text-center text-lg font-semibold text-[#333333]">
+                        No transactions available
+                      </h1>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
           <div className="col-span-3 h-full overflow-hidden flex flex-col justify-center space-y-8 px-6">
-            <SeachBar />
+            <SeachBar onSearch={performSearch} />
 
             <div className="flex flex-col justify-center">
               <div className="bg-white rounded-2xl p-5">
@@ -705,147 +747,6 @@ function UpdateFee() {
               </div>
             </div>
           </div>
-          {/* <div className="col-span-3 h-full  grid grid-rows-11 overflow-hidden  pt-12 bg-red-200">
-            <div className="  row-span-1 px-5 ">
-              <SeachBar />
-            </div>
-            <div className="row-span-10  3xl:row-span-9 px-8 py-3">
-              <div className="bg-white h-full grid grid-rows-6  rounded-2xl p-5 ">
-                <div className="flex flex-col p-5 row-span-1 ">
-                  <h1 className="xl:text-lg 3xl:text-3xl font-semibold">
-                    Update Fee
-                  </h1>
-                  <h1 className="xl:text-sm 3xl:text-lg font-base text-[#333333]">
-                    Update the fee of the student
-                  </h1>
-                </div>
-
-                <div className=" xl:row-span-5 3xl:row-span-4 grid xl:grid-rows-6 3xl:grid-rows-6 2xl:gap-1 xl:gap-5  px-3 xl:pt-3">
-                  <div class=" row-span-1">
-                    <label
-                      for="feeType"
-                      class="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
-                    >
-                      Select payment type
-                    </label>
-                    <Select
-                      options={paymentOptions}
-                      styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderRadius: '.5rem',
-                          padding: '0.2rem',
-                          borderWidth: '0px',
-                          backgroundColor: 'RGB(240, 240, 240)',
-                        }),
-                      }}
-                      className="border border-gray-200 rounded bg-[#f0f0f0] 2xl:text-sm xl:text-xs text-gray-600"
-                      closeMenuOnSelect={true}
-                      isSearchable={false}
-                      onChange={(e) => setFeeType(e.value)}
-                      name="feeType"
-                      controlShouldRenderValue={
-                        feeType ? true : feeType === false ? true : false
-                      }
-                    />
-                  </div>
-                  <div class={` row-span-1`}>
-                    <label
-                      for="paymentType"
-                      class="block 2xl:text-sm xl:text-xs xl: font-medium text-gray-900 "
-                    >
-                      Select fee type
-                    </label>
-                    <Select
-                      options={feeOptions}
-                      styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderRadius: '.5rem',
-                          padding: '0.2rem',
-                          borderWidth: '0px',
-                          backgroundColor: 'RGB(240, 240, 240)',
-                        }),
-                      }}
-                      className="border border-gray-200 rounded 2xl:text-sm xl:text-xs"
-                      closeMenuOnSelect={true}
-                      isSearchable={false}
-                      name="paymentType"
-                      onChange={(e) => setPaymentType(e.value)}
-                      controlShouldRenderValue={
-                        paymentType
-                          ? true
-                          : paymentType === false
-                          ? true
-                          : false
-                      }
-                    />
-                  </div>
-
-                  <div class="row-span-1">
-                    <label
-                      for="amount"
-                      class="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
-                    >
-                      Amount
-                    </label>
-                    <input
-                      type="text"
-                      id="amount"
-                      class="bg-[#f0f0f0] text-gray-600 border border-gray-200   text-sm 2xl:text-sm xl:text-xs rounded-lg block w-full p-2.5 focus:outline-blue-400"
-                      placeholder="1000"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div class="row-span-1">
-                    <label
-                      for="utrNo"
-                      class="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
-                    >
-                      Enter the UTR number
-                    </label>
-                    <input
-                      type="text"
-                      id="UtrNo"
-                      class="bg-[#f0f0f0] 2xl:text-sm xl:text-xs text-gray-600 border border-gray-200   text-sm rounded-lg block w-full p-2.5 focus:outline-blue-400"
-                      placeholder="CHJSU2UHBSA"
-                      value={utrNumber}
-                      onChange={(e) => setUtrNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div class="row-span-1">
-                    <label
-                      for="utrNo"
-                      class="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
-                    >
-                      Enter the UTR number
-                    </label>
-                    <input
-                      type="text"
-                      id="UtrNo"
-                      class="bg-[#f0f0f0] 2xl:text-sm xl:text-xs text-gray-600 border border-gray-200   text-sm rounded-lg block w-full p-2.5 focus:outline-blue-400"
-                      placeholder="CHJSU2UHBSA"
-                      value={utrNumber}
-                      onChange={(e) => setUtrNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="row-span-1  flex items-end pb-5 ">
-                    <Button
-                      text={'Update Fee'}
-                      buttonStyle={
-                        'bg-[#2740CD] text-white rounded-lg  flex items-center justify-center px-2 py-2 text-md lg:text-xl xl:text-sm 2xl:text-md 3xl:text-base  w-full'
-                      }
-                      onClick={updateFeeHandler}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
       {/* <div className='grid grid-cols-5'>
