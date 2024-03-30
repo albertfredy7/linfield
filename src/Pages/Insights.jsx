@@ -23,11 +23,11 @@ function Insights() {
   const [date, setDate] = useState(null);
 
   const revenueCategories = [
-    { value: 'excess_registration', label: 'Excess amount of Registration' },
-    { value: 'excess_toc', label: 'Excess amount of TOC' },
-    { value: 'old_students_fee', label: 'Old Students Fee' },
-    { value: 'commissions', label: 'Commissions' },
-    { value: 'others', label: 'Others' },
+    { value: 'Excess amount of Registration', label: 'Excess amount of Registration' },
+    { value: 'Excess amount of TO', label: 'Excess amount of TOC' },
+    { value: 'Old Students Fee', label: 'Old Students Fee' },
+    { value: 'Commissions', label: 'Commissions' },
+    { value: 'Others', label: 'Others' },
   ];
 
   const navigate = useNavigate();
@@ -128,7 +128,7 @@ function Insights() {
 
         if (selectedCategory === 'revenue') {
           return {
-            title: item.studentName,
+            title: item.studentName ? item.studentName : item.purpose,
             subTitle: item.purpose,
             tailData: item.amount,
             date: formattedDate,
@@ -190,10 +190,35 @@ function Insights() {
     navigate('/');
   };
 
-  const handleAddRevenue = () => {
-    // backend part
+  const handleAddRevenue = async () => {
+    try {
+      const revenueData = {
+        category: category,
+        amount: amount,
+        description: description,
+        date: date,
+      };
 
-    handleCloseModal();
+      const response = await axios.post(
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/addRevenue',
+        revenueData
+      );
+
+      // Handle the response from the API
+      if (response.status === 200) {
+        // Successfully added revenue
+        console.log('Revenue added successfully:', response.data);
+        // You can also update the state or UI here if needed
+      } else {
+        // Handle error
+        console.error('Failed to add revenue:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding revenue:', error);
+    } finally {
+      // Close the modal after the API call is complete
+      handleCloseModal();
+    }
   };
 
   // const Switch = () => {
@@ -651,7 +676,7 @@ function Insights() {
                                         required />
                                     </div>
                                     <div className='flex items-center justify-center pt-5'>
-                                      <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl"  onClick={handleAddRevenue}/>
+                                      <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl" onClick={handleAddRevenue} />
                                     </div>
                                   </div>
 
