@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 
 function UpdateFee() {
   const [feeType, setFeeType] = useState(null);
+  const [feeName, setFeeName] = useState(null);
   const [paymentType, setPaymentType] = useState(null);
   const [isFocused, setIsFocused] = useState(true);
   const [studentDetails, setStudentDetails] = useState(null);
@@ -22,6 +23,7 @@ function UpdateFee() {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [studentData, setStudentData] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
   const [number, setNumber] = useState(null);
   const [student, setStudent] = useState(null);
@@ -52,6 +54,10 @@ function UpdateFee() {
       label: 'Third term fee',
       value: 'thirdTerm',
     },
+    {
+      label: 'Custom fee',
+      value: 'customFee',
+    },
   ];
 
   const paymentOptions = [
@@ -72,10 +78,13 @@ function UpdateFee() {
     },
   ];
 
+
+
   const performSearch = async (query) => {
     try {
       const response = await axios.get(`https://lobster-app-yjjm5.ondigitalocean.app/api/students/search/${query}`);
       const data = response.data;
+      setSearchValue(query)
 
       // Validate the response data
       if (Array.isArray(data)) {
@@ -118,6 +127,61 @@ function UpdateFee() {
       setTransactions([]);
     }
   };
+
+  console.log(searchValue);
+
+
+
+  const updateFeeHandler = async () => {
+    let number = searchValue;
+    console.log(number);
+
+    let feeBody = {};
+
+    feeBody.number = number;
+
+    if (!number || !feeType || !amount || !utrNumber) {
+      window.alert('please enter all details');
+      return;
+    } else {
+      if (feeType === 'firstTerm') {
+        feeBody.installmentNumber = 1;
+      } else if (feeType === 'secondTerm') {
+        feeBody.installmentNumber = 2;
+      } else if (feeType === 'thirdTerm') {
+        feeBody.installmentNumber = 3;
+      }
+      if (feeName) {
+        feeBody.feeName = feeName;
+      }
+      feeBody.feeType = feeType;
+      feeBody.amount = amount;
+      feeBody.utrNumber = utrNumber;
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.put(
+      'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
+      feeBody,
+      config
+    );
+
+    if (data.status === 'success') {
+      window.alert('success');
+    } else if (data.message && !data.status) {
+      window.alert(data.message);
+    }
+  };
+
+  useEffect(() => {
+    
+  }, []);
+
 
 
 
@@ -167,7 +231,7 @@ function UpdateFee() {
                 : (
                   <div className="h-full flex flex-col items-center justify-center">
                     <h1 className="text-lg font-semibold text-[#333333]">No student data available</h1>
-                   
+
                   </div>
                 )
               }
@@ -319,7 +383,7 @@ function UpdateFee() {
                 : (
                   <div className="h-full flex flex-col items-center justify-center">
                     <h1 className="text-lg font-semibold text-[#333333]">No student data available</h1>
-                   
+
                   </div>
                 )
               }
@@ -458,26 +522,28 @@ function UpdateFee() {
               </div>
             </div>
           </div>
-          <div className="col-span-3 h-full  grid grid-rows-11 overflow-hidden  pt-12">
-            <div className="  row-span-1 px-5 ">
-              <SeachBar onSearch={performSearch} />
-            </div>
-            <div className="row-span-10  3xl:row-span-9  p-8 ">
-              <div className="bg-white h-full grid grid-rows-6  rounded-2xl p-5 ">
-                <div className="flex flex-col p-5 row-span-1 ">
-                  <h1 className="xl:text-lg 3xl:text-3xl font-semibold">
-                    Update Fee
+          <div className="col-span-3 h-full overflow-hidden flex flex-col justify-center space-y-8 px-6">
+            <SeachBar
+              onSearch={performSearch}
+
+            />
+
+            <div className="flex flex-col justify-center">
+              <div className="bg-white rounded-2xl p-5">
+                <div className="flex flex-col px-3 py-3">
+                  <h1 className="xl:text-xl 4xl:text-xl font-semibold">
+                    Enter fee details to update
                   </h1>
-                  <h1 className="xl:text-sm 3xl:text-lg font-base text-[#333333]">
+                  {/* <h1 className="xl:text-sm 3xl:text-lg font-base text-[#333333]">
                     Update the fee of the student
-                  </h1>
+                  </h1> */}
                 </div>
 
-                <div className=" xl:row-span-5 3xl:row-span-4 grid xl:grid-rows-5 3xl:grid-rows-5 2xl:gap-1 xl:gap-5  px-3 xl:pt-3">
-                  <div className=" row-span-1">
+                <div className="2xl:gap-1 xl:gap-5 px-3 pt-3 space-y-2 4xl:space-y-4">
+                  <div className="space-y-1 3xl:hidden">
                     <label
-                      htmlFor="feeType"
-                      className="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
+                      for="feeType"
+                      class="block xl:text-sm  text-gray-900 "
                     >
                       Select payment type
                     </label>
@@ -487,25 +553,55 @@ function UpdateFee() {
                         control: (baseStyles, state) => ({
                           ...baseStyles,
                           borderRadius: '.5rem',
-                          padding: '0.2rem',
+                          padding: '0.rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '0.9rem',
                         }),
                       }}
-                      className="border border-gray-200 rounded bg-[#f0f0f0] 2xl:text-sm xl:text-xs text-gray-600"
+                      className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 4xl:text-md text-gray-600 rounded-xl"
                       closeMenuOnSelect={true}
                       isSearchable={false}
-                      onChange={(e) => setFeeType(e.value)}
+                      onChange={(e) => setPaymentType(e.value)}
                       name="feeType"
                       controlShouldRenderValue={
                         feeType ? true : feeType === false ? true : false
                       }
                     />
                   </div>
-                  <div className={` row-span-1`}>
+                  <div className="space-y-1 hidden 3xl:block">
                     <label
-                      htmlFor="paymentType"
-                      className="block 2xl:text-sm xl:text-xs xl: font-medium text-gray-900 "
+                      for="feeType"
+                      class="block xl:text-sm 3xl:text-lg 4xl:text-lg text-gray-900 "
+                    >
+                      Select payment type
+                    </label>
+                    <Select
+                      options={paymentOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '1.03rem',
+                        }),
+                      }}
+                      className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-md text-gray-600 rounded-xl"
+                      closeMenuOnSelect={true}
+                      isSearchable={false}
+                      onChange={(e) => setPaymentType(e.value)}
+                      name="feeType"
+                      controlShouldRenderValue={
+                        feeType ? true : feeType === false ? true : false
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1 3xl:hidden">
+                    <label
+                      for="paymentType"
+                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Select fee type
                     </label>
@@ -518,13 +614,14 @@ function UpdateFee() {
                           padding: '0.2rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '.9rem',
                         }),
                       }}
-                      className="border border-gray-200 rounded 2xl:text-sm xl:text-xs"
+                      className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
                       closeMenuOnSelect={true}
                       isSearchable={false}
                       name="paymentType"
-                      onChange={(e) => setPaymentType(e.value)}
+                      onChange={(e) => setFeeType(e.value)}
                       controlShouldRenderValue={
                         paymentType
                           ? true
@@ -534,47 +631,97 @@ function UpdateFee() {
                       }
                     />
                   </div>
-
-                  <div className="row-span-1">
+                  <div className="space-y-1 hidden 3xl:block">
                     <label
-                      htmlFor="amount"
-                      className="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
+                      for="paymentType"
+                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                    >
+                      Select fee type
+                    </label>
+                    <Select
+                      options={feeOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(240, 240, 240)',
+                          fontSize: '1.03rem',
+                        }),
+                      }}
+                      className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
+                      closeMenuOnSelect={true}
+                      isSearchable={false}
+                      name="paymentType"
+                      onChange={(e) => setFeeType(e.value)}
+                      controlShouldRenderValue={
+                        paymentType
+                          ? true
+                          : paymentType === false
+                            ? true
+                            : false
+                      }
+                    />
+                  </div>
+                  {feeType === 'customFee' && (
+                    <div className="space-y-1">
+                      <label
+                        for="feeName"
+                        class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      >
+                        Custom fee name
+                      </label>
+                      <input
+                        type="text"
+                        id="feeName"
+                        className="bg-[#f0f0f0] text-gray-600 border border-gray-200 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="Enter custom fee"
+                        onChange={(e) => setFeeName(e.target.value)}
+                        required
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-1">
+                    <label
+                      for="amount"
+                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Amount
                     </label>
                     <input
                       type="text"
                       id="amount"
-                      className="bg-[#f0f0f0] text-gray-600 border border-gray-200   text-sm 2xl:text-sm xl:text-xs rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                      class="bg-[#f0f0f0] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                       placeholder="1000"
-                      value={amount || ''}
                       onChange={(e) => setAmount(e.target.value)}
                       required
                     />
                   </div>
-                  <div className="row-span-1">
+                  <div className="space-y-1">
                     <label
-                      htmlFor="utrNo"
-                      className="block text-sm 2xl:text-sm xl:text-xs font-medium text-gray-900 "
+                      for="utrNo"
+                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg font-medium text-gray-900 "
                     >
                       Enter the UTR number
                     </label>
                     <input
                       type="text"
                       id="UtrNo"
-                      className="bg-[#f0f0f0] 2xl:text-sm xl:text-xs text-gray-600 border border-gray-200   text-sm rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                      class="bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-sm rounded-lg block w-full p-2.5"
                       placeholder="CHJSU2UHBSA"
-                      value={utrNumber || ''}
+                      value={utrNumber}
                       onChange={(e) => setUtrNumber(e.target.value)}
                       required
                     />
                   </div>
-                  <div className="row-span-1  flex items-end pb-5 ">
+                  <div className="flex items-end py-3">
                     <Button
                       text={'Update Fee'}
                       buttonStyle={
-                        'bg-[#2740CD] text-white rounded-lg  flex items-center justify-center px-2 py-2 text-md lg:text-xl xl:text-sm 2xl:text-md 3xl:text-base  w-full'
+                        'bg-[#2740CD] text-white rounded-lg  flex items-center justify-center px-2 py-2 text-md lg:text-xl xl:text-sm 3xl:text-lg  w-full'
                       }
+                      onClick={updateFeeHandler}
                     />
                   </div>
                 </div>
