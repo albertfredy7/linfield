@@ -30,7 +30,7 @@ function App() {
         <Route path="applyFilter" element={<Filter />} />
         <Route path="/teacherId" element={<CreateTeacher />} />
         <Route path="/updatefee" element={<UpdateFee />} />
-        <Route path="/feeUpdate/:search" element={<FeeUpdateForm />} />
+        <Route path="/feeUpdate/:number" element={<FeeUpdateForm />} />
         <Route path="/addRevenue" element={<AddRevenue />} />
 
         <Route path="/login" element={<Login />} />

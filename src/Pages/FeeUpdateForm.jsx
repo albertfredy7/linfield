@@ -1,32 +1,57 @@
-import React, { useState } from 'react'
-import SidebarNew from '../Components/SidebarNew'
-import Select from 'react-select'
-import Button from '../Components/Button'
-import MobileNavigation from '../Components/MobileNavigation'
-import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import Sidebar from '../Components/Sidebar';
+import SidebarNew from '../Components/SidebarNew';
+import MobileOverviewCard from '../Components/MobileOverviewCard';
+import SeachBar from '../Components/SeachBar';
+import DataCard from '../Components/DataCard';
+import Select from 'react-select';
+import Button from '../Components/Button';
+import MobileNavigation from '../Components/MobileNavigation';
+import FeeStatus from '../Components/FeeStatus';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+import { format } from 'date-fns';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 
 function FeeUpdateForm() {
 
-    const { search } = useParams()
-    // console.log(search);
+    const { number } = useParams()
+    console.log(number);
 
-    const [feeType, setFeeType] = useState(null)
-    const [paymentType, setPaymentType] = useState(null)
-    const [isFocused, setIsFocused] = useState(true);
-    const [studentDetails, setStudentDetails] = useState(null)
-    const [amount, setAmount] = useState('')
-    const [utrNumber, setUtrNumber] = useState('')
-    const [error, setError] = useState(null)
-    const [successMessage, setSuccessMessage] = useState(null)
-    const [feeName, setFeeName] = useState('')
+    useEffect(() => {
+        if (number == undefined) {
+            window.alert('Please enter a valid student number');
+        }
+    }, [])
 
-
-    const [student, setStudent] = useState(null)
     const navigate = useNavigate()
 
-    const feeOptions = [
+    const [feeType, setFeeType] = useState(null);
+    const [feeName, setFeeName] = useState(null);
+    const [paymentType, setPaymentType] = useState(null);
+    const [isFocused, setIsFocused] = useState(true);
+    const [studentDetails, setStudentDetails] = useState(null);
+    const [amount, setAmount] = useState(null);
+    const [utrNumber, setUtrNumber] = useState(null);
+    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [studentData, setStudentData] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
+
+    const [student, setStudent] = useState(null);
+    const [transactions, setTransactions] = useState(null);
+
+    const searchValueHandler = (value) => {
+        setNumber(value);
+    };
+
+    const allFeeOptions = [
+        {
+            label: 'Admission fee',
+            value: 'admissionFees',
+        },
         {
             label: 'Registration fee',
             value: 'registrationFees',
@@ -71,13 +96,27 @@ function FeeUpdateForm() {
         },
     ];
 
+
+
     const updateFeeHandler = async () => {
-        let number = search;
-        console.log(number);
+        //the conditions to satisfy stuffs
+        if (feeType === 'examFees') {
+            if (
+                studentData[0].feeDetails.installments[0] &&
+                studentData[0].feeDetails.installments[0].isPaid === false
+            ) {
+                window.alert('Please pay first term fees first to continue');
+                return;
+            }
+        }
+
+
 
         let feeBody = {};
 
         feeBody.number = number;
+
+        console.log(number, feeType, amount, utrNumber);
 
         if (!number || !feeType || !amount || !utrNumber) {
             window.alert('please enter all details');
@@ -94,7 +133,7 @@ function FeeUpdateForm() {
                 feeBody.feeName = feeName;
             }
             feeBody.feeType = feeType;
-            feeBody.amount = amount;
+            feeBody.amount = parseInt(amount);
             feeBody.utrNumber = utrNumber;
         }
 
@@ -118,6 +157,88 @@ function FeeUpdateForm() {
         }
     };
 
+    let feeOptions = allFeeOptions;
+
+    if (studentData.length > 0) {
+        const mode = studentData[0].mode;
+
+        if (mode === 'Correspondent') {
+            feeOptions = feeOptions.filter((option) =>
+                ['examFees', 'registrationFees', 'admissionFees'].includes(option.value)
+            );
+        } else if (mode === 'Offline') {
+            feeOptions = feeOptions.filter((option) =>
+                [
+                    'admissionFees',
+                    'registrationFees',
+                    'examFees',
+                    'firstTerm',
+                    'secondTerm',
+                ].includes(option.value)
+            );
+        }
+    }
+
+    useEffect(() => {
+        const changeAmount = () => {
+            if (
+                studentData &&
+                studentData.length > 0 &&
+                feeType === 'admissionFees' &&
+                paymentType === 'fullPayment'
+            ) {
+                setAmount(
+                    studentData[0].feeDetails.admissionFees -
+                    studentData[0].feeDetails.admissionFeePaidAmount
+                );
+            } else if (
+                studentData &&
+                studentData.length > 0 &&
+                feeType === 'firstTerm' &&
+                paymentType === 'fullPayment'
+            ) {
+                setAmount(
+                    studentData[0].feeDetails.installments[0].amount -
+                    studentData[0].feeDetails.installments[0].paidAmount
+                );
+            } else if (
+                studentData &&
+                studentData.length > 0 &&
+                feeType === 'secondTerm' &&
+                paymentType === 'fullPayment'
+            ) {
+                setAmount(
+                    studentData[0].feeDetails.installments[1].amount -
+                    studentData[0].feeDetails.installments[1].paidAmount
+                );
+            } else if (
+                studentData &&
+                studentData.length > 0 &&
+                studentData[0].mode === 'Online' &&
+                feeType === 'thirdTerm' &&
+                paymentType === 'fullPayment'
+            ) {
+                setAmount(
+                    studentData[0].feeDetails.installments[2].amount -
+                    studentData[0].feeDetails.installments[2].paidAmount
+                );
+            } else {
+                // Set a default value or handle the case when none of the conditions match
+                return;
+            }
+        };
+
+        changeAmount();
+    }),
+        [feeType, paymentType];
+
+
+    
+
+
+
+
+
     return (
         <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
 
@@ -132,7 +253,7 @@ function FeeUpdateForm() {
                         </div>
                         <div className='flex flex-col gap-3 px-6 overflow-y-auto scroll-smooth'>
 
-                            <div className=''>
+                            {<div className=''>
                                 <div className="space-y-1 3xl:hidden">
                                     <label
                                         htmlFor="feeType"
@@ -152,12 +273,18 @@ function FeeUpdateForm() {
                                                 fontSize: '0.9rem',
                                             }),
                                         }}
-                                        className=" bg-[#ffffff] 2xl:text-sm xl:text-xs 4xl:text-md text-gray-600 rounded-xl"
+                                        className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 4xl:text-md text-gray-600 rounded-xl"
                                         closeMenuOnSelect={true}
                                         isSearchable={false}
                                         onChange={(e) => setPaymentType(e.value)}
                                         name="feeType"
-
+                                        controlShouldRenderValue={
+                                            paymentType
+                                                ? true
+                                                : paymentType === false
+                                                    ? true
+                                                    : false
+                                        }
                                     />
                                 </div>
                                 <div className="space-y-1 hidden 3xl:block">
@@ -184,7 +311,13 @@ function FeeUpdateForm() {
                                         isSearchable={false}
                                         onChange={(e) => setPaymentType(e.value)}
                                         name="feeType"
-
+                                        controlShouldRenderValue={
+                                            paymentType
+                                                ? true
+                                                : paymentType === false
+                                                    ? true
+                                                    : false
+                                        }
                                     />
                                 </div>
                                 <div className="space-y-1 3xl:hidden">
@@ -212,11 +345,7 @@ function FeeUpdateForm() {
                                         name="paymentType"
                                         onChange={(e) => setFeeType(e.value)}
                                         controlShouldRenderValue={
-                                            paymentType
-                                                ? true
-                                                : paymentType === false
-                                                    ? true
-                                                    : false
+                                            feeType ? true : feeType === false ? true : false
                                         }
                                     />
                                 </div>
@@ -235,7 +364,7 @@ function FeeUpdateForm() {
                                                 borderRadius: '.5rem',
                                                 padding: '0.2rem',
                                                 borderWidth: '0px',
-                                                backgroundColor: 'RGB(240, 240, 240)',
+                                                backgroundColor: 'RGB(255, 255, 255)',
                                                 fontSize: '1.03rem',
                                             }),
                                         }}
@@ -245,11 +374,7 @@ function FeeUpdateForm() {
                                         name="paymentType"
                                         onChange={(e) => setFeeType(e.value)}
                                         controlShouldRenderValue={
-                                            paymentType
-                                                ? true
-                                                : paymentType === false
-                                                    ? true
-                                                    : false
+                                            feeType ? true : feeType === false ? true : false
                                         }
                                     />
                                 </div>
@@ -283,6 +408,7 @@ function FeeUpdateForm() {
                                         id="amount"
                                         className="bg-[#ffffff] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                                         placeholder="1000"
+                                        value={amount}
                                         onChange={(e) => setAmount(e.target.value)}
                                         required
                                     />
@@ -313,7 +439,7 @@ function FeeUpdateForm() {
                                         onClick={updateFeeHandler}
                                     />
                                 </div>
-                            </div>
+                            </div>}
 
                         </div>
                     </div>

@@ -33,7 +33,11 @@ function UpdateFee() {
     setNumber(value);
   };
 
-  const feeOptions = [
+  const allFeeOptions = [
+    {
+      label: 'Admission fee',
+      value: 'admissionFees',
+    },
     {
       label: 'Registration fee',
       value: 'registrationFees',
@@ -78,13 +82,13 @@ function UpdateFee() {
     },
   ];
 
-
-
   const performSearch = async (query) => {
     try {
-      const response = await axios.get(`https://lobster-app-yjjm5.ondigitalocean.app/api/students/search/${query}`);
+      const response = await axios.get(
+        `https://lobster-app-yjjm5.ondigitalocean.app/api/students/search/${query}`
+      );
       const data = response.data;
-      setSearchValue(query)
+      setSearchValue(query);
 
       // Validate the response data
       if (Array.isArray(data)) {
@@ -93,9 +97,12 @@ function UpdateFee() {
           // Extract the admissionNumber from the first result
           const admissionNumber = data[0].admissionNumber;
           // Perform the second API call using the admissionNumber
-          const transactionsResponse = await axios.get(`https://lobster-app-yjjm5.ondigitalocean.app/api/students/studentTransactions/${admissionNumber}`);
+          const transactionsResponse = await axios.get(
+            `https://lobster-app-yjjm5.ondigitalocean.app/api/students/studentTransactions/${admissionNumber}`
+          );
           // Assuming the response contains the transactions data
           setTransactions(transactionsResponse.data);
+          console.log(transactionsResponse.data);
         } else {
           // Clear transactions if no student data is found
           setTransactions([]);
@@ -106,7 +113,9 @@ function UpdateFee() {
         console.log(data.admissionNumber);
         if (data.admissionNumber) {
           // Perform the second API call using the admissionNumber from the object
-          const transactionsResponse = await axios.get(`https://lobster-app-yjjm5.ondigitalocean.app/api/students/studentTransactions/${data.admissionNumber}`);
+          const transactionsResponse = await axios.get(
+            `https://lobster-app-yjjm5.ondigitalocean.app/api/students/studentTransactions/${data.admissionNumber}`
+          );
           // Assuming the response contains the transactions data
           setTransactions(transactionsResponse.data);
         } else {
@@ -130,11 +139,19 @@ function UpdateFee() {
 
   console.log(searchValue);
 
-
-
   const updateFeeHandler = async () => {
+    //the conditions to satisfy stuffs
+    if (feeType === 'examFees') {
+      if (
+        studentData[0].feeDetails.installments[0] &&
+        studentData[0].feeDetails.installments[0].isPaid === false
+      ) {
+        window.alert('Please pay first term fees first to continue');
+        return;
+      }
+    }
+
     let number = searchValue;
-    console.log(number);
 
     let feeBody = {};
 
@@ -155,7 +172,7 @@ function UpdateFee() {
         feeBody.feeName = feeName;
       }
       feeBody.feeType = feeType;
-      feeBody.amount = amount;
+      feeBody.amount = parseInt(amount);
       feeBody.utrNumber = utrNumber;
     }
 
@@ -175,49 +192,117 @@ function UpdateFee() {
       window.alert('success');
     } else if (data.message && !data.status) {
       window.alert(data.message);
+      naviga
     }
   };
 
+  let feeOptions = allFeeOptions;
+
+  if (studentData.length > 0) {
+    const mode = studentData[0].mode;
+
+    if (mode === 'Correspondent') {
+      feeOptions = feeOptions.filter((option) =>
+        ['examFees', 'registrationFees', 'admissionFees'].includes(option.value)
+      );
+    } else if (mode === 'Offline') {
+      feeOptions = feeOptions.filter((option) =>
+        [
+          'admissionFees',
+          'registrationFees',
+          'examFees',
+          'firstTerm',
+          'secondTerm',
+        ].includes(option.value)
+      );
+    }
+  }
+
   useEffect(() => {
+    const changeAmount = () => {
+      if (
+        studentData &&
+        studentData.length > 0 &&
+        feeType === 'admissionFees' &&
+        paymentType === 'fullPayment'
+      ) {
+        setAmount(
+          studentData[0].feeDetails.admissionFees -
+          studentData[0].feeDetails.admissionFeePaidAmount
+        );
+      } else if (
+        studentData &&
+        studentData.length > 0 &&
+        feeType === 'firstTerm' &&
+        paymentType === 'fullPayment'
+      ) {
+        setAmount(
+          studentData[0].feeDetails.installments[0].amount -
+          studentData[0].feeDetails.installments[0].paidAmount
+        );
+      } else if (
+        studentData &&
+        studentData.length > 0 &&
+        feeType === 'secondTerm' &&
+        paymentType === 'fullPayment'
+      ) {
+        setAmount(
+          studentData[0].feeDetails.installments[1].amount -
+          studentData[0].feeDetails.installments[1].paidAmount
+        );
+      } else if (
+        studentData &&
+        studentData.length > 0 &&
+        studentData[0].mode === 'Online' &&
+        feeType === 'thirdTerm' &&
+        paymentType === 'fullPayment'
+      ) {
+        setAmount(
+          studentData[0].feeDetails.installments[2].amount -
+          studentData[0].feeDetails.installments[2].paidAmount
+        );
+      } else {
+        // Set a default value or handle the case when none of the conditions match
+        return;
+      }
+    };
 
-  }, []);
+    changeAmount();
+  }),
+    [feeType, paymentType];
 
+  console.log(studentData[0]?.admissionNumber);
 
-
-
-  console.log(studentData);
-  console.log(transactions);
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         <div className="block md:hidden">
           <div className="grid grid-rows-12  h-screen">
-            <div className=" row-span-2   flex items-center justify-between px-5">
+            <div className=" row-span-2 flex items-center justify-between px-5">
               <div className=" px-5 flex flex-col">
                 <h1 className=" text-xl  font-semibold">Update Fee</h1>
                 <h1 className="text-[#333333] text-xs">
                   Update the fee of the student{' '}
                 </h1>
               </div>
-              <div className="  sm:pt-16">
+              <div className="">
+
                 <Button
                   text={'Update'}
                   buttonStyle={
-                    'bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs'
+                    `bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${studentData[0]?.admissionNumber ? 'block' : 'hidden'}`
                   }
-                  navigateUrl={`/feeUpdate/${encodeURIComponent(searchValue)}`}
+                  navigateUrl={`/feeUpdate/${studentData[0]?.admissionNumber}`}
                 />
               </div>
             </div>
 
-            <div className="row-span-1 flex justify-center items-center ">
-              <SeachBar
-                onSearch={performSearch}
-              />
+            <div className="row-span-1 flex justify-center items-center bg-green-100">
+              <SeachBar onSearch={performSearch} />
             </div>
 
-            <div className="row-span-1 px-5 ">
+            <div className="row-span-1 px-5">
               {studentData.length > 0 ? (
                 studentData.map((student, index) => (
                   <DataCard
@@ -227,101 +312,49 @@ function UpdateFee() {
                     tailData={student.course}
                   />
                 ))
-              )
-                : (
-                  <div className="h-full flex flex-col items-center justify-center">
-                    <h1 className="text-lg font-semibold text-[#333333]">No student data available</h1>
-
-                  </div>
-                )
-              }
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <h1 className="text-lg font-semibold text-[#333333]">
+                    No student data available
+                  </h1>
+                </div>
+              )}
             </div>
 
-
             <div className="row-span-3  h-full sm:h-4/5 p-3">
-              {/* <div className="grid grid-cols-3 gap-5 h-full  bg-white p-6  rounded-2xl">
-
-                <div className="w-full ">
-                  <button type="button" className={`w-full ${student && student.feeDetails.admissionFeePaid ? 'text-green-500' : 'text-red-500'} border ${student && student.feeDetails.admissionFeePaid ? 'border-green-500' : 'border-red-500'} font-medium rounded-lg text-sm px-1 py-1`}>
-                    <div><h1 className='text-sm sm:text-md'>Admn</h1></div>
-                    <div><h1 className='text-sm sm:text-md'>Fee</h1></div>
-                  </button>
-                  <label className={`${student && student.feeDetails.admissionFeePaid ? 'hidden' : 'block'} text-xs font-medium text-red-600 mt-2 text-center`}>
-                    {student && student.feeDetails.admissionFeePaid && `${student.feeDetails.admissionFeeAmount - student.feeDetails.admissionFeePaid} bal`}
-                  </label>
-                </div>
-
-
-                <div className="w-full p-2">
-                  <button type="button" className={`w-full ${student && student.feeDetails.registrationFeePaid ? 'text-green-500' : 'text-red-500'} border ${student && student.feeDetails.registrationFeePaid ? 'border-green-500' : 'border-red-500'} font-medium rounded-lg text-sm px-1 py-1`}>
-                    <div><h1 className='text-sm sm:text-md'>Reg</h1></div>
-                    <div><h1 className='text-sm sm:text-md'>Fee</h1></div>
-                  </button>
-                  <label className={`${student && student.feeDetails.registrationFeePaid ? 'hidden' : 'block'} text-xs font-medium text-red-600 mt-2 text-center`}>
-                    {student && student.feeDetails.registrationFeePaid && `${student.feeDetails.registrationFeeAmount - student.feeDetails.registrationFeePaid} bal`}
-                  </label>
-                </div>
-
-
-                <div className="w-full p-2">
-                  <button type="button" className={`w-full ${student && student.feeDetails.examFeePaid ? 'text-green-500' : 'text-red-500'} border ${student && student.feeDetails.examFeePaid ? 'border-green-500' : 'border-red-500'} font-medium rounded-lg text-sm px-1 py-1`}>
-                    <div><h1 className='text-sm sm:text-md'>Exam</h1></div>
-                    <div><h1 className='text-sm sm:text-md'>Fee</h1></div>
-                  </button>
-                  <label className={`${student && student.feeDetails.examFeePaid ? 'hidden' : 'block'} text-xs font-medium text-red-600 mt-2 text-center`}>
-                    {student && student.feeDetails.examFeePaid && `${student.feeDetails.examFeeAmount - student.feeDetails.examFeePaid} bal`}
-                  </label>
-                </div>
-                <div className="w-full p-2">
-
-                  <button type="button" className={`w-full ${student && student.feeDetails.installments[0].isPaid ? 'text-green-500' : 'text-red-500'} border ${student && student.feeDetails.installments[0].isPaid ? 'border-green-500' : 'border-red-500'} font-medium rounded-lg text-sm px-1 py-1`}>
-                    <div><h1 className='text-sm sm:text-md'>First</h1></div>
-                    <div><h1 className='text-md'>Term</h1></div>
-                  </button>
-
-                  <label for="button" className={`${student && student.feeDetails.installments[0].isPaid ? 'hidden' : 'block'} text-xs font-medium text-red-600 mt-2 text-center`}>{student && student.feeDetails.installments[0].paidAmount > 0 && `${student.feeDetails.installments[0].amount - student.feeDetails.installments[0].paidAmount} bal`}</label>
-                </div>
-                <div className="w-full p-2">
-
-                  <button type="button" className={`w-full ${student && student.feeDetails.installments[1].isPaid ? 'text-green-500' : 'text-red-500'} border ${student && student.feeDetails.installments[1].isPaid ? 'border-green-500' : 'border-red-500'} font-medium rounded-lg text-sm px-1 py-1`}>
-                    <div><h1 className='text-md'>Second</h1></div>
-                    <div><h1 className='text-md'>Term</h1></div>
-                  </button>
-                  <label for="button" className={`${student && student.feeDetails.installments[1].isPaid ? 'hidden' : 'block'} text-xs font-medium text-red-600 mt-2 text-center`}>{student && student.feeDetails.installments[1].paidAmount > 0 && `${student.feeDetails.installments[1].amount - student.feeDetails.installments[1].paidAmount} bal`}</label>
-                </div>
-                <div className="w-full p-2">
-
-                  <button type="button" className={`w-full ${student && student.feeDetails.installments[2].isPaid ? 'text-green-500' : 'text-red-500'} border ${student && student.feeDetails.installments[2].isPaid ? 'border-green-500' : 'border-red-500'} font-medium rounded-lg text-sm px-1 py-1`}>
-                    <div><h1 className='text-md'>Third</h1></div>
-                    <div><h1 className='text-md'>Term</h1></div>
-                  </button>
-                  <label for="button" className={`${student && student.feeDetails.installments[2].isPaid ? 'hidden' : 'block'} text-xs font-medium text-red-600 mt-2 text-center`}>{student && student.feeDetails.installments[2].paidAmount > 0 && `${student.feeDetails.installments[2].amount - student.feeDetails.installments[2].paidAmount} bal`}</label>
-                </div>
-              </div> */}
-
-              <FeeStatus />
+              <FeeStatus studentData={studentData} />
             </div>
 
             <div className={` ${student} ? 'row-span-3' : row-span-5  px-3`}>
               <h1 className="text-md p-2 ">Recent Transactions</h1>
-              <div className="overflow-y-auto scroll-smooth h-full  pb-10">
+              <div className="overflow-y-auto scroll-smooth h-full  pb-28">
                 <div className="space-y-3">
-                  {
-                    transactions && transactions.length > 0 ? transactions.map((transaction, index) => (
+                  {transactions && transactions.length > 0 ? (
+                    transactions.map((transaction, index) => (
                       <DataCard
                         key={index}
                         type="transactions"
                         title={transaction.purpose}
-                        subTitle={format(new Date(transaction.date), 'dd MMM yyyy , hh:mm a')}
+                        subTitle={format(
+                          new Date(transaction.date),
+                          'dd MMM yyyy , hh:mm a'
+                        )}
                         midData={transaction.utrNumber}
                         tailData={transaction.amount}
                       />
-                    )) : <div>
-                      <img src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif" className='mix-blend-multiply' alt="" />
-                      <h1 className='text-center text-lg font-semibold text-[#333333]'>No transactions available</h1>
+                    ))
+                  ) : (
+                    <div>
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply"
+                        alt=""
+                      />
+                      <h1 className="text-center text-lg font-semibold text-[#333333]">
+                        No transactions available
+                      </h1>
                     </div>
-
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -353,9 +386,9 @@ function UpdateFee() {
                   <Button
                     text={'Update'}
                     buttonStyle={
-                      'bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs'
+                      `bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${studentData[0]?.admissionNumber ? 'block' : 'hidden'}`
                     }
-                    navigateUrl={`/feeUpdate/${encodeURIComponent(searchValue)}`}
+                    navigateUrl={`/feeUpdate/${studentData[0]?.admissionNumber}`}
                   />
                 </div>
               </div>
@@ -363,9 +396,7 @@ function UpdateFee() {
 
             <div className="row-span-1  pt-5 lg:pt-8 px-5 ">
               <div className="">
-                <SeachBar
-                  onSearch={performSearch}
-                />
+                <SeachBar onSearch={performSearch} />
               </div>
             </div>
 
@@ -379,14 +410,13 @@ function UpdateFee() {
                     tailData={student.course}
                   />
                 ))
-              )
-                : (
-                  <div className="h-full flex flex-col items-center justify-center">
-                    <h1 className="text-lg font-semibold text-[#333333]">No student data available</h1>
-
-                  </div>
-                )
-              }
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <h1 className="text-lg font-semibold text-[#333333]">
+                    No student data available
+                  </h1>
+                </div>
+              )}
             </div>
 
             {/* <div className="row-span-2 grid grid-cols-3 gap-5 h-full bg-white p-8 rounded-2xl lg:p-12 ">
@@ -431,28 +461,39 @@ function UpdateFee() {
               </div>
             </div> */}
             <div className="row-span-2">
-              <FeeStatus />
+              <FeeStatus studentData={studentData} />
             </div>
 
             <div className="row-span-4 pt-10">
               <h1 className="text-lg lg:text-xl pb-2">Recent Transactions</h1>
               <div className="overflow-y-auto h-full p-4">
                 <div className="space-y-3">
-                  {
-                    transactions && transactions.length > 0 ? transactions.map((transaction, index) => (
+                  {transactions && transactions.length > 0 ? (
+                    transactions.map((transaction, index) => (
                       <DataCard
                         key={index}
                         type="transactions"
                         title={transaction.purpose}
-                        subTitle={format(new Date(transaction.date), 'dd MMM yyyy , hh:mm a')}
+                        subTitle={format(
+                          new Date(transaction.date),
+                          'dd MMM yyyy , hh:mm a'
+                        )}
                         midData={transaction.utrNumber}
                         tailData={transaction.amount}
                       />
-                    )) : <div>
-                      <img src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif" className='mix-blend-multiply' alt="" />
-                      <h1 className='text-center text-lg font-semibold lead text-[#333333]'>No transactions available</h1>
+                    ))
+                  ) : (
+                    <div>
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply"
+                        alt=""
+                      />
+                      <h1 className="text-center text-lg font-semibold lead text-[#333333]">
+                        No transactions available
+                      </h1>
                     </div>
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -464,14 +505,14 @@ function UpdateFee() {
           <div className="col-span-2">
             <SidebarNew />
           </div>
-          <div className="col-span-6 px-8 grid  3xl:grid-rows-10 xl:grid-rows-8  space-y-4 overflow-hidden pt-6 ">
+          <div className="col-span-6 px-8 grid  3xl:grid-rows-10 xl:grid-rows-8  space-y-4 overflow-hidden pt-6 4xl:pt-10">
             <Toaster position="top-center" reverseOrder={false} />
             <div className="row-span-1 ">
               <div className="flex flex-col gap-0  px-5  ">
-                <h1 className="text-xl 3xl:text-3xl font-semibold">
+                <h1 className="text-xl 3xl:text-2xl font-semibold">
                   Update Fee
                 </h1>
-                <h1 className="text-md font-medium text-[#333333]">
+                <h1 className="text-md 3xl:text-lg font-medium text-[#333333]">
                   Update the fee of the student
                 </h1>
               </div>
@@ -486,47 +527,58 @@ function UpdateFee() {
                     tailData={student.course}
                   />
                 ))
-              )
-                : (
-                  <div className="h-full flex flex-col items-center justify-center">
-                    <h1 className="text-lg font-semibold text-[#333333]">No student data available</h1>
-                  </div>
-                )
-              }
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <h1 className="text-lg font-semibold text-[#333333]">
+                    No student data available
+                  </h1>
+                </div>
+              )}
             </div>
             <div className="3xl:row-span-8 xl:row-span-6  h-full grid grid-rows-8">
-              <div className="3xl:row-span-4 xl:row-span-4 3xl:p-10 xl:p-5 ">
-                <FeeStatus />
+              <div className="3xl:row-span-2 4xl:row-span-3 xl:row-span-3 3xl:px-10 xl:px-5 py-2 flex items-center ">
+                <FeeStatus studentData={studentData} />
               </div>
-              <div className="3xl:row-span-4 xl:row-span-4 overflow-hidden ">
-                <h1 className="text-lg font-semibold ps-5 pb-2 pt-2">
+              <div className="3xl:row-span-6 4xl:row-span-5 xl:row-span-5 overflow-hidden ">
+                <h1 className="text-lg 4xl:text-xl font-semibold pb-2 pt-8 px-5">
                   Recent Transactions{' '}
                 </h1>
-                <div className="h-full overflow-y-auto flex flex-col gap-3 px-5 3xl:pb-14   ">
-                  {
-                    transactions && transactions.length > 0 ? transactions.map((transaction, index) => (
-                      <DataCard
-                        key={index}
-                        type="transactions"
-                        title={transaction.purpose}
-                        subTitle={format(new Date(transaction.date), 'dd MMM yyyy , hh:mm a')}
-                        midData={transaction.utrNumber}
-                        tailData={transaction.amount}
+                <div className="h-full overflow-y-auto space-y-2 px-5  pb-20">
+                  {transactions && transactions.length > 0 ? (
+                    transactions.map((transaction) => {
+                      console.log(transaction.purpose); // Logging each transaction's purpose
+                      return (
+                        <DataCard
+                          key={transaction._id} // Assuming _id is a unique identifier
+                          type="transactions"
+                          title={transaction.purpose}
+                          subTitle={format(
+                            new Date(transaction.date),
+                            'dd MMM yyyy , hh:mm a'
+                          )}
+                          midData={transaction.utrNumber}
+                          tailData={transaction.amount}
+                        />
+                      );
+                    })
+                  ) : (
+                    <div className=" xl:flex xl:flex-col justify-center items-center">
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply xl:w-1/2"
+                        alt=""
                       />
-                    )) : <div className=' xl:flex xl:flex-col justify-center items-center'>
-                      <img src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif" className='mix-blend-multiply xl:w-1/2' alt="" />
-                      <h1 className='text-center text-lg font-semibold text-[#333333]'>No transactions available</h1>
+                      <h1 className="text-center text-lg font-semibold text-[#333333]">
+                        No transactions available
+                      </h1>
                     </div>
-                  }
+                  )}
                 </div>
               </div>
             </div>
           </div>
           <div className="col-span-3 h-full overflow-hidden flex flex-col justify-center space-y-8 px-6">
-            <SeachBar
-              onSearch={performSearch}
-
-            />
+            <SeachBar onSearch={performSearch} />
 
             <div className="flex flex-col justify-center">
               <div className="bg-white rounded-2xl p-5">
@@ -542,8 +594,8 @@ function UpdateFee() {
                 <div className="2xl:gap-1 xl:gap-5 px-3 pt-3 space-y-2 4xl:space-y-4">
                   <div className="space-y-1 3xl:hidden">
                     <label
-                      for="feeType"
-                      class="block xl:text-sm  text-gray-900 "
+                      htmlFor="feeType"
+                      className="block xl:text-sm  text-gray-900 "
                     >
                       Select payment type
                     </label>
@@ -564,13 +616,19 @@ function UpdateFee() {
                       isSearchable={false}
                       onChange={(e) => setPaymentType(e.value)}
                       name="feeType"
-
+                      controlShouldRenderValue={
+                        paymentType
+                          ? true
+                          : paymentType === false
+                            ? true
+                            : false
+                      }
                     />
                   </div>
                   <div className="space-y-1 hidden 3xl:block">
                     <label
-                      for="feeType"
-                      class="block xl:text-sm 3xl:text-lg 4xl:text-lg text-gray-900 "
+                      htmlFor="feeType"
+                      className="block xl:text-sm 3xl:text-lg 4xl:text-lg text-gray-900 "
                     >
                       Select payment type
                     </label>
@@ -591,13 +649,19 @@ function UpdateFee() {
                       isSearchable={false}
                       onChange={(e) => setPaymentType(e.value)}
                       name="feeType"
-
+                      controlShouldRenderValue={
+                        paymentType
+                          ? true
+                          : paymentType === false
+                            ? true
+                            : false
+                      }
                     />
                   </div>
                   <div className="space-y-1 3xl:hidden">
                     <label
-                      for="paymentType"
-                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      htmlFor="paymentType"
+                      className="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Select fee type
                     </label>
@@ -619,18 +683,14 @@ function UpdateFee() {
                       name="paymentType"
                       onChange={(e) => setFeeType(e.value)}
                       controlShouldRenderValue={
-                        paymentType
-                          ? true
-                          : paymentType === false
-                            ? true
-                            : false
+                        feeType ? true : feeType === false ? true : false
                       }
                     />
                   </div>
                   <div className="space-y-1 hidden 3xl:block">
                     <label
-                      for="paymentType"
-                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      htmlFor="paymentType"
+                      className="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Select fee type
                     </label>
@@ -652,19 +712,15 @@ function UpdateFee() {
                       name="paymentType"
                       onChange={(e) => setFeeType(e.value)}
                       controlShouldRenderValue={
-                        paymentType
-                          ? true
-                          : paymentType === false
-                            ? true
-                            : false
+                        feeType ? true : feeType === false ? true : false
                       }
                     />
                   </div>
                   {feeType === 'customFee' && (
                     <div className="space-y-1">
                       <label
-                        for="feeName"
-                        class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                        htmlFor="feeName"
+                        className="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                       >
                         Custom fee name
                       </label>
@@ -680,31 +736,32 @@ function UpdateFee() {
                   )}
                   <div className="space-y-1">
                     <label
-                      for="amount"
-                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      htmlFor="amount"
+                      className="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Amount
                     </label>
                     <input
                       type="text"
                       id="amount"
-                      class="bg-[#f0f0f0] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                      className="bg-[#f0f0f0] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                       placeholder="1000"
+                      value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-1">
                     <label
-                      for="utrNo"
-                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg font-medium text-gray-900 "
+                      htmlFor="utrNo"
+                      className="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg font-medium text-gray-900 "
                     >
                       Enter the UTR number
                     </label>
                     <input
                       type="text"
                       id="UtrNo"
-                      class="bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-sm rounded-lg block w-full p-2.5"
+                      className="bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-sm rounded-lg block w-full p-2.5"
                       placeholder="CHJSU2UHBSA"
                       value={utrNumber}
                       onChange={(e) => setUtrNumber(e.target.value)}
@@ -726,12 +783,6 @@ function UpdateFee() {
           </div>
         </div>
       </div>
-      {/* <div className='grid grid-cols-5'>
-            <div className='w-full '>
-                <Sidebar />
-            </div>
-            <div>Home</div>
-        </div> */}
     </div>
   );
 }
