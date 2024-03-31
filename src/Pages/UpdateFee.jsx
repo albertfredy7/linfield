@@ -179,7 +179,7 @@ function UpdateFee() {
   };
 
   useEffect(() => {
-    
+
   }, []);
 
 
@@ -206,7 +206,7 @@ function UpdateFee() {
                   buttonStyle={
                     'bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs'
                   }
-                  navigateUrl={'/feeUpdate'}
+                  navigateUrl={`/feeUpdate/${encodeURIComponent(searchValue)}`}
                 />
               </div>
             </div>
@@ -351,11 +351,11 @@ function UpdateFee() {
                 </div>
                 <div className="flex justify-center items-center">
                   <Button
-                    text={'Update Fee'}
+                    text={'Update'}
                     buttonStyle={
-                      'bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md lg:text-xl 3xl:text-base'
+                      'bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs'
                     }
-                    navigateUrl={'/feeUpdate'}
+                    navigateUrl={`/feeUpdate/${encodeURIComponent(searchValue)}`}
                   />
                 </div>
               </div>
@@ -564,9 +564,7 @@ function UpdateFee() {
                       isSearchable={false}
                       onChange={(e) => setPaymentType(e.value)}
                       name="feeType"
-                      controlShouldRenderValue={
-                        feeType ? true : feeType === false ? true : false
-                      }
+
                     />
                   </div>
                   <div className="space-y-1 hidden 3xl:block">
@@ -593,9 +591,7 @@ function UpdateFee() {
                       isSearchable={false}
                       onChange={(e) => setPaymentType(e.value)}
                       name="feeType"
-                      controlShouldRenderValue={
-                        feeType ? true : feeType === false ? true : false
-                      }
+
                     />
                   </div>
                   <div className="space-y-1 3xl:hidden">
