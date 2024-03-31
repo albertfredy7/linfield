@@ -183,7 +183,7 @@ function UpdateFee() {
     };
 
     const { data } = await axios.put(
-      'http://127.0.0.1:5000/api/students/fees/nios',
+      'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
       feeBody,
       config
     );
@@ -192,6 +192,7 @@ function UpdateFee() {
       window.alert('success');
     } else if (data.message && !data.status) {
       window.alert(data.message);
+      naviga
     }
   };
 
@@ -227,7 +228,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.admissionFees -
-            studentData[0].feeDetails.admissionFeePaidAmount
+          studentData[0].feeDetails.admissionFeePaidAmount
         );
       } else if (
         studentData &&
@@ -237,7 +238,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.installments[0].amount -
-            studentData[0].feeDetails.installments[0].paidAmount
+          studentData[0].feeDetails.installments[0].paidAmount
         );
       } else if (
         studentData &&
@@ -247,7 +248,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.installments[1].amount -
-            studentData[0].feeDetails.installments[1].paidAmount
+          studentData[0].feeDetails.installments[1].paidAmount
         );
       } else if (
         studentData &&
@@ -258,7 +259,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.installments[2].amount -
-            studentData[0].feeDetails.installments[2].paidAmount
+          studentData[0].feeDetails.installments[2].paidAmount
         );
       } else {
         // Set a default value or handle the case when none of the conditions match
@@ -269,6 +270,8 @@ function UpdateFee() {
     changeAmount();
   }),
     [feeType, paymentType];
+
+  console.log(studentData[0]?.admissionNumber);
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
@@ -284,12 +287,13 @@ function UpdateFee() {
                 </h1>
               </div>
               <div className="">
+
                 <Button
                   text={'Update'}
                   buttonStyle={
-                    'bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs'
+                    `bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${studentData[0]?.admissionNumber ? 'block' : 'hidden'}`
                   }
-                  navigateUrl={'/feeUpdate'}
+                  navigateUrl={`/feeUpdate/${studentData[0]?.admissionNumber}`}
                 />
               </div>
             </div>
@@ -380,11 +384,11 @@ function UpdateFee() {
                 </div>
                 <div className="flex justify-center items-center">
                   <Button
-                    text={'Update Fee'}
+                    text={'Update'}
                     buttonStyle={
-                      'bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md lg:text-xl 3xl:text-base'
+                      `bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${studentData[0]?.admissionNumber ? 'block' : 'hidden'}`
                     }
-                    navigateUrl={'/feeUpdate'}
+                    navigateUrl={`/feeUpdate/${studentData[0]?.admissionNumber}`}
                   />
                 </div>
               </div>
@@ -590,8 +594,8 @@ function UpdateFee() {
                 <div className="2xl:gap-1 xl:gap-5 px-3 pt-3 space-y-2 4xl:space-y-4">
                   <div className="space-y-1 3xl:hidden">
                     <label
-                      for="feeType"
-                      class="block xl:text-sm  text-gray-900 "
+                      htmlFor="feeType"
+                      className="block xl:text-sm  text-gray-900 "
                     >
                       Select payment type
                     </label>
@@ -616,15 +620,15 @@ function UpdateFee() {
                         paymentType
                           ? true
                           : paymentType === false
-                          ? true
-                          : false
+                            ? true
+                            : false
                       }
                     />
                   </div>
                   <div className="space-y-1 hidden 3xl:block">
                     <label
-                      for="feeType"
-                      class="block xl:text-sm 3xl:text-lg 4xl:text-lg text-gray-900 "
+                      htmlFor="feeType"
+                      className="block xl:text-sm 3xl:text-lg 4xl:text-lg text-gray-900 "
                     >
                       Select payment type
                     </label>
@@ -649,15 +653,15 @@ function UpdateFee() {
                         paymentType
                           ? true
                           : paymentType === false
-                          ? true
-                          : false
+                            ? true
+                            : false
                       }
                     />
                   </div>
                   <div className="space-y-1 3xl:hidden">
                     <label
-                      for="paymentType"
-                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      htmlFor="paymentType"
+                      className="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Select fee type
                     </label>
@@ -685,8 +689,8 @@ function UpdateFee() {
                   </div>
                   <div className="space-y-1 hidden 3xl:block">
                     <label
-                      for="paymentType"
-                      class="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      htmlFor="paymentType"
+                      className="block 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Select fee type
                     </label>
@@ -715,8 +719,8 @@ function UpdateFee() {
                   {feeType === 'customFee' && (
                     <div className="space-y-1">
                       <label
-                        for="feeName"
-                        class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                        htmlFor="feeName"
+                        className="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                       >
                         Custom fee name
                       </label>
@@ -732,15 +736,15 @@ function UpdateFee() {
                   )}
                   <div className="space-y-1">
                     <label
-                      for="amount"
-                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
+                      htmlFor="amount"
+                      className="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-900 "
                     >
                       Amount
                     </label>
                     <input
                       type="text"
                       id="amount"
-                      class="bg-[#f0f0f0] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                      className="bg-[#f0f0f0] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                       placeholder="1000"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
@@ -749,15 +753,15 @@ function UpdateFee() {
                   </div>
                   <div className="space-y-1">
                     <label
-                      for="utrNo"
-                      class="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg font-medium text-gray-900 "
+                      htmlFor="utrNo"
+                      className="block text-sm 2xl:text-sm xl:text-xs 3xl:text-lg font-medium text-gray-900 "
                     >
                       Enter the UTR number
                     </label>
                     <input
                       type="text"
                       id="UtrNo"
-                      class="bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-sm rounded-lg block w-full p-2.5"
+                      className="bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-sm rounded-lg block w-full p-2.5"
                       placeholder="CHJSU2UHBSA"
                       value={utrNumber}
                       onChange={(e) => setUtrNumber(e.target.value)}
