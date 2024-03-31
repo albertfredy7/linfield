@@ -233,11 +233,6 @@ function FeeUpdateForm() {
         [feeType, paymentType];
 
 
-    
-
-
-
-
 
     return (
         <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
