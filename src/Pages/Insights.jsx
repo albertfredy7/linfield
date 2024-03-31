@@ -23,8 +23,11 @@ function Insights() {
   const [date, setDate] = useState(null);
 
   const revenueCategories = [
-    { value: 'Excess amount of Registration', label: 'Excess amount of Registration' },
-    { value: 'Excess amount of TO', label: 'Excess amount of TOC' },
+    {
+      value: 'Excess registration',
+      label: 'Excess registration',
+    },
+    { value: 'Excess TOC', label: 'Excess TOC' },
     { value: 'Old Students Fee', label: 'Old Students Fee' },
     { value: 'Commissions', label: 'Commissions' },
     { value: 'Others', label: 'Others' },
@@ -91,10 +94,10 @@ function Insights() {
     },
   ];
 
-
-
   const formatNumber = (number) => {
-    if (number >= 100000) {
+    if (number >= 1000000) {
+      return (number / 1000000).toFixed(1) + 'M'; // Convert to millions
+    } else if (number >= 100000) {
       return (number / 100000).toFixed(1) + 'L'; // Convert to lakhs
     } else if (number >= 1000) {
       return (number / 1000).toFixed(1) + 'K'; // Convert to thousands
@@ -120,52 +123,56 @@ function Insights() {
       console.log(response.data);
 
       // Transform the data based on the selected category
-      const transformedData = response.data.map((item) => {
-        // Format the date and time
-        const createdAtDate = new Date(item.createdAt);
-        const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString('default', { month: 'short' })} ${createdAtDate.getFullYear()}`;
-        const formattedTime = createdAtDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+      const transformedData = response.data
+        .map((item) => {
+          // Format the date and time
+          const createdAtDate = new Date(item.createdAt);
+          const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString(
+            'default',
+            { month: 'short' }
+          )} ${createdAtDate.getFullYear()}`;
+          const formattedTime = createdAtDate.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+          });
 
-        if (selectedCategory === 'revenue') {
-          return {
-            title: item.studentName ? item.studentName : item.purpose,
-            subTitle: item.purpose,
-            tailData: item.amount,
-            date: formattedDate,
-            time: formattedTime,
-          };
-        } else if (selectedCategory === 'admission') {
-          return {
-            title: item.name,
-            subTitle: item.course,
-            tailData: item.admissionNumber,
-            date: formattedDate,
-            time: formattedTime,
-          };
-        } else if (selectedCategory === 'expense') {
-          return {
-            type: item.purpose.toLowerCase(),
-            title: item.purpose,
-            tailData: item.amount,
-            date: formattedDate,
-            time: formattedTime,
-          };
-        }
-        return null;
-      }).filter(Boolean); // Filter out any null values
+          if (selectedCategory === 'revenue') {
+            return {
+              title: item.studentName ? item.studentName : item.purpose,
+              subTitle: item.purpose,
+              tailData: item.amount,
+              date: formattedDate,
+              time: formattedTime,
+            };
+          } else if (selectedCategory === 'admission') {
+            return {
+              title: item.name,
+              subTitle: item.course,
+              tailData: item.admissionNumber,
+              date: formattedDate,
+              time: formattedTime,
+            };
+          } else if (selectedCategory === 'expense') {
+            return {
+              type: item.purpose.toLowerCase(),
+              title: item.purpose,
+              tailData: item.amount,
+              date: formattedDate,
+              time: formattedTime,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean); // Filter out any null values
 
       // Set the transformed data to the state
       setInsightCategoryData(transformedData);
       console.log(transformedData);
     } catch (error) {
-      console.error("Failed to fetch insight category data:", error);
+      console.error('Failed to fetch insight category data:', error);
     }
   };
-
-
-
-
-
 
   useEffect(() => {
     const fetchInsightsData = async () => {
@@ -178,7 +185,6 @@ function Insights() {
     };
     fetchInsightsData();
   }, [selectedCategory]);
-
 
   useEffect(() => {
     fetchInsightCategoryData();
@@ -221,43 +227,6 @@ function Insights() {
     }
   };
 
-  // const Switch = () => {
-  //   const [activeIndex, setActiveIndex] = useState(0);
-
-  //   const handleClick = (index) => {
-  //     setActiveIndex(index);
-  //   };
-
-  //   return (
-  //     <div className="w-3/4 h-full grid grid-cols-3 bg-white rounded-l-xl rounded-r-xl">
-  //       <button
-  //         className={`col-span-1 rounded-xl ${
-  //           activeIndex === 0 ? 'bg-blue-200' : ''
-  //         }`}
-  //         onClick={() => handleClick(0)}
-  //       >
-  //         Revenue
-  //       </button>
-  //       <button
-  //         className={`col-span-1 rounded-xl ${
-  //           activeIndex === 1 ? 'bg-blue-200' : ''
-  //         }`}
-  //         onClick={() => handleClick(1)}
-  //       >
-  //         Admissions
-  //       </button>
-  //       <button
-  //         className={`col-span-1 rounded-xl ${
-  //           activeIndex === 2 ? 'bg-blue-200' : ''
-  //         }`}
-  //         onClick={() => handleClick(2)}
-  //       >
-  //         Expenses
-  //       </button>
-  //     </div>
-  //   );
-  // };
-
   console.log(selectedCategory);
   console.log(selectedDuration);
 
@@ -298,9 +267,9 @@ function Insights() {
         {/* mobile screens */}
         <div className="block md:hidden w-full ">
           <div className="flex flex-col h-screen">
-            <div className="p-5">
-              <h1 className="text-3xl text-center font-semibold">Insights</h1>
-              <p className="text-center">All your data is here</p>
+            <div className="px-5 pt-10 pb-6">
+              <h1 className="text-xl font-semibold">Insights</h1>
+              <p className="">All your data is here</p>
             </div>
 
             <div className=" px-5">
@@ -314,44 +283,55 @@ function Insights() {
 
               <div className=" h-full flex flex-row gap-2 items-center justify-center">
                 <div className=" h-full flex flex-col justify-center items-center  relative">
-                  <p className="text-xl 3xl:text-4xl text-[#2740CD] font-bold">
+                  <p className="text-base 3xl:text-4xl text-[#2740CD] font-bold">
                     {insightData.admission &&
                       formatNumber(insightData[selectedCategory].dailyData)}
                   </p>
-                  <p className="text-xs font-medium text-[#333333] text-nowrap">
+                  <p className="block md:hidden text-xs text-[#333333] text-nowrap">
+                    Daily {selectedCategory.substring(0, 3)}
+                  </p>
+                  <p className="hidden md:block text-xs text-[#333333] text-nowrap">
                     Daily {selectedCategory}
                   </p>
-
                 </div>
 
-                <div><h1 className='text-xl'>|</h1> </div>
+                <div>
+                  <h1 className="text-xl">|</h1>{' '}
+                </div>
 
-                <div className="1 h-full flex flex-col justify-center items-center  relative">
-                  <p className="text-xl 3xl:text-4xl text-[#2740CD] font-bold">
+                <div className=" h-full flex flex-col justify-center items-center  relative">
+                  <p className="text-base 3xl:text-4xl text-[#2740CD] font-bold">
                     {insightData.admission &&
                       formatNumber(insightData[selectedCategory].weeklyData)}
                   </p>
-                  <p className="text-xs font-medium text-[#333333] text-nowrap">
+                  <p className="block md:hidden text-xs text-[#333333] text-nowrap">
+                    Weekly {selectedCategory.substring(0, 3)}
+                  </p>
+                  <p className="hidden md:block text-xs text-[#333333] text-nowrap">
                     Weekly {selectedCategory}
                   </p>
-
                 </div>
 
-                <div><h1 className='text-xl'>|</h1> </div>
+                <div>
+                  <h1 className="text-xl">|</h1>{' '}
+                </div>
 
                 <div className="col-span-1 h-full flex flex-col justify-center items-center  relative">
-                  <p className="text-xl 3xl:text-4xl text-[#2740CD] font-bold">
+                  <p className="text-base 3xl:text-4xl text-[#2740CD] font-bold">
                     {insightData.admission &&
                       formatNumber(insightData[selectedCategory].monthlyData)}
                   </p>
-                  <p className="text-xs font-medium text-[#333333] text-nowrap">
+                  <p className="block md:hidden text-xs text-[#333333] text-nowrap">
+                    Monthly {selectedCategory.substring(0, 3)}
+                  </p>
+                  <p className="hidden md:block text-xs text-[#333333] text-nowrap">
                     Monthly {selectedCategory}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className=" p-5">
+            <div className="px-5">
               <MobileDateSwitch
                 duration={selectedDuration}
                 onSelect={handleDurationChange}
@@ -359,39 +339,54 @@ function Insights() {
             </div>
 
             <div className="flex justify-between items-center py-2 px-5">
-              <div className=" px-5">
+              <div className="">
                 <h1>Recent Transactions</h1>
               </div>
               <div className="p-2">
-                {selectedCategory === 'revenue' && <Button
-                  buttonStyle="bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl"
-                  text="Add" navigateUrl={'/addRevenue'}
-                />}
+                {selectedCategory === 'revenue' && (
+                  <Button
+                    buttonStyle="bg-[#2740CD] text-white px-5 py-1 text-sm rounded-2xl"
+                    text="Add"
+                    navigateUrl={'/addRevenue'}
+                  />
+                )}
               </div>
             </div>
-            <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-20">
-              {insightCategoryData ?
+            <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-40">
+              {insightCategoryData ? (
+                insightCategoryData.map((data, index) => {
+                  // console.log(data);
 
-                insightCategoryData.map(
-                  (data, index) => {
-                    // console.log(data);
-
-                    return (
-                      <DataCard
-                        type={selectedCategory === 'admission' ? 'admissions' : selectedCategory === 'revenue' ? 'transactions' : data.type}
-                        title={data.title}
-                        subTitle={selectedDuration === 'today' ? data.time : `${data.date} ,${data.time}`}
-                        tailData={data.tailData}
-                        style={{ h: '1/3' }}
-                      />
-                    )
-
-
-                  }
-                )
-                :
+                  return (
+                    <DataCard
+                      type={
+                        selectedCategory === 'admission'
+                          ? 'admissions'
+                          : selectedCategory === 'revenue'
+                          ? 'transactions'
+                          : data.type
+                      }
+                      title={data.title}
+                      subTitle={
+                        selectedDuration === 'today'
+                          ? data.time
+                          : `${data.date} ,${data.time}`
+                      }
+                      tailData={data.tailData}
+                      tailDataStyle={`${
+                        selectedCategory === 'revenue'
+                          ? 'text-green-500 font-semibold'
+                          : selectedCategory === 'expense'
+                          ? 'text-red-500 font-semibold'
+                          : 'text-black font-semibold'
+                      }`}
+                      style={{ h: '1/4' }}
+                    />
+                  );
+                })
+              ) : (
                 <h1>No data available</h1>
-              }
+              )}
             </div>
 
             <div className="fixed bottom-0 right-0 w-full">
@@ -459,25 +454,29 @@ function Insights() {
               </div>
               <div className="row-span-4  overflow-y-auto space-y-2 py-3">
                 {insightCategoryData &&
+                  insightCategoryData.map((data, index) => {
+                    // console.log(data);
 
-                  insightCategoryData.map(
-                    (data, index) => {
-                      // console.log(data);
-
-                      return (
-                        <DataCard
-                          type={selectedCategory === 'admission' ? 'admissions' : selectedCategory === 'revenue' ? 'transactions' : data.type}
-                          title={data.title}
-                          subTitle={selectedDuration === 'today' ? data.time : `${data.date} ,${data.time}`}
-                          tailData={data.tailData}
-                          style={{ h: '1/3' }}
-                        />
-                      )
-
-
-                    }
-                  )
-                }
+                    return (
+                      <DataCard
+                        type={
+                          selectedCategory === 'admission'
+                            ? 'admissions'
+                            : selectedCategory === 'revenue'
+                            ? 'transactions'
+                            : data.type
+                        }
+                        title={data.title}
+                        subTitle={
+                          selectedDuration === 'today'
+                            ? data.time
+                            : `${data.date} ,${data.time}`
+                        }
+                        tailData={data.tailData}
+                        style={{ h: '1/3' }}
+                      />
+                    );
+                  })}
               </div>
               <div className="row-span-1 flex items-center px-2">
                 <Button
@@ -560,27 +559,30 @@ function Insights() {
                     </div>
                   </div>
                   <div className="row-span-5 3xl:row-span-5  h-full overflow-y-auto space-y-2 px-4 py-2">
-
                     {insightCategoryData &&
+                      insightCategoryData.map((data, index) => {
+                        // console.log(data);
 
-                      insightCategoryData.map(
-                        (data, index) => {
-                          // console.log(data);
-
-                          return (
-                            <DataCard
-                              type={selectedCategory === 'admission' ? 'admissions' : selectedCategory === 'revenue' ? 'transactions' : data.type}
-                              title={data.title}
-                              subTitle={selectedDuration === 'today' ? data.time : `${data.date} ,${data.time}`}
-                              tailData={data.tailData}
-                              style={{ h: '1/3' }}
-                            />
-                          )
-
-
-                        }
-                      )
-                    }
+                        return (
+                          <DataCard
+                            type={
+                              selectedCategory === 'admission'
+                                ? 'admissions'
+                                : selectedCategory === 'revenue'
+                                ? 'transactions'
+                                : data.type
+                            }
+                            title={data.title}
+                            subTitle={
+                              selectedDuration === 'today'
+                                ? data.time
+                                : `${data.date} ,${data.time}`
+                            }
+                            tailData={data.tailData}
+                            style={{ h: '1/3' }}
+                          />
+                        );
+                      })}
                     {/* <div className="h-16 w-full bg-indigo-200"></div>
                     <div className="h-16 w-full bg-indigo-200"></div>
                     <div className="h-16 w-full bg-indigo-200"></div>
@@ -605,10 +607,14 @@ function Insights() {
               <div className="col-span-2  px-4 py-4 overflow-hidden">
                 <div className="h-full w-full grid grid-rows-9 3xl:grid-rows-8 space-y-3">
                   <div
-                    className={`${selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
-                      }   flex items-center justify-center`}
+                    className={`${
+                      selectedCategory === 'expense' ? 'hidden' : 'row-span-1'
+                    }   flex items-center justify-center`}
                   >
-                    <button className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-2xl font-medium" onClick={handleOpenModal}>
+                    <button
+                      className="h-3/4 w-3/4 bg-white rounded-xl 3xl:rounded-2xl 3xl:text-2xl font-medium"
+                      onClick={handleOpenModal}
+                    >
                       Add revenue
                     </button>
                     {isModalOpen && (
@@ -641,8 +647,7 @@ function Insights() {
                                 </div>
 
                                 <div className="px-8 flex flex-col gap-2  py-10 ">
-
-                                  <div className='flex flex-col gap-3'>
+                                  <div className="flex flex-col gap-3">
                                     <div>
                                       <label
                                         htmlFor="category"
@@ -650,36 +655,86 @@ function Insights() {
                                       >
                                         Category
                                       </label>
-                                      <Select options={revenueCategories} styles={{
-                                        control: (baseStyles, state) => ({
-                                          ...baseStyles,
-                                          borderRadius: '.5rem',
-                                          padding: '0.2rem',
-                                          borderWidth: '0px',
-                                          backgroundColor: 'RGB(255,255,255)',
-                                        }),
-                                      }} className="border border-gray-200 text-md lg:text-xl rounded" closeMenuOnSelect={true} isSearchable={false} name="category" onChange={(e) => setCategory(e.value)} />
+                                      <Select
+                                        options={revenueCategories}
+                                        styles={{
+                                          control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderRadius: '.5rem',
+                                            padding: '0.2rem',
+                                            borderWidth: '0px',
+                                            backgroundColor: 'RGB(255,255,255)',
+                                          }),
+                                        }}
+                                        className="border border-gray-200 text-md lg:text-xl rounded"
+                                        closeMenuOnSelect={true}
+                                        isSearchable={false}
+                                        name="category"
+                                        onChange={(e) => setCategory(e.value)}
+                                      />
                                     </div>
                                     <div>
-                                      <label htmlFor="amount" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Amount</label>
-                                      <input type="text" id="amount" className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400" placeholder="1000"
-                                        onChange={(e) => setAmount(e.target.value)} required />
+                                      <label
+                                        htmlFor="amount"
+                                        className="block text-md lg:text-xl font-medium text-gray-900 mb-2"
+                                      >
+                                        Amount
+                                      </label>
+                                      <input
+                                        type="text"
+                                        id="amount"
+                                        className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                                        placeholder="1000"
+                                        onChange={(e) =>
+                                          setAmount(e.target.value)
+                                        }
+                                        required
+                                      />
                                     </div>
                                     <div>
-                                      <label htmlFor="description" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Description</label>
-                                      <input type="text" id="description" className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400" placeholder="Description"
-                                        required onChange={(e) => setDescription(e.target.value)} />
+                                      <label
+                                        htmlFor="description"
+                                        className="block text-md lg:text-xl font-medium text-gray-900 mb-2"
+                                      >
+                                        Description
+                                      </label>
+                                      <input
+                                        type="text"
+                                        id="description"
+                                        className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                                        placeholder="Description"
+                                        required
+                                        onChange={(e) =>
+                                          setDescription(e.target.value)
+                                        }
+                                      />
                                     </div>
                                     <div>
-                                      <label htmlFor="date" className="block text-md lg:text-xl font-medium text-gray-900 mb-2">Date</label>
-                                      <input type="date" id="date" className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400" placeholder="Date" onChange={(e) => setDate(e.target.value)}
-                                        required />
+                                      <label
+                                        htmlFor="date"
+                                        className="block text-md lg:text-xl font-medium text-gray-900 mb-2"
+                                      >
+                                        Date
+                                      </label>
+                                      <input
+                                        type="date"
+                                        id="date"
+                                        className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                                        placeholder="Date"
+                                        onChange={(e) =>
+                                          setDate(e.target.value)
+                                        }
+                                        required
+                                      />
                                     </div>
-                                    <div className='flex items-center justify-center pt-5'>
-                                      <Button text="Add Revenue" buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl" onClick={handleAddRevenue} />
+                                    <div className="flex items-center justify-center pt-5">
+                                      <Button
+                                        text="Add Revenue"
+                                        buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl"
+                                        onClick={handleAddRevenue}
+                                      />
                                     </div>
                                   </div>
-
                                 </div>
                               </div>
                             </div>
@@ -692,19 +747,22 @@ function Insights() {
                     <DatePicker />
                   </div>
                   <div
-                    className={`${selectedCategory === 'expense'
-                      ? 'row-span-4'
-                      : 'row-span-3'
-                      }  3xl:${selectedCategory === 'expense'
+                    className={`${
+                      selectedCategory === 'expense'
+                        ? 'row-span-4'
+                        : 'row-span-3'
+                    }  3xl:${
+                      selectedCategory === 'expense'
                         ? 'row-span-3'
                         : 'row-span-2'
-                      } bg-white p-3 rounded-xl`}
+                    } bg-white p-3 rounded-xl`}
                   >
                     <div
-                      className={`h-full w-full grid ${selectedCategory === 'expense'
-                        ? 'grid-rows-9'
-                        : 'grid-rows-5'
-                        } items-center space-y-2 3xl:space-y-1`}
+                      className={`h-full w-full grid ${
+                        selectedCategory === 'expense'
+                          ? 'grid-rows-9'
+                          : 'grid-rows-5'
+                      } items-center space-y-2 3xl:space-y-1`}
                     >
                       <div className="row-span-1  flex justify-between items-center">
                         <h2 className="text-sm 3xl:text-base 4xl:text-lg font-semibold">

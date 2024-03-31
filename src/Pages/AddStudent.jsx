@@ -54,8 +54,8 @@ function AddStudent() {
       label: 'Offline',
     },
     {
-      value: 'Correspondence',
-      label: 'Correspondence',
+      value: 'Correspondent',
+      label: 'Correspondent',
     },
   ];
 

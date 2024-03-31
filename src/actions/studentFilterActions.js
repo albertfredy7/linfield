@@ -15,7 +15,7 @@ export const  filterStudents = ({filterObject}) => async (dispatch) => {
       }
   
       const { data } = await axios.post(
-        'http://127.0.0.1:5000/api/students/filterStudents',
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/filterStudents',
         filterObject,
         config
       )
