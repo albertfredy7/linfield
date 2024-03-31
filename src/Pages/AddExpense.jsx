@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function AddExpense() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const options = [
     { value: 'Salary', label: 'Salary' },
     { value: 'Rent', label: 'Rent' },
@@ -39,19 +39,20 @@ function AddExpense() {
       },
     };
 
-    axios.post(
-      'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
-      { category, description, amount, date },
-      config
-    )
+    axios
+      .post(
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
+        { category, description, amount, date },
+        config
+      )
       .then(({ data }) => {
         if (data.transaction && data.transaction.type) {
           //  toast.success('Expense added successfully');
           alert('Expense added successfully');
-          navigate('/expense')
+          navigate('/expense');
         }
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           // Extracting the error message from the response
           console.log(error.response.data.message);
@@ -71,21 +72,18 @@ function AddExpense() {
         {/* mobile screens */}
         <div className="block md:hidden ">
           <div className="flex flex-col h-screen ">
-            <div className="flex flex-col items-start  px-8  pt-20">
-              <h1 className="text-2xl sm:text-2xl  font-bold ">
+            <div className="flex flex-col items-start  px-5  pt-10">
+              <h1 className="text-xl md:text-2xl  font-bold ">
                 Add new expense
               </h1>
-              <h2 className="text-[#66666] text-sm sm:text-lg  ">
+              <h2 className="text-[#66666] text-sm md:text-lg  ">
                 Please add details for expense tracking.
               </h2>
             </div>
 
-            <div className="px-8 flex flex-col gap-2  py-10 ">
+            <div className="px-5 flex flex-col gap-2  py-5 ">
               <div>
-                <label
-                  for="amount"
-                  class="block text-sm font-medium text-gray-600"
-                >
+                <label for="amount" class="block text-base text-gray-600 pb-1">
                   Amount
                 </label>
                 <input
@@ -102,7 +100,7 @@ function AddExpense() {
               <div>
                 <label
                   for="description"
-                  class="block text-sm font-medium text-gray-600"
+                  class="block text-base text-gray-600 pb-1"
                 >
                   Description
                 </label>
@@ -120,7 +118,7 @@ function AddExpense() {
               <div>
                 <label
                   htmlFor="category"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-base text-gray-600 pb-1"
                 >
                   Category
                 </label>
@@ -131,19 +129,29 @@ function AddExpense() {
                   onChange={(e) => {
                     setCategory(e.value);
                   }}
+                  styles={{
+                    control: (baseStyles, state) => ({
+                      ...baseStyles,
+                      borderRadius: '.5rem',
+                      padding: '0.07rem',
+                      borderWidth: '0px',
+                      backgroundColor: 'RGB(255,255,255)',
+                      fontSize: '.9rem',
+                    }),
+                  }}
                 />
               </div>
               <div className="w-full ">
                 <label
                   for="date"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-base text-gray-600 pb-1"
                 >
                   Date
                 </label>
                 <input
                   type="date"
                   id="date"
-                  className="bg-white px-3 border text-gray-600 text-sm  rounded-md w-full p-2 md:p-4 xl:p-2"
+                  className="bg-white px-3 border text-gray-600 text-sm  rounded-md w-full p-1.5 md:p-4 xl:p-2"
                   required
                   placeholder="Select date"
                   onChange={(e) => {
@@ -170,9 +178,7 @@ function AddExpense() {
                 pauseOnHover
                 theme="colored"
               />{' '} */}
-              <Toaster
-                position="top-center"
-              />
+              <Toaster position="top-center" />
             </div>
           </div>
 

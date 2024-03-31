@@ -223,25 +223,25 @@ function AddStudent() {
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
-        <div className=" h-full md:hidden flex flex-col gap-3 p-4">
-          <div className="h-full overflow-y-auto px-3 flex flex-col gap-3">
-            <div className="flex flex-col pt-5 ">
-              <h1 className="text-2xl font font-semibold">Add Student</h1>
+        <div className=" h-full md:hidden flex flex-col py-4">
+          <div className="h-full overflow-y-auto px-5 flex flex-col gap-3">
+            <div className="flex flex-col pt-2 ">
+              <h1 className="text-xl font font-semibold">Add Student</h1>
               <h1 className="text-[#333333] text-md">
                 Enter the details of the student{' '}
               </h1>
             </div>
-            <div className="pt-4">
+            <div className="pt-2">
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-900 mb-2"
+                className="block text-base font-medium text-gray-500 pb-1"
               >
                 Name
               </label>
               <input
                 type="text"
                 id="name"
-                className="bg-white border border-white text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                 placeholder="John"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -251,14 +251,14 @@ function AddStudent() {
             <div>
               <label
                 htmlFor="place"
-                className="block text-sm font-medium text-gray-900 mb-2"
+                className="block text-base font-medium text-gray-500 pb-1"
               >
                 Place
               </label>
               <input
                 type="text"
                 id="place"
-                className="bg-white border border-white text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                 placeholder="nyc"
                 value={place}
                 onChange={(e) => setPlace(e.target.value)}
@@ -268,7 +268,7 @@ function AddStudent() {
             <div>
               <label
                 htmlFor="year"
-                className="block text-sm font-medium text-gray-900 mb-2"
+                className="block text-base font-medium text-gray-500 pb-1"
               >
                 Year
               </label>
@@ -281,6 +281,8 @@ function AddStudent() {
                     padding: '0.2rem',
                     borderWidth: '0px',
                     backgroundColor: 'RGB(255, 255, 255)',
+                    fontSize: '1rem',
+                    color: 'red',
                   }),
                 }}
                 className="border-white text-sm"
