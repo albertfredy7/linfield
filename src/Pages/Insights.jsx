@@ -177,7 +177,7 @@ function Insights() {
   useEffect(() => {
     const fetchInsightsData = async () => {
       const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/info'
+        'http://127.0.0.1:5000/api/transactions/info'
       );
 
       console.log(data);

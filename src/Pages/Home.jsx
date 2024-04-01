@@ -28,7 +28,6 @@ function Home() {
     }
   };
 
-
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
     const options = {
@@ -37,7 +36,7 @@ function Home() {
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     };
     return date.toLocaleString('en-US', options);
   };
@@ -72,9 +71,8 @@ function Home() {
     const getRecentTransactions = async () => {
       const { data } = await axios.get(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/recentTransactions'
-        
       );
-      console.log(data)
+      console.log(data);
       setRecentTransactions(data);
     };
     getRecentTransactions();
@@ -136,42 +134,46 @@ function Home() {
                   Recent transactions
                 </h4>
                 <div className="py-3 flex flex-col gap-2">
-                  {recentTransactions.slice(0, 3).reverse().map((x) => {
-                    const formatDate = (dateString) => {
-                      const date = new Date(dateString);
-                      const day = date.getDate();
-                      const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
-                      const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+                  {recentTransactions
+                    .slice(0, 3)
+                    .reverse()
+                    .map((x) => {
+                      const formatDate = (dateString) => {
+                        const date = new Date(dateString);
+                        const day = date.getDate();
+                        const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
+                        const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
 
-                      // Ensure leading zero for single-digit day and month
-                      const formattedDay = day < 10 ? '0' + day : day;
-                      const formattedMonth = month < 10 ? '0' + month : month;
+                        // Ensure leading zero for single-digit day and month
+                        const formattedDay = day < 10 ? '0' + day : day;
+                        const formattedMonth = month < 10 ? '0' + month : month;
 
-                      return `${formattedDay}-${formattedMonth}-${year}`;
-                    };
+                        return `${formattedDay}-${formattedMonth}-${year}`;
+                      };
 
-                    const formattedDate = formatDate(x.date);
+                      const formattedDate = formatDate(x.date);
 
-                    return (
-                      <DataCard
-                        type="transactions"
-                        title={x.purpose}
-                        subTitle={
-                          x.type === 'debit'
-                            ? formattedDate
-                            : `${x.studentName} (${x.studentAdmissionNumber})`
-                        }
-                        tailData={
-                          x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
-                        }
-                        style={{ h: 'full' }}
-                        tailDataStyle={`${x.type === 'credit'
-                            ? 'text-green-500 font-semibold'
-                            : 'text-red-500 font-semibold'
+                      return (
+                        <DataCard
+                          type="transactions"
+                          title={x.purpose}
+                          subTitle={
+                            x.type === 'debit'
+                              ? formattedDate
+                              : `${x.studentName} (${x.studentAdmissionNumber})`
+                          }
+                          tailData={
+                            x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
+                          }
+                          style={{ h: 'full' }}
+                          tailDataStyle={`${
+                            x.type === 'credit'
+                              ? 'text-green-500 font-semibold'
+                              : 'text-red-500 font-semibold'
                           }`}
-                      />
-                    );
-                  })}
+                        />
+                      );
+                    })}
 
                   {/* <DataCard
                     type="transactions"
@@ -206,7 +208,7 @@ function Home() {
                 <h4 className="text-base md:text-lg lg:text-3xl font-semibold">
                   Recent Admisisons
                 </h4>
-                <div className="py-3 flex flex-col gap-2">
+                <div className="py-3 flex flex-col gap-2 pb-12">
                   {recentAdmissions
                     .slice(0, 3)
                     .reverse()
@@ -293,45 +295,49 @@ function Home() {
                     Recent transactions
                   </h4>
                 </div>
-                {recentTransactions.slice(0, 3).reverse().map((x, index) => {
-                  const formatDate = (dateString) => {
-                    const date = new Date(dateString);
-                    const day = date.getDate();
-                    const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
-                    const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+                {recentTransactions
+                  .slice(0, 3)
+                  .reverse()
+                  .map((x, index) => {
+                    const formatDate = (dateString) => {
+                      const date = new Date(dateString);
+                      const day = date.getDate();
+                      const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
+                      const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
 
-                    // Ensure leading zero for single-digit day and month
-                    const formattedDay = day < 10 ? '0' + day : day;
-                    const formattedMonth = month < 10 ? '0' + month : month;
+                      // Ensure leading zero for single-digit day and month
+                      const formattedDay = day < 10 ? '0' + day : day;
+                      const formattedMonth = month < 10 ? '0' + month : month;
 
-                    return `${formattedDay}-${formattedMonth}-${year}`;
-                  };
+                      return `${formattedDay}-${formattedMonth}-${year}`;
+                    };
 
-                  const formattedDate = formatDate(x.date);
+                    const formattedDate = formatDate(x.date);
 
-                  return (
-                    <div className="row-span-3 flex items-center pl-7 py-2">
-                      <DataCard
-                        key={index}
-                        type="transactions"
-                        title={x.purpose}
-                        subTitle={
-                          x.type === 'debit'
-                            ? formattedDate
-                            : `${x.studentName} (${x.studentAdmissionNumber})`
-                        }
-                        tailData={
-                          x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
-                        }
-                        style={{ h: 'full' }}
-                        tailDataStyle={`${x.type === 'credit'
-                            ? 'text-green-500 font-semibold'
-                            : 'text-red-500 font-semibold'
+                    return (
+                      <div className="row-span-3 flex items-center pl-7 py-2">
+                        <DataCard
+                          key={index}
+                          type="transactions"
+                          title={x.purpose}
+                          subTitle={
+                            x.type === 'debit'
+                              ? formattedDate
+                              : `${x.studentName} (${x.studentAdmissionNumber})`
+                          }
+                          tailData={
+                            x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
+                          }
+                          style={{ h: 'full' }}
+                          tailDataStyle={`${
+                            x.type === 'credit'
+                              ? 'text-green-500 font-semibold'
+                              : 'text-red-500 font-semibold'
                           }`}
-                      />
-                    </div>
-                  );
-                })}
+                        />
+                      </div>
+                    );
+                  })}
                 {/* <div className="row-span-3 flex items-center pl-7 py-2">
                   <DataCard
                     type="transactions"
@@ -463,21 +469,27 @@ function Home() {
                   {' '}
                   {/* Transactions row */}
                   <div className="row-span-1 flex items-center">
-                    <h3 className="text-sm 3xl:text-xl font-semibold px-9" >
+                    <h3 className="text-sm 3xl:text-xl font-semibold px-9">
                       Recent transactions
                     </h3>
                   </div>
-                  {
-                    recentTransactions.slice(0, 3).reverse().map((x, index) => {
-
+                  {recentTransactions
+                    .slice(0, 3)
+                    .reverse()
+                    .map((x, index) => {
                       const formatDate = (dateString) => {
                         const createdAtDate = new Date(dateString);
-                        const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString('default', { month: 'short' })} ${createdAtDate.getFullYear()}`;
-                        const formattedTime = createdAtDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-                       
-                        return `${formattedDate} || ${formattedTime}`;
-                       };
+                        const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString(
+                          'default',
+                          { month: 'short' }
+                        )} ${createdAtDate.getFullYear()}`;
+                        const formattedTime = createdAtDate.toLocaleTimeString(
+                          'en-US',
+                          { hour: '2-digit', minute: '2-digit', hour12: true }
+                        );
 
+                        return `${formattedDate} || ${formattedTime}`;
+                      };
 
                       const formattedDate = formatDate(x.date);
                       console.log(formattedDate);
@@ -493,22 +505,25 @@ function Home() {
                             subTitle={
                               x.type === 'debit'
                                 ? formattedDate
-                                // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
-                                : x.studentName ? `${x.studentName} (${x.studentAdmissionNumber})` : formattedDate
-
+                                : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
+                                x.studentName
+                                ? `${x.studentName} (${x.studentAdmissionNumber})`
+                                : formattedDate
                             }
                             tailData={
-                              x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
+                              x.type === 'credit'
+                                ? `+${x.amount}`
+                                : `${x.amount}`
                             }
-                            tailDataStyle={`${x.type === 'credit'
+                            tailDataStyle={`${
+                              x.type === 'credit'
                                 ? 'text-green-600 font-semibold'
                                 : 'text-red-500 font-semibold'
-                              }`}
+                            }`}
                           />
                         </div>
-                      )
-                    })
-                  }
+                      );
+                    })}
                   {/* <div className=" row-span-2 pl-9 pr-4 pb-2">
                     <DataCard
                       type="transactions"
@@ -543,17 +558,20 @@ function Home() {
                       Recent admissions
                     </h3>
                   </div>
-                  {recentAdmissions.slice(0, 3).reverse().map((x, index) => {
-                    return (
-                      <div className=" row-span-2 pl-9 pr-4 pb-2">
-                        <DataCard
-                          type={'admissions'}
-                          title={x.name}
-                          tailData={x.course}
-                        />
-                      </div>
-                    )
-                  })}
+                  {recentAdmissions
+                    .slice(0, 3)
+                    .reverse()
+                    .map((x, index) => {
+                      return (
+                        <div className=" row-span-2 pl-9 pr-4 pb-2">
+                          <DataCard
+                            type={'admissions'}
+                            title={x.name}
+                            tailData={x.course}
+                          />
+                        </div>
+                      );
+                    })}
                   {/* <div className=" row-span-2 pl-9 pr-4 pb-2">
                     <DataCard
                       type="admissions"
