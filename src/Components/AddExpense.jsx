@@ -39,7 +39,7 @@ function AddExpense() {
 
       if (data.transaction && data.transaction.type) {
         console.log('iam working');
-        toast.success('Expense added successfully');
+        window.alert('Expense added successfully');
         setCategory(null);
         setAmount(null);
         setDescription(null);
@@ -50,7 +50,7 @@ function AddExpense() {
         // Extracting the error message from the response
         console.log(error.response.data.message);
         const errorMessage = error.response.data.message;
-        toast.error(errorMessage);
+        window.alert(errorMessage);
       } else {
         // Handling other types of errors
         console.error('An error occurred:', error.message);

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 function FeeStatus({ studentData }) {
   console.log(studentData && studentData[0] && studentData[0]);
   return (
-    <div className="bg-white rounded-lg h-full 4xl:h-3/4 w-full grid grid-rows-2 4xl:space-y-1 p-4 space-y-2">
+    <div className="bg-white rounded-lg h-full 4xl:h-3/4 w-full grid grid-rows-2 4xl:space-y-1 p-4 space-y-2  items-center">
       <div className="h-full w-full grid grid-cols-3 space-x-2">
         <div
           className={`border ${
@@ -32,7 +32,7 @@ function FeeStatus({ studentData }) {
                 ₹{' '}
                 {studentData[0].feeDetails.admissionFees -
                   studentData[0].feeDetails.admissionFeePaidAmount}{' '}
-                pending
+                pen
               </h2>
             )}
         </div>
@@ -73,7 +73,7 @@ function FeeStatus({ studentData }) {
                 ₹{' '}
                 {studentData[0].feeDetails.installments[0].amount -
                   studentData[0].feeDetails.installments[0].paidAmount}{' '}
-                pending
+                pen
               </h2>
             )}
         </div>
@@ -159,7 +159,7 @@ function FeeStatus({ studentData }) {
                 ₹{' '}
                 {studentData[0].feeDetails.installments[1].amount -
                   studentData[0].feeDetails.installments[1].paidAmount}{' '}
-                pending
+                pen
               </h2>
             )}
         </div>
@@ -217,7 +217,7 @@ function FeeStatus({ studentData }) {
                 ₹{' '}
                 {studentData[0].feeDetails.installments[2].amount -
                   studentData[0].feeDetails.installments[2].paidAmount}{' '}
-                pending
+                pen
               </h2>
             )}
           {/* {(studentData &&

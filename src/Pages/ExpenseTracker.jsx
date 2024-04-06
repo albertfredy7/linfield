@@ -29,7 +29,7 @@ function ExpenseTracker() {
   const options = [
     { value: 'Salary', label: 'Salary' },
     { value: 'Rent', label: 'Rent' },
-    { value: 'Printing & Stationary', label: 'Printing & Stationary' },
+    // { value: 'PrintingandStationary', label: 'Printing & Stationary' },
     { value: 'Refreshment', label: 'Refreshment' },
     { value: 'Electricity', label: 'Electricity' },
     { value: 'Repairs', label: 'Repairs' },
@@ -67,14 +67,14 @@ function ExpenseTracker() {
       );
 
       if (data.transaction && data.transaction.type) {
-        toast.success('Expense added successfully');
+        window.alert('Expense added successfully');
       }
     } catch (error) {
       if (error.response) {
         // Extracting the error message from the response
         console.log(error.response.data.message);
         const errorMessage = error.response.data.message;
-        toast.error(errorMessage);
+        window.alert(errorMessage);
       } else {
         // Handling other types of errors
         console.error('An error occurred:', error.message);
@@ -83,12 +83,14 @@ function ExpenseTracker() {
   };
 
   const formatNumber = (number) => {
-    if (number >= 100000) {
+    if (number >= 1000000) {
+      return (number / 1000000).toFixed(1) + 'M'; // Convert to millions
+    } else if (number >= 100000) {
       return (number / 100000).toFixed(1) + 'L'; // Convert to lakhs
     } else if (number >= 1000) {
       return (number / 1000).toFixed(1) + 'K'; // Convert to thousands
     } else {
-      return number.toString();
+      return number;
     }
   };
 
@@ -117,6 +119,25 @@ function ExpenseTracker() {
     fetchData();
   }, [selectedDuration]);
 
+  const formattedTodayDate = () => {
+    const today = new Date();
+
+    const options = {
+      weekday: 'long', // Specify the full name of the weekday
+      day: '2-digit', // Specify the day of the month as two digits
+      month: 'short', // Specify the abbreviated month name
+      year: 'numeric', // Specify the year as four digits
+    };
+
+    const dateFormatter = new Intl.DateTimeFormat('en-US', options);
+    let formattedDate = dateFormatter.format(today);
+
+    // Remove the comma between the day and month
+    formattedDate = formattedDate.replace(',', '');
+
+    return formattedDate;
+  };
+
   return (
     <>
       <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
@@ -128,7 +149,7 @@ function ExpenseTracker() {
                 <h1 className="text-xl sm:text-2xl text-[#2740CD] font-bold ">
                   Hey Nishad 👋
                 </h1>
-                <h2 className="text-[#66666] text-sm text-nowrap ">
+                <h2 className="text-[#66666] text-sm text-nowrap pt-1">
                   Track your expenses, start your day right
                 </h2>
                 <div className="flex justify-center pt-2">
@@ -144,8 +165,8 @@ function ExpenseTracker() {
                   subtitle={totalExpense}
                 />
               </div>
-              <div className="flex justify-between p-5">
-                <h1 className="font-medium text-sm">Today, 12 Mar 2024</h1>
+              <div className="flex justify-between items-center p-5 ">
+                <h1 className="font-medium text-sm">{formattedTodayDate()}</h1>
                 <button
                   className="bg-[#2740CD] text-white text-sm px-3 py-1 rounded-xl"
                   onClick={() => navigate('/add-expense')}
@@ -153,8 +174,28 @@ function ExpenseTracker() {
                   Add
                 </button>
               </div>
-              <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-40">
-                {expenseData.map((x, idx) => {
+              <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-32">
+                {expenseData.length > 0 ? (
+                  expenseData.map((x, idx) => (
+                    <DataCard
+                      title={x.category}
+                      tailData={x.amount}
+                      type={x.category.toLowerCase()}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center">
+                    <img
+                      src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                      className="mix-blend-multiply w-4/6"
+                      alt=""
+                    />
+                    <h1 className="text-center text-gray-500">
+                      No expense to show
+                    </h1>
+                  </div>
+                )}
+                {/* {expenseData.map((x, idx) => {
                   return (
                     <DataCard
                       title={x.category}
@@ -162,7 +203,7 @@ function ExpenseTracker() {
                       type={x.category.toLowerCase()}
                     />
                   );
-                })}
+                })} */}
                 {/* <DataCard
                   title={'Stationary'}
                   subTitle={'11.00am'}

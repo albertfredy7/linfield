@@ -329,7 +329,7 @@ function FilterStudents() {
       setTotalStudents(response.data.numberOfAdmissions);
     } catch (error) {
       console.error('Error fetching total students:', error);
-      toast.error('Failed to fetch total students');
+      window.alert('Failed to fetch total students');
     }
   };
 
@@ -344,6 +344,13 @@ function FilterStudents() {
     }
   }, [filteredStudents]);
 
+  const changeStatus = () => {
+    const updatedStudents = studentData.filter(
+      (student) => student.status === academicStatus
+    );
+    setStudentData(updatedStudents);
+  };
+
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       {console.log(
@@ -355,21 +362,21 @@ function FilterStudents() {
           <Toaster position="top-center" reverseOrder={false} />
 
           <div className="flex flex-col h-screen">
-            <div className="pt-14 px-5 flex flex-col">
-              <h1 className="text-2xl font-semibold">Filter Student</h1>
-              <h1 className="text-[#333333] text-sm">
-                Filter the student based on Admn No / Mobile No{' '}
+            <div className="pt-10 px-5 flex flex-col">
+              <h1 className="text-xl font-semibold">Filter Student</h1>
+              <h1 className="text-[#333333] text-sm pt-1">
+                Filter students a/c Admn No / Mobile No{' '}
               </h1>
             </div>
 
-            <div className="pt-5">
+            <div className="pt-5 px-1">
               <MobileOverviewCard
                 title={'Total students'}
                 subtitle={totalStudents}
               />
             </div>
 
-            <div className="flex justify-between pt-5 pb-5 px-6 gap-8 ">
+            <div className="flex justify-between pt-5 pb-5 pl-5 pr-5 gap-8">
               <Button
                 text="Filter"
                 buttonStyle="bg-[#2740CD] text-white px-3 py-1 rounded-xl"
@@ -378,7 +385,7 @@ function FilterStudents() {
               <SeachBar onSearch={performSearch} />
             </div>
 
-            <div className="overflow-y-auto flex flex-col gap-3 h-[550px] px-5  pt-5">
+            <div className="overflow-y-auto flex flex-col gap-3 md:h-[550px] px-5 pt-5">
               {studentData.length > 0 ? (
                 studentData.map((student, index) => (
                   <DataCard
@@ -386,16 +393,20 @@ function FilterStudents() {
                     type="admissions"
                     title={student.name}
                     tailData={student.course}
+                    admissionNumber={student.admissionNumber}
+                    callBackFunction={changeStatus}
                   />
                 ))
               ) : (
-                <div className="text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center">
+                <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center">
                   <img
                     src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
                     className="mix-blend-multiply w-4/6"
                     alt=""
                   />
-                  <h1 className="text-center">No student data available</h1>
+                  <h1 className="text-center text-gray-500">
+                    No student data available
+                  </h1>
                 </div>
               )}
             </div>

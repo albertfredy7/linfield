@@ -15,7 +15,7 @@ function AddExpense() {
   const options = [
     { value: 'Salary', label: 'Salary' },
     { value: 'Rent', label: 'Rent' },
-    { value: 'Printing & Stationary', label: 'Printing & Stationary' },
+    // { value: 'PrintingandStationary', label: 'Printing & Stationary' },
     { value: 'Refreshment', label: 'Refreshment' },
     { value: 'Electricity', label: 'Electricity' },
     { value: 'Repairs', label: 'Repairs' },
@@ -89,7 +89,7 @@ function AddExpense() {
                 <input
                   type="text"
                   id="amount"
-                  class="bg-white border text-gray-600 text-sm  rounded-md block w-full p-2 md:p-4 xl:p-2"
+                  class="bg-white border text-gray-600 text-base  rounded-md block w-full p-2 md:p-4 xl:p-2"
                   placeholder="Enter the amount"
                   required
                   onChange={(e) => {
@@ -107,7 +107,7 @@ function AddExpense() {
                 <input
                   type="text"
                   id="description"
-                  class="bg-white border text-gray-600 text-sm  rounded-md block w-full p-2 md:p-4 xl:p-2"
+                  class="bg-white border text-gray-600 text-base  rounded-md block w-full p-2 md:p-4 xl:p-2"
                   placeholder="Describe the expense"
                   required
                   onChange={(e) => {
@@ -136,7 +136,7 @@ function AddExpense() {
                       padding: '0.07rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255,255,255)',
-                      fontSize: '.9rem',
+                      fontSize: '1rem',
                     }),
                   }}
                 />

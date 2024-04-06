@@ -177,7 +177,7 @@ function Insights() {
   useEffect(() => {
     const fetchInsightsData = async () => {
       const { data } = await axios.get(
-        'http://127.0.0.1:5000/api/transactions/info'
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/info'
       );
 
       console.log(data);
@@ -340,7 +340,7 @@ function Insights() {
 
             <div className="flex justify-between items-center py-2 px-5">
               <div className="">
-                <h1>Recent Transactions</h1>
+                <h1>Recent {selectedCategory}</h1>
               </div>
               <div className="p-2">
                 {selectedCategory === 'revenue' && (
@@ -370,7 +370,7 @@ function Insights() {
                       subTitle={
                         selectedDuration === 'today'
                           ? data.time
-                          : `${data.date} ,${data.time}`
+                          : `${data.date},${data.time}`
                       }
                       tailData={data.tailData}
                       tailDataStyle={`${
@@ -378,7 +378,7 @@ function Insights() {
                           ? 'text-green-500 font-semibold'
                           : selectedCategory === 'expense'
                           ? 'text-red-500 font-semibold'
-                          : 'text-black font-semibold'
+                          : 'text-gray-500 font-semibold'
                       }`}
                       style={{ h: '1/4' }}
                     />

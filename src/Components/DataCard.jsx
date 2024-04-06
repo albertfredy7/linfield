@@ -3,8 +3,20 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import SchoolIcon from '@mui/icons-material/School';
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
+function DataCard({
+  type,
+  title,
+  subTitle,
+  tailData,
+  style,
+  tailDataStyle,
+  admissionNumber,
+}) {
+  const navigate = useNavigate();
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [dotPosition, setDotPosition] = useState({ x: 0, y: 0 });
 
@@ -32,6 +44,8 @@ function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
       'https://static.vecteezy.com/system/resources/previews/021/378/257/non_2x/expense-icon-vector.jpg',
     registrationfees:
       'https://static.vecteezy.com/system/resources/previews/021/378/257/non_2x/expense-icon-vector.jpg',
+    PrintingandStationary:
+      'https://png.pngtree.com/png-clipart/20230925/original/pngtree-school-stationery-and-appliances-seamless-pattern-color-print-template-vector-png-image_12764239.png',
   };
 
   const imageSrc = imageMap[type] || null;
@@ -45,6 +59,43 @@ function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
       x: dotRect.left,
       y: dotRect.top,
     });
+  };
+
+  const submitHandler = (value) => {
+    console.log(value);
+    console.log(admissionNumber);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    axios
+      .put(
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/updateExisting',
+        { academicStatus: value, admissionNumber },
+        config
+      )
+      .then((response) => {
+        const data = response.data;
+        console.log(`student data ${data.name}`);
+
+        if (data && data.name) {
+          console.log(`success`);
+          window.alert('Status updated successfully');
+
+          setTimeout(() => {
+            navigate('/');
+          }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        window.alert('An error occurred while adding the student.');
+      });
+
+    setModalOpen(false);
   };
 
   const closeModal = () => {
@@ -76,16 +127,18 @@ function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
         <div
           className={`col-span-5 h-full  flex flex-col gap-0 justify-center items-center`}
         >
-          <h1 className="text-md md:text-xl lg:text-2xl xl:text-sm 3xl:text-xl flex justify-end items-center">
+          <h1 className="text-base text-gray-500 md:text-xl lg:text-2xl xl:text-sm 3xl:text-xl flex justify-end items-center">
             {title}
           </h1>
           {subTitle && (
-            <h2 className="text-[#666666] text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl">
+            <h2 className="text-gray-500 text-sm md:text-lg lg:text-2xl xl:text-sm 3xl:text-xl">
               {subTitle}
             </h2>
           )}
         </div>
-        <div className={`col-span-3 h-full flex justify-center items-center`}>
+        <div
+          className={`col-span-3 h-full flex justify-center items-center text-gray-500`}
+        >
           <h1
             className={`text-sm md:text-xl lg:text-2xl xl:text-sm 3xl:text-xl ${
               tailDataStyle && tailDataStyle
@@ -106,20 +159,20 @@ function DataCard({ type, title, subTitle, tailData, style, tailDataStyle }) {
               style={{ top: dotPosition.y - 86, left: dotPosition.x }}
             >
               <button
-                className="w-full flex justify-between border-b-2 pb-2"
+                className="w-full flex justify-between text-gray-500 border-b-2 pb-2"
                 onClick={closeModal}
               >
                 Edit student <EditIcon style={{ color: '#93e9be' }} />
               </button>
               <button
-                className="w-full flex justify-between gap-4 border-b-2 py-3"
-                onClick={closeModal}
+                className="w-full flex justify-between text-gray-500 gap-4 border-b-2 py-3"
+                onClick={() => submitHandler('Pass')}
               >
                 Mark as passed <SchoolIcon style={{ color: '#5390d9' }} />
               </button>
               <button
-                className="w-full flex justify-between  pt-2"
-                onClick={closeModal}
+                className="w-full flex text-gray-500 justify-between  pt-2"
+                onClick={() => submitHandler('Fail')}
               >
                 Mark as failed{' '}
                 <NotInterestedOutlinedIcon style={{ color: '#ad2829' }} />

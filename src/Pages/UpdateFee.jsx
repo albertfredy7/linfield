@@ -130,7 +130,7 @@ function UpdateFee() {
       }
     } catch (error) {
       console.error('Error fetching search results:', error);
-      toast.error('No student data available');
+      window.alert('No student data available');
       setStudentData([]);
       // Clear transactions on error
       setTransactions([]);
@@ -142,12 +142,22 @@ function UpdateFee() {
   const updateFeeHandler = async () => {
     //the conditions to satisfy stuffs
     if (feeType === 'examFees') {
+      console.log('iam executing on behalf of examfees');
       if (
+        studentData[0].length > 0 &&
         studentData[0].feeDetails.installments[0] &&
         studentData[0].feeDetails.installments[0].isPaid === false
       ) {
         window.alert('Please pay first term fees first to continue');
         return;
+      } else if (
+        (studentData[0].length > 0 &&
+          studentData[0].feeDetails.examFees === null) ||
+        studentData[0].feeDetails.examFees === undefined
+      ) {
+        window.alert(
+          'Exam fee for the student is not recorded. Please connect admin'
+        );
       }
     }
 
@@ -192,7 +202,7 @@ function UpdateFee() {
       window.alert('success');
     } else if (data.message && !data.status) {
       window.alert(data.message);
-      naviga
+      naviga;
     }
   };
 
@@ -228,7 +238,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.admissionFees -
-          studentData[0].feeDetails.admissionFeePaidAmount
+            studentData[0].feeDetails.admissionFeePaidAmount
         );
       } else if (
         studentData &&
@@ -238,7 +248,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.installments[0].amount -
-          studentData[0].feeDetails.installments[0].paidAmount
+            studentData[0].feeDetails.installments[0].paidAmount
         );
       } else if (
         studentData &&
@@ -248,7 +258,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.installments[1].amount -
-          studentData[0].feeDetails.installments[1].paidAmount
+            studentData[0].feeDetails.installments[1].paidAmount
         );
       } else if (
         studentData &&
@@ -259,7 +269,7 @@ function UpdateFee() {
       ) {
         setAmount(
           studentData[0].feeDetails.installments[2].amount -
-          studentData[0].feeDetails.installments[2].paidAmount
+            studentData[0].feeDetails.installments[2].paidAmount
         );
       } else {
         // Set a default value or handle the case when none of the conditions match
@@ -278,57 +288,82 @@ function UpdateFee() {
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         <div className="block md:hidden">
-          <div className="grid grid-rows-12  h-screen">
-            <div className=" row-span-2 flex items-center justify-between px-5">
-              <div className=" px-5 flex flex-col">
-                <h1 className=" text-xl  font-semibold">Update Fee</h1>
-                <h1 className="text-[#333333] text-xs">
-                  Update the fee of the student{' '}
-                </h1>
-              </div>
-              <div className="">
-
-                <Button
-                  text={'Update'}
-                  buttonStyle={
-                    `bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${studentData[0]?.admissionNumber ? 'block' : 'hidden'}`
-                  }
-                  navigateUrl={`/feeUpdate/${studentData[0]?.admissionNumber}`}
-                />
-              </div>
-            </div>
-
-            <div className="row-span-1 flex justify-center items-center bg-green-100">
-              <SeachBar onSearch={performSearch} />
-            </div>
-
-            <div className="row-span-1 px-5">
-              {studentData.length > 0 ? (
-                studentData.map((student, index) => (
-                  <DataCard
-                    key={index}
-                    type="admissions"
-                    title={student.name}
-                    tailData={student.course}
-                  />
-                ))
-              ) : (
-                <div className="h-full flex flex-col items-center justify-center">
-                  <h1 className="text-lg font-semibold text-[#333333]">
-                    No student data available
-                  </h1>
+          <div className="h-screen pt-10 pb-4 px-5 overflow-hidden ">
+            <div className="h-full w-full  grid grid-rows-9 space-y-2">
+              <div className="row-span-1  flex justify-between">
+                <div>
+                  <h1 className="text-xl md:text-2xl font-bold ">Update fee</h1>
+                  <h2 className="text-[#333333] text-sm pt-1 text-nowrap">
+                    Update the fees of stduents
+                  </h2>
                 </div>
-              )}
-            </div>
-
-            <div className="row-span-3  h-full sm:h-4/5 p-3">
-              <FeeStatus studentData={studentData} />
-            </div>
-
-            <div className={` ${student} ? 'row-span-3' : row-span-5  px-3`}>
-              <h1 className="text-md p-2 ">Recent Transactions</h1>
-              <div className="overflow-y-auto scroll-smooth h-full  pb-28">
-                <div className="space-y-3">
+                <div
+                  className={`${
+                    studentData.length > 0 ? 'block' : 'hidden'
+                  } flex items-center pb-5`}
+                >
+                  <Button
+                    text={'Update'}
+                    buttonStyle={`bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${
+                      studentData[0]?.admissionNumber ? 'block' : 'block'
+                    }`}
+                    navigateUrl={`/feeUpdate/${studentData[0]?.admissionNumber}`}
+                  />
+                </div>
+              </div>
+              <div className="row-span-2 ">
+                <div className="h-full w-full grid grid-rows-2 space-y-1">
+                  <div className=" pt-3">
+                    <SeachBar onSearch={performSearch} />
+                  </div>
+                  <div className="">
+                    {studentData.length > 0 ? (
+                      studentData.map((student, index) => (
+                        <DataCard
+                          key={index}
+                          type="admissions"
+                          title={student.name}
+                          tailData={student.course}
+                        />
+                      ))
+                    ) : (
+                      <div className="h-full flex flex-col items-center justify-center">
+                        <h1 className="text-lg font-semibold text-gray-500">
+                          No student data available
+                        </h1>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="row-span-2  grid grid-rows-6 ">
+                <div className="row-span-5">
+                  <FeeStatus studentData={studentData} />
+                </div>
+                <div
+                  className={`${
+                    studentData.length > 0 ? 'flex' : 'hidden'
+                  } text-gray-500  justify-start items-center pt-5 pb-2 space-x-5 text-sm`}
+                >
+                  <h2>
+                    Paid:{' '}
+                    <span className="text-green-500">
+                      {studentData.length > 0 &&
+                        studentData[0].feeDetails.paidAmount}
+                    </span>
+                  </h2>
+                  <h2>
+                    Outstanding:{' '}
+                    <span className="text-red-500">
+                      {studentData.length > 0 &&
+                        studentData[0].feeDetails.totalAmount -
+                          studentData[0].feeDetails.paidAmount}
+                    </span>
+                  </h2>
+                </div>
+              </div>
+              <div className="row-span-4  overflow-hidden pb-12">
+                <div className="h-full w-full p-2 overflow-y-auto space-y-2">
                   {transactions && transactions.length > 0 ? (
                     transactions.map((transaction, index) => (
                       <DataCard
@@ -337,20 +372,21 @@ function UpdateFee() {
                         title={transaction.purpose}
                         subTitle={format(
                           new Date(transaction.date),
-                          'dd MMM yyyy , hh:mm a'
+                          'dd MMM yy, hh:mm'
                         )}
                         midData={transaction.utrNumber}
-                        tailData={transaction.amount}
+                        tailData={`+ ${transaction.amount}`}
+                        tailDataStyle={`${'text-green-600 font-semibold'}`}
                       />
                     ))
                   ) : (
-                    <div>
+                    <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center bg-[#f0f0f0]">
                       <img
                         src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
                         className="mix-blend-multiply"
                         alt=""
                       />
-                      <h1 className="text-center text-lg font-semibold text-[#333333]">
+                      <h1 className="text-center text-lg font-semibold text-gray-500">
                         No transactions available
                       </h1>
                     </div>
@@ -358,7 +394,7 @@ function UpdateFee() {
                 </div>
               </div>
             </div>
-            <div className="fixed bottom-0 right-0 w-full row-span-1">
+            <div className="fixed bottom-0 right-0 w-full">
               <MobileNavigation />
             </div>
           </div>
@@ -385,9 +421,9 @@ function UpdateFee() {
                 <div className="flex justify-center items-center">
                   <Button
                     text={'Update'}
-                    buttonStyle={
-                      `bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${studentData[0]?.admissionNumber ? 'block' : 'hidden'}`
-                    }
+                    buttonStyle={`bg-[#2740CD] text-white rounded-lg px-4 py-2 text-xs ${
+                      studentData[0]?.admissionNumber ? 'block' : 'hidden'
+                    }`}
                     navigateUrl={`/feeUpdate/${studentData[0]?.admissionNumber}`}
                   />
                 </div>
@@ -620,8 +656,8 @@ function UpdateFee() {
                         paymentType
                           ? true
                           : paymentType === false
-                            ? true
-                            : false
+                          ? true
+                          : false
                       }
                     />
                   </div>
@@ -653,8 +689,8 @@ function UpdateFee() {
                         paymentType
                           ? true
                           : paymentType === false
-                            ? true
-                            : false
+                          ? true
+                          : false
                       }
                     />
                   </div>
