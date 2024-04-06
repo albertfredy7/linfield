@@ -10,8 +10,11 @@ import DatePicker from '../Components/DatePicker';
 import MobileNavigation from '../Components/MobileNavigation';
 import MobileOverviewCard from '../Components/MobileOverviewCard';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Home() {
+  const navigate = useNavigate();
+
   const [totalRevenue, setTotalRevenue] = useState(null);
   const [totalAdmissions, setTotalAdmissions] = useState(null);
   const [totalExpense, setTotalExpense] = useState(null);
@@ -19,15 +22,16 @@ function Home() {
   const [recentAdmissions, setRecentAdmissions] = useState([]);
 
   const formatNumber = (number) => {
-    if (number >= 100000) {
+    if (number >= 1000000) {
+      return (number / 1000000).toFixed(1) + 'M'; // Convert to millions
+    } else if (number >= 100000) {
       return (number / 100000).toFixed(1) + 'L'; // Convert to lakhs
     } else if (number >= 1000) {
       return (number / 1000).toFixed(1) + 'K'; // Convert to thousands
     } else {
-      return number.toString();
+      return number;
     }
   };
-
 
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
@@ -37,7 +41,7 @@ function Home() {
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     };
     return date.toLocaleString('en-US', options);
   };
@@ -72,9 +76,8 @@ function Home() {
     const getRecentTransactions = async () => {
       const { data } = await axios.get(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/recentTransactions'
-        
       );
-      console.log(data)
+      console.log(data);
       setRecentTransactions(data);
     };
     getRecentTransactions();
@@ -113,104 +116,110 @@ function Home() {
             </div>
 
             <div className="flex gap-3 justify-center items-center p-2">
-              <Button
-                buttonStyle={`flex items-center gap-2`}
-                icon={gmeet}
-                iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
-                text={`Meet`}
-                textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
-              />
-              <Button
-                buttonStyle={`flex items-center gap-2`}
-                icon={notion}
-                iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
-                text={`Notion`}
-                textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
-              />
+              <div>
+                <Link
+                  to="https://meet.google.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    buttonStyle={`flex items-center gap-2`}
+                    icon={gmeet}
+                    iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
+                    text={`Meet`}
+                    textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
+                  />
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to="https://www.notion.so/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    buttonStyle={`flex items-center gap-2`}
+                    icon={notion}
+                    iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
+                    text={`Notion`}
+                    textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
+                  />
+                </Link>
+              </div>
             </div>
 
             <div className="overflow-y-auto h-full ">
               {/* Recent transactions */}
               <div className="px-4 pt-5 ">
-                <h4 className="text-base md:text-lg lg:text-3xl font-semibold">
+                <h4 className="text-base text-gray-500 md:text-lg lg:text-3xl font-semibold">
                   Recent transactions
                 </h4>
                 <div className="py-3 flex flex-col gap-2">
-                  {recentTransactions.slice(0, 3).reverse().map((x) => {
-                    const formatDate = (dateString) => {
-                      const date = new Date(dateString);
-                      const day = date.getDate();
-                      const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
-                      const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+                  {recentTransactions
+                    .slice(0, 3)
+                    .reverse()
+                    .map((x, index) => {
+                      const formatDate = (dateString) => {
+                        const date = new Date(dateString);
+                        const day = date.getDate();
+                        const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
+                        const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
 
-                      // Ensure leading zero for single-digit day and month
-                      const formattedDay = day < 10 ? '0' + day : day;
-                      const formattedMonth = month < 10 ? '0' + month : month;
+                        // Ensure leading zero for single-digit day and month
+                        const formattedDay = day < 10 ? '0' + day : day;
+                        const formattedMonth = month < 10 ? '0' + month : month;
 
-                      return `${formattedDay}-${formattedMonth}-${year}`;
-                    };
+                        return `${formattedDay}-${formattedMonth}-${year}`;
+                      };
 
-                    const formattedDate = formatDate(x.date);
+                      const formattedDate = formatDate(x.date);
 
-                    return (
-                      <DataCard
-                        type="transactions"
-                        title={x.purpose}
-                        subTitle={
-                          x.type === 'debit'
-                            ? formattedDate
-                            : `${x.studentName} (${x.studentAdmissionNumber})`
-                        }
-                        tailData={
-                          x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
-                        }
-                        style={{ h: 'full' }}
-                        tailDataStyle={`${x.type === 'credit'
-                            ? 'text-green-500 font-semibold'
-                            : 'text-red-500 font-semibold'
+                      return (
+                        <DataCard
+                          key={index}
+                          type="transactions"
+                          title={x.purpose}
+                          subTitle={
+                            x.type === 'debit'
+                              ? formattedDate
+                              : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
+                              x.studentName
+                              ? `${x.studentName} (${x.studentAdmissionNumber})`
+                              : formattedDate
+                          }
+                          tailData={
+                            x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
+                          }
+                          tailDataStyle={`${
+                            x.type === 'credit'
+                              ? 'text-green-600 font-semibold'
+                              : 'text-red-500 font-semibold'
                           }`}
-                      />
-                    );
-                  })}
+                        />
+                      );
+                    })}
 
-                  {/* <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle="John Doe"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="John Doe"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-
-                  <DataCard
-                    type="transactions"
-                    title="Tution Fee"
-                    subTitle="John Doe"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  /> */}
-                  <div className=" px-2 text-sm md:text-base text-blue-600 flex justify-end ">
+                  <div
+                    className=" px-2 text-sm md:text-base text-blue-600 flex justify-end "
+                    onClick={() => navigate('/insights')}
+                  >
                     View more
                   </div>
                 </div>
               </div>
 
               {/* Recent admissions */}
-              <div className="px-4 pb-24 ">
-                <h4 className="text-base md:text-lg lg:text-3xl font-semibold">
+              <div className="px-4 pb-16">
+                <h4 className="text-base text-gray-500 md:text-lg lg:text-3xl font-semibold">
                   Recent Admisisons
                 </h4>
-                <div className="py-3 flex flex-col gap-2">
+                <div className="py-3 flex flex-col gap-2 pb-12">
                   {recentAdmissions
                     .slice(0, 3)
                     .reverse()
                     .map((x, index) => {
+                      console.log('im printing the admissions stuff');
+                      console.log(x);
                       return (
                         <DataCard
                           key={index} // Make sure to provide a unique key for each item in the list
@@ -218,11 +227,15 @@ function Home() {
                           title={x.name}
                           tailData={x.course}
                           style={{ h: 'full' }}
+                          admissionNumber={x.admissionNumber}
                         />
                       );
                     })}
 
-                  <div className=" px-2 text-sm md:text-md text-blue-600 flex justify-end ">
+                  <div
+                    className=" px-2 text-sm md:text-md text-blue-600 flex justify-end "
+                    onClick={() => navigate('/insights')}
+                  >
                     View more
                   </div>
                 </div>
@@ -270,20 +283,36 @@ function Home() {
               {' '}
               {/* second row contains the data card and quick actions */}
               <div className="row-span-1 h-full flex justify-end gap-6">
-                <Button
-                  buttonStyle={`flex items-center gap-2`}
-                  icon={gmeet}
-                  iconStyle={`h-2/5 w-2/5 lg:h-3/5 lg:w-3/5`}
-                  text={`Meet`}
-                  textStyle={`text-xl lg:text-2xl font-semibold hover:text-blue-400`}
-                />
-                <Button
-                  buttonStyle={`flex items-center gap-2`}
-                  icon={notion}
-                  iconStyle={`h-2/5 w-2/5 lg:h-3/5 lg:w-3/5`}
-                  text={`Notion`}
-                  textStyle={`text-xl lg:text-2xl font-semibold hover:text-blue-400`}
-                />
+                <div>
+                  <Link
+                    to="https://meet.google.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      buttonStyle={`flex items-center gap-2`}
+                      icon={gmeet}
+                      iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
+                      text={`Meet`}
+                      textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
+                    />
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    to="https://www.notion.so/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      buttonStyle={`flex items-center gap-2`}
+                      icon={notion}
+                      iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
+                      text={`Notion`}
+                      textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
+                    />
+                  </Link>
+                </div>
               </div>
               <div className="row-span-5 h-full grid grid-rows-11">
                 {' '}
@@ -293,73 +322,56 @@ function Home() {
                     Recent transactions
                   </h4>
                 </div>
-                {recentTransactions.slice(0, 3).reverse().map((x, index) => {
-                  const formatDate = (dateString) => {
-                    const date = new Date(dateString);
-                    const day = date.getDate();
-                    const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
-                    const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+                {recentTransactions
+                  .slice(0, 3)
+                  .reverse()
+                  .map((x, index) => {
+                    const formatDate = (dateString) => {
+                      const date = new Date(dateString);
+                      const day = date.getDate();
+                      const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
+                      const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
 
-                    // Ensure leading zero for single-digit day and month
-                    const formattedDay = day < 10 ? '0' + day : day;
-                    const formattedMonth = month < 10 ? '0' + month : month;
+                      // Ensure leading zero for single-digit day and month
+                      const formattedDay = day < 10 ? '0' + day : day;
+                      const formattedMonth = month < 10 ? '0' + month : month;
 
-                    return `${formattedDay}-${formattedMonth}-${year}`;
-                  };
+                      return `${formattedDay}-${formattedMonth}-${year}`;
+                    };
 
-                  const formattedDate = formatDate(x.date);
+                    const formattedDate = formatDate(x.date);
 
-                  return (
-                    <div className="row-span-3 flex items-center pl-7 py-2">
-                      <DataCard
-                        key={index}
-                        type="transactions"
-                        title={x.purpose}
-                        subTitle={
-                          x.type === 'debit'
-                            ? formattedDate
-                            : `${x.studentName} (${x.studentAdmissionNumber})`
-                        }
-                        tailData={
-                          x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
-                        }
-                        style={{ h: 'full' }}
-                        tailDataStyle={`${x.type === 'credit'
-                            ? 'text-green-500 font-semibold'
-                            : 'text-red-500 font-semibold'
+                    return (
+                      <div className="row-span-3 flex items-center pl-7 py-2 bg-green-200">
+                        <DataCard
+                          key={index}
+                          type="transactions"
+                          title={x.purpose}
+                          subTitle={
+                            x.type === 'debit'
+                              ? formattedDate
+                              : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
+                              x.studentName
+                              ? `${x.studentName} (${x.studentAdmissionNumber})`
+                              : formattedDate
+                          }
+                          tailData={
+                            x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
+                          }
+                          tailDataStyle={`${
+                            x.type === 'credit'
+                              ? 'text-green-600 font-semibold'
+                              : 'text-red-500 font-semibold'
                           }`}
-                      />
-                    </div>
-                  );
-                })}
-                {/* <div className="row-span-3 flex items-center pl-7 py-2">
-                  <DataCard
-                    type="transactions"
-                    title="Admission Fee"
-                    subTitle="John Doe"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                </div>
-                <div className="row-span-3 flex items-center pl-7 py-2">
-                  <DataCard
-                    type="transactions"
-                    title="Exam Fee"
-                    subTitle="John Doe"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                </div>
-                <div className="row-span-3 flex items-center pl-7 py-2">
-                  <DataCard
-                    type="transactions"
-                    title="Tuition Fee"
-                    subTitle="John Doe"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                </div> */}
-                <div className="row-span-1 text-xl lg:text-2xl text-blue-600 flex justify-end ">
+                          style={{ h: 'full' }}
+                        />
+                      </div>
+                    );
+                  })}
+                <div
+                  className="row-span-1 text-xl lg:text-2xl text-blue-600 flex justify-end "
+                  onClick={() => navigate('/insights')}
+                >
                   View more
                 </div>
               </div>
@@ -412,7 +424,10 @@ function Home() {
                     style={{ h: 'full' }}
                   />
                 </div> */}
-                <div className="row-span-1 text-xl lg:text-2xl text-blue-600 flex justify-end ">
+                <div
+                  className="row-span-1 text-xl lg:text-2xl text-blue-600 flex justify-end "
+                  onClick={() => navigate('/insights')}
+                >
                   View more
                 </div>
               </div>
@@ -422,7 +437,7 @@ function Home() {
         </div>
 
         {/* pc screens */}
-        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen">
+        <div className="hidden xl:grid xl:grid-cols-11 p-4 w-screen h-screen overflow-hidden">
           {' '}
           {/* Total 2 cols for pc screens */}
           {/* <SidebarComponent /> */}
@@ -460,24 +475,124 @@ function Home() {
                 {' '}
                 {/* Second row contains 2 cols, first one for data cards that acquire 2x spacing and another contains x spacing for calender and quick actions. This also contains 2 rows one for DataCard referring 'admissions' and second one refers to 'transactions'*/}
                 <div className=" grid grid-rows-8 ">
-                  {' '}
+                  <div className="row-span-4  grid grid-rows-7 pl-8">
+                    <div className="row-span-1  flex items-center text-gray-500 font-semibold">
+                      <h3>Recent transactions</h3>
+                    </div>
+                    <div className="row-span-5  grid grid-rows-6">
+                      {recentTransactions
+                        .slice(0, 3)
+                        .reverse()
+                        .map((x, index) => {
+                          const formatDate = (dateString) => {
+                            const createdAtDate = new Date(dateString);
+                            const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString(
+                              'default',
+                              { month: 'short' }
+                            )} ${createdAtDate.getFullYear()}`;
+                            const formattedTime =
+                              createdAtDate.toLocaleTimeString('en-US', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true,
+                              });
+
+                            return `${formattedDate} || ${formattedTime}`;
+                          };
+
+                          const formattedDate = formatDate(x.date);
+                          console.log(formattedDate);
+
+                          console.log(x);
+
+                          return (
+                            <div className=" row-span-2 pr-4 pb-1.5">
+                              <DataCard
+                                key={index}
+                                type="transactions"
+                                title={x.purpose}
+                                subTitle={
+                                  x.type === 'debit'
+                                    ? formattedDate
+                                    : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
+                                    x.studentName
+                                    ? `${x.studentName} (${x.studentAdmissionNumber})`
+                                    : formattedDate
+                                }
+                                tailData={
+                                  x.type === 'credit'
+                                    ? `+${x.amount}`
+                                    : `${x.amount}`
+                                }
+                                tailDataStyle={`${
+                                  x.type === 'credit'
+                                    ? 'text-green-600 font-semibold'
+                                    : 'text-red-500 font-semibold'
+                                }`}
+                                style={{ h: 'full' }}
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
+                    <div className="row-span-1  flex justify-end items-center pr-6">
+                      <h3 className="text-sm 3xl:text-lg text-blue-500">
+                        View more
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="row-span-4 ">
+                    <div className="h-full w-full pl-8 grid grid-rows-7">
+                      <div className="row-span-1  flex items-center text-gray-500 font-semibold">
+                        <h3>Recent transactions</h3>
+                      </div>
+                      <div className="row-span-5  grid grid-rows-6">
+                        {recentAdmissions
+                          .slice(0, 3)
+                          .reverse()
+                          .map((x, index) => {
+                            return (
+                              <div className=" row-span-2 pb-1.5 pr-4">
+                                <DataCard
+                                  type={'admissions'}
+                                  title={x.name}
+                                  tailData={x.course}
+                                  style={{ h: 'full' }}
+                                />
+                              </div>
+                            );
+                          })}
+                      </div>
+                      <div className="row-span-1  flex justify-end items-center pr-6">
+                        <h3 className="text-sm 3xl:text-lg text-blue-500">
+                          View more
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
                   {/* Transactions row */}
-                  <div className="row-span-1 flex items-center">
-                    <h3 className="text-sm 3xl:text-xl font-semibold px-9" >
+                  {/* <div className="row-span-1 flex items-center">
+                    <h3 className="text-sm 3xl:text-xl font-semibold px-9">
                       Recent transactions
                     </h3>
                   </div>
-                  {
-                    recentTransactions.slice(0, 3).reverse().map((x, index) => {
-
+                  {recentTransactions
+                    .slice(0, 3)
+                    .reverse()
+                    .map((x, index) => {
                       const formatDate = (dateString) => {
                         const createdAtDate = new Date(dateString);
-                        const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString('default', { month: 'short' })} ${createdAtDate.getFullYear()}`;
-                        const formattedTime = createdAtDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-                       
-                        return `${formattedDate} || ${formattedTime}`;
-                       };
+                        const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString(
+                          'default',
+                          { month: 'short' }
+                        )} ${createdAtDate.getFullYear()}`;
+                        const formattedTime = createdAtDate.toLocaleTimeString(
+                          'en-US',
+                          { hour: '2-digit', minute: '2-digit', hour12: true }
+                        );
 
+                        return `${formattedDate} || ${formattedTime}`;
+                      };
 
                       const formattedDate = formatDate(x.date);
                       console.log(formattedDate);
@@ -485,7 +600,7 @@ function Home() {
                       console.log(x);
 
                       return (
-                        <div className=" row-span-2 pl-9 pr-4 pb-2">
+                        <div className=" row-span-2 pl-9 pr-4 bg-green-200">
                           <DataCard
                             key={index}
                             type="transactions"
@@ -493,22 +608,26 @@ function Home() {
                             subTitle={
                               x.type === 'debit'
                                 ? formattedDate
-                                // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
-                                : x.studentName ? `${x.studentName} (${x.studentAdmissionNumber})` : formattedDate
-
+                                : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
+                                x.studentName
+                                ? `${x.studentName} (${x.studentAdmissionNumber})`
+                                : formattedDate
                             }
                             tailData={
-                              x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
+                              x.type === 'credit'
+                                ? `+${x.amount}`
+                                : `${x.amount}`
                             }
-                            tailDataStyle={`${x.type === 'credit'
+                            tailDataStyle={`${
+                              x.type === 'credit'
                                 ? 'text-green-600 font-semibold'
                                 : 'text-red-500 font-semibold'
-                              }`}
+                            }`}
+                            style={{ h: '5/6' }}
                           />
                         </div>
-                      )
-                    })
-                  }
+                      );
+                    })} */}
                   {/* <div className=" row-span-2 pl-9 pr-4 pb-2">
                     <DataCard
                       type="transactions"
@@ -533,7 +652,7 @@ function Home() {
                       tailData="SSLC"
                     />
                   </div> */}
-                  <div className="row-span-1 flex justify-end pr-4">
+                  {/* <div className="row-span-1 flex justify-end pr-4">
                     <h3 className="text-sm 3xl:text-lg text-blue-500">
                       View more
                     </h3>
@@ -543,17 +662,21 @@ function Home() {
                       Recent admissions
                     </h3>
                   </div>
-                  {recentAdmissions.slice(0, 3).reverse().map((x, index) => {
-                    return (
-                      <div className=" row-span-2 pl-9 pr-4 pb-2">
-                        <DataCard
-                          type={'admissions'}
-                          title={x.name}
-                          tailData={x.course}
-                        />
-                      </div>
-                    )
-                  })}
+                  {recentAdmissions
+                    .slice(0, 3)
+                    .reverse()
+                    .map((x, index) => {
+                      return (
+                        <div className=" row-span-2 pl-9 pr-4 pb-2 bg-red-200">
+                          <DataCard
+                            type={'admissions'}
+                            title={x.name}
+                            tailData={x.course}
+                            style={{ h: 'full' }}
+                          />
+                        </div>
+                      );
+                    })} */}
                   {/* <div className=" row-span-2 pl-9 pr-4 pb-2">
                     <DataCard
                       type="admissions"
@@ -575,11 +698,11 @@ function Home() {
                       tailData="SSLC"
                     />
                   </div> */}
-                  <div className="row-span-1 flex justify-end pr-4">
+                  {/* <div className="row-span-1 flex justify-end pr-4">
                     <h3 className="text-sm 3xl:text-lg text-blue-500">
                       View more
                     </h3>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-span-1  grid grid-rows-5 px-8 py-4 items-center ">

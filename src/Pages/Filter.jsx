@@ -91,27 +91,27 @@ function Filter() {
   ];
   const pendingFeeOptions = [
     {
-      value: 'admissionFee',
+      value: 'admissionFees',
       label: 'Admission Fee',
     },
     {
-      value: 'registrationFee',
+      value: 'registrationFees',
       label: 'Registration Fee',
     },
     {
-      value: 'examFee',
+      value: 'examFees',
       label: 'Exam Fee',
     },
     {
-      value: 'firstTermFee',
+      value: 'firstTerm',
       label: 'First Term Fee',
     },
     {
-      value: 'secondTermFee',
+      value: 'secondTerm',
       label: 'Second Term Fee',
     },
     {
-      value: 'thirdTermFee',
+      value: 'thirdTerm',
       label: 'Third Term Fee',
     },
   ];
@@ -129,69 +129,69 @@ function Filter() {
 
   const academicStatusOptions = [
     {
-      value: 'pass',
+      value: 'Pass',
       label: 'Pass',
     },
     {
-      value: 'fail',
+      value: 'Fail',
       label: 'Fail',
     },
     {
-      value: 'cancelled',
+      value: 'Cancelled',
       label: 'Cancelled',
     },
     {
-      value: 'partiallyCancelled',
+      value: 'PartiallyCancelled',
       label: 'Partially Cancelled',
     },
   ];
   const examMonthOptions = [
     {
-      value: 'january',
+      value: 'January',
       label: 'January',
     },
     {
-      value: 'february',
+      value: 'February',
       label: 'February',
     },
     {
-      value: 'march',
+      value: 'March',
       label: 'March',
     },
     {
-      value: 'april',
+      value: 'April',
       label: 'April',
     },
     {
-      value: 'may',
+      value: 'May',
       label: 'May',
     },
     {
-      value: 'june',
+      value: 'June',
       label: 'June',
     },
     {
-      value: 'july',
+      value: 'July',
       label: 'July',
     },
     {
-      value: 'august',
+      value: 'August',
       label: 'August',
     },
     {
-      value: 'september',
+      value: 'September',
       label: 'September',
     },
     {
-      value: 'october',
+      value: 'October',
       label: 'October',
     },
     {
-      value: 'november',
+      value: 'November',
       label: 'November',
     },
     {
-      value: 'december',
+      value: 'December',
       label: 'December',
     },
   ];
@@ -240,44 +240,44 @@ function Filter() {
 
   const tmaRecievedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
 
   const tmaSubmittedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
 
   const tocRecievedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
   const tocSubmittedOptions = [
     {
-      value: 'yes',
-      label: 'Yes',
+      value: true,
+      label: 'True',
     },
     {
-      value: 'no',
-      label: 'No',
+      value: false,
+      label: 'False',
     },
   ];
 
@@ -310,17 +310,17 @@ function Filter() {
         {/* mobile screen */}
         <div className="block md:hidden bg-[#f0f0f0]">
           <div className="flex flex-col h-screen">
-            <div className="flex flex-col p-8">
-              <h1 className="text-2xl font-bold">Filter Students</h1>
+            <div className="flex flex-col px-5 pt-10">
+              <h1 className="text-xl font-bold">Filter Students</h1>
               <h1 className="text-sm text-gray-500">
                 Filter students based on your criteria
               </h1>
             </div>
-            <div className="flex flex-col gap-3 px-6 overflow-y-auto scroll-smooth">
+            <div className="flex flex-col gap-3 px-6 overflow-y-auto scroll-smooth pt-6">
               <div>
                 <label
                   htmlFor="year"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Year
                 </label>
@@ -333,9 +333,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setAdmYear(e.value)}
@@ -349,7 +354,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="course"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Course
                 </label>
@@ -362,6 +367,11 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-sm"
@@ -378,7 +388,7 @@ function Filter() {
                 <div>
                   <label
                     htmlFor="batch"
-                    className="block text-sm font-medium text-gray-900 mb-2"
+                    className="block text-base font-medium text-gray-500 pb-1"
                   >
                     Batch
                   </label>
@@ -391,9 +401,14 @@ function Filter() {
                         padding: '0.2rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                        fontSize: '1rem',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#9E9E9E', // Change the color of the text inside the input container
                       }),
                     }}
-                    className="border-white text-sm"
+                    className="border-white text-base text-gray-500"
                     closeMenuOnSelect={true}
                     isSearchable={false}
                     onChange={(e) => setBatch(e.value)}
@@ -408,7 +423,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="mode"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Mode
                 </label>
@@ -421,9 +436,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setMode(e.value)}
@@ -436,7 +456,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="mode"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Pending Fee
                 </label>
@@ -449,9 +469,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setPendingFee(e.value)}
@@ -464,7 +489,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="registrationStatus"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Registration Status
                 </label>
@@ -477,9 +502,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setRegistrationStatus(e.value)}
@@ -496,7 +526,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="academicStatus"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Academic Status
                 </label>
@@ -509,9 +539,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setAcademicStatus(e.value)}
@@ -528,7 +563,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="examMonth"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Exam Month
                 </label>
@@ -541,9 +576,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setExamMonth(e.value)}
@@ -556,7 +596,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="examCenter"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   Exam Center
                 </label>
@@ -569,9 +609,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setExamCenter(e.value)}
@@ -584,7 +629,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="tmaRecieved"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   TMA Recieved
                 </label>
@@ -597,9 +642,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setTmaRecieved(e.value)}
@@ -612,7 +662,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="tmaSubmitted"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   TMA Submitted
                 </label>
@@ -625,9 +675,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setTmaSubmitted(e.value)}
@@ -640,7 +695,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="tocRecieved"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   TOC Recieved
                 </label>
@@ -653,9 +708,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setTocRecieved(e.value)}
@@ -668,7 +728,7 @@ function Filter() {
               <div>
                 <label
                   htmlFor="tocSubmitted"
-                  className="block text-sm font-medium text-gray-900 mb-2"
+                  className="block text-base font-medium text-gray-500 pb-1"
                 >
                   TOC Submitted
                 </label>
@@ -681,9 +741,14 @@ function Filter() {
                       padding: '0.2rem',
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
+                      fontSize: '1rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#9E9E9E', // Change the color of the text inside the input container
                     }),
                   }}
-                  className="border-white text-sm"
+                  className="border-white text-base text-gray-500"
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   onChange={(e) => setTocSubmitted(e.value)}
