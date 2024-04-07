@@ -1147,14 +1147,14 @@ function AddStudent() {
                     for="place"
                     class="block text-sm 3xl:text-lg font-medium text-gray-900 "
                   >
-                    Name
+                    Place
                   </label>
                   <input
                     type="text"
                     id="place"
                     class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                    placeholder="John"
-                    value={name}
+                    placeholder="cyc"
+                    value={place}
                     onChange={(e) => setPlace(e.target.value)}
                     required
                   />

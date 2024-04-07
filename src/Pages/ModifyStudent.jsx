@@ -135,7 +135,7 @@ function ModifyStudent() {
     //check if passwords are matching, if yes throw an error
     //else save that in a modifyStudentRequestObject
 
-    
+
 
     if (password !== confirmPassword) {
       window.alert(`passwords doesn't match`);
@@ -453,9 +453,8 @@ function ModifyStudent() {
                   />
                 </div>
                 <div
-                  className={`pt-2 ${
-                    !optionalSubjectsExam ? 'hidden' : 'block'
-                  }`}
+                  className={`pt-2 ${!optionalSubjectsExam ? 'hidden' : 'block'
+                    }`}
                 >
                   <label
                     htmlFor="optionalSubjectsOptions"
@@ -883,9 +882,8 @@ function ModifyStudent() {
                 </div>
 
                 <div
-                  className={`row-span-1 ${
-                    !optionalSubjectsExam ? 'hidden' : 'block'
-                  }`}
+                  className={`row-span-1 ${!optionalSubjectsExam ? 'hidden' : 'block'
+                    }`}
                 >
                   <div className="pt-2">
                     <label
@@ -945,9 +943,8 @@ function ModifyStudent() {
                 </div>
 
                 <div
-                  className={`row-span-1 grid grid-cols-12 gap-4 ${
-                    !toc ? 'hidden' : 'block'
-                  }`}
+                  className={`row-span-1 grid grid-cols-12 gap-4 ${!toc ? 'hidden' : 'block'
+                    }`}
                 >
                   <div className="col-span-6">
                     <div className="pt-2">
@@ -1009,14 +1006,12 @@ function ModifyStudent() {
 
                 <div className="lg:row-span-2 md:row-span-1 pt-10  float-end justify-end">
                   <div className="pt-2 pb-10 ">
-                    <Button
-                      text="Modify Student"
-                      buttonStyle={
-                        'bg-[#2740CD] text-white rounded-lg text-base font-semibold p-3'
-                      }
+                    <button
+                      className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
+                      onClick={() => submitHandler()}
                     >
                       Modify Student
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1052,325 +1047,337 @@ function ModifyStudent() {
                 <SearchBar onSearch={performSearch} />
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3 px-12 pt-9">
-              <div className="">
-                <label
-                  for="name"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="John doe"
-                  value={studentData.length > 0 ? studentData[0].name : ''}
-                  disabled
-                  required
-                />
-              </div>
-              <div className="">
-                <label
-                  for="email"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  email
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="somehing@gmail.com"
-                  value={studentData.length > 0 ? studentData[0].email : ''}
-                  disabled
-                  required
-                />
-              </div>
-              <div className="">
-                <label
-                  for="phoneNumber"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  Phone number
-                </label>
-                <input
-                  type="text"
-                  id="phoneNumber"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="967335361"
-                  value={
-                    studentData.length > 0 ? studentData[0].phoneNumber : ''
-                  }
-                  disabled
-                  required
-                />
-              </div>
-              <div className="">
-                <label
-                  for="password"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  Password
-                </label>
-                <input
-                  type="text"
-                  id="password"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="**********"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="">
-                <label
-                  for="confirmPassword"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  Confirm password
-                </label>
-                <input
-                  type="text"
-                  id="confirmPassword"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="**********"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="">
-                <label
-                  for="refNo"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  Reference no
-                </label>
-                <input
-                  type="text"
-                  id="refNo"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="UIXO89654"
-                  onChange={(e) => setReferenceNo(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="col-span-3">
-                <label
-                  htmlFor="subjects"
-                  className="block text-sm 3xl:text-lg font-semibold text-gray-500"
-                >
-                  Subjects
-                </label>
-                <Select
-                  options={subjectsOptions}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      borderRadius: '.5rem',
-                      padding: '0.rem',
-                      borderWidth: '0px',
-                      backgroundColor: 'RGB(255, 255, 255)',
-                    }),
-                  }}
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  onChange={(e) => setSubjects(e.value)}
-                  onBlur={() => console.log('Blur')}
-                  onFocus={() => console.log('Focus')}
-                />
-              </div>
-              <div className="">
-                <label
-                  htmlFor="optionalSubjects"
-                  className="block text-sm 3xl:text-lg font-semibold text-gray-500"
-                >
-                  Optional subjects
-                </label>
-                <Select
-                  options={booleanOptions}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      borderRadius: '.5rem',
-                      padding: '0rem',
-                      borderWidth: '0px',
-                      backgroundColor: 'RGB(255, 255, 255)',
-                    }),
-                  }}
-                  onChange={(e) => setOptionalSubjectsExam(e.value)}
-                  onBlur={() => console.log('Blur')}
-                  onFocus={() => console.log('Focus')}
-                />
-              </div>
-              <div className="">
-                <label
-                  for="examFee"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  Exam fee
-                </label>
-                <input
-                  type="text"
-                  id="examFee"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="1500"
-                  onChange={(e) => setExamFee(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="">
-                <label
-                  for="regFee"
-                  class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
-                >
-                  Registration fee
-                </label>
-                <input
-                  type="text"
-                  id="regFee"
-                  class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
-                  placeholder="1500"
-                  onChange={(e) => setRegistrationFee(e.target.value)}
-                  required
-                />
-              </div>
-              <div
-                className={`${
-                  optionalSubjectsExam ? 'block col-span-3' : 'hidden'
-                }`}
-              >
-                <label
-                  htmlFor="optionalSubjects"
-                  className="block text-sm 3xl:text-lg font-semibold text-gray-500"
-                >
-                  Optional subjects
-                </label>
-                <Select
-                  options={optionalSubjectsOptions}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      borderRadius: '.5rem',
-                      padding: '0rem',
-                      borderWidth: '0px',
-                      backgroundColor: 'RGB(255, 255, 255)',
-                    }),
-                  }}
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  onChange={(e) => setOptionalSubjects(e.value)}
-                  onBlur={() => console.log('Blur')}
-                  onFocus={() => console.log('Focus')}
-                />
-              </div>
-              <div className="">
-                <label
-                  htmlFor="toc"
-                  className="block text-sm 3xl:text-lg font-semibold text-gray-500"
-                >
-                  Toc
-                </label>
-                <Select
-                  options={booleanOptions}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      borderRadius: '.5rem',
-                      padding: '0rem',
-                      borderWidth: '0px',
-                      backgroundColor: 'RGB(255, 255, 255)',
-                    }),
-                  }}
-                  onChange={(e) => setToc(e.value)}
-                  onBlur={() => console.log('Blur')}
-                  onFocus={() => console.log('Focus')}
-                />
-              </div>
-              <div className={`${toc ? 'block' : 'hidden'}`}>
-                <label
-                  htmlFor="tocReceived"
-                  className="block text-sm 3xl:text-lg font-semibold text-gray-500"
-                >
-                  Toc received
-                </label>
-                <Select
-                  options={booleanOptions}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      borderRadius: '.5rem',
-                      padding: '0rem',
-                      borderWidth: '0px',
-                      backgroundColor: 'RGB(255, 255, 255)',
-                    }),
-                  }}
-                  onChange={(e) => setTocRecieved(e.value)}
-                  onBlur={() => console.log('Blur')}
-                  onFocus={() => console.log('Focus')}
-                />
-              </div>
-              <div className={`${toc ? 'block' : 'hidden'}`}>
-                <label
-                  htmlFor="tocSubmitted"
-                  className="block text-sm 3xl:text-lg font-semibold text-gray-500"
-                >
-                  Toc submitted
-                </label>
-                <Select
-                  options={booleanOptions}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      borderRadius: '.5rem',
-                      padding: '0rem',
-                      borderWidth: '0px',
-                      backgroundColor: 'RGB(255, 255, 255)',
-                    }),
-                  }}
-                  onChange={(e) => setTocSubmitted(e.value)}
-                  onBlur={() => console.log('Blur')}
-                  onFocus={() => console.log('Focus')}
-                />
-              </div>
-              <div className={`${toc ? 'block col-span-3' : 'hidden'}`}>
-                <label
-                  htmlFor="tocSubjets"
-                  className="block text-sm 3xl:text-lg font-semibold text-gray-500"
-                >
-                  TOC subjects
-                </label>
-                <Select
-                  options={subjectsOptions}
-                  styles={{
-                    control: (baseStyles, state) => ({
-                      ...baseStyles,
-                      borderRadius: '.5rem',
-                      padding: '0rem',
-                      borderWidth: '0px',
-                      backgroundColor: 'RGB(255, 255, 255)',
-                    }),
-                  }}
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  onChange={(e) => setTocSubjects(e.value)}
-                  onBlur={() => console.log('Blur')}
-                  onFocus={() => console.log('Focus')}
-                />
-              </div>
-              <div className="float-end flex  justify-end col-span-3 pt-1">
-                <div>
-                  <Button
-                    buttonStyle={
-                      'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '
-                    }
-                    text={'Update Student'}
+            { studentData.length > 0 ? (
+              <div>
+              <div className="grid grid-cols-3 gap-3 px-12 pt-9">
+                <div className="">
+                  <label
+                    for="name"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="John doe"
+                    value={studentData.length > 0 ? studentData[0].name : ''}
+                    disabled
+                    required
                   />
                 </div>
+                <div className="">
+                  <label
+                    for="email"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    email
+                  </label>
+                  <input
+                    type="text"
+                    id="email"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="somehing@gmail.com"
+                    value={studentData.length > 0 ? studentData[0].email : ''}
+                    disabled
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label
+                    for="phoneNumber"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    Phone number
+                  </label>
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="967335361"
+                    value={
+                      studentData.length > 0 ? studentData[0].phoneNumber : ''
+                    }
+                    disabled
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label
+                    for="password"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="text"
+                    id="password"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="**********"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label
+                    for="confirmPassword"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    Confirm password
+                  </label>
+                  <input
+                    type="text"
+                    id="confirmPassword"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="**********"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label
+                    for="refNo"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    Reference no
+                  </label>
+                  <input
+                    type="text"
+                    id="refNo"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="UIXO89654"
+                    onChange={(e) => setReferenceNo(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="col-span-3">
+                  <label
+                    htmlFor="subjects"
+                    className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                  >
+                    Subjects
+                  </label>
+                  <Select
+                    options={subjectsOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '.5rem',
+                        padding: '0.rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    onChange={(e) => setSubjects(e.value)}
+                    onBlur={() => console.log('Blur')}
+                    onFocus={() => console.log('Focus')}
+                  />
+                </div>
+                <div className="">
+                  <label
+                    htmlFor="optionalSubjects"
+                    className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                  >
+                    Optional subjects
+                  </label>
+                  <Select
+                    options={booleanOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '.5rem',
+                        padding: '0rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    onChange={(e) => setOptionalSubjectsExam(e.value)}
+                    onBlur={() => console.log('Blur')}
+                    onFocus={() => console.log('Focus')}
+                  />
+                </div>
+                <div className="">
+                  <label
+                    for="examFee"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    Exam fee
+                  </label>
+                  <input
+                    type="text"
+                    id="examFee"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="1500"
+                    onChange={(e) => setExamFee(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label
+                    for="regFee"
+                    class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
+                  >
+                    Registration fee
+                  </label>
+                  <input
+                    type="text"
+                    id="regFee"
+                    class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    placeholder="1500"
+                    onChange={(e) => setRegistrationFee(e.target.value)}
+                    required
+                  />
+                </div>
+                <div
+                  className={`${optionalSubjectsExam ? 'block col-span-3' : 'hidden'
+                    }`}
+                >
+                  <label
+                    htmlFor="optionalSubjects"
+                    className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                  >
+                    Optional subjects
+                  </label>
+                  <Select
+                    options={optionalSubjectsOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '.5rem',
+                        padding: '0rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    onChange={(e) => setOptionalSubjects(e.value)}
+                    onBlur={() => console.log('Blur')}
+                    onFocus={() => console.log('Focus')}
+                  />
+                </div>
+                <div className="">
+                  <label
+                    htmlFor="toc"
+                    className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                  >
+                    Toc
+                  </label>
+                  <Select
+                    options={booleanOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '.5rem',
+                        padding: '0rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    onChange={(e) => setToc(e.value)}
+                    onBlur={() => console.log('Blur')}
+                    onFocus={() => console.log('Focus')}
+                  />
+                </div>
+                <div className={`${toc ? 'block' : 'hidden'}`}>
+                  <label
+                    htmlFor="tocReceived"
+                    className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                  >
+                    Toc received
+                  </label>
+                  <Select
+                    options={booleanOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '.5rem',
+                        padding: '0rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    onChange={(e) => setTocRecieved(e.value)}
+                    onBlur={() => console.log('Blur')}
+                    onFocus={() => console.log('Focus')}
+                  />
+                </div>
+                <div className={`${toc ? 'block' : 'hidden'}`}>
+                  <label
+                    htmlFor="tocSubmitted"
+                    className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                  >
+                    Toc submitted
+                  </label>
+                  <Select
+                    options={booleanOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '.5rem',
+                        padding: '0rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    onChange={(e) => setTocSubmitted(e.value)}
+                    onBlur={() => console.log('Blur')}
+                    onFocus={() => console.log('Focus')}
+                  />
+                </div>
+                <div className={`${toc ? 'block col-span-3' : 'hidden'}`}>
+                  <label
+                    htmlFor="tocSubjets"
+                    className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                  >
+                    TOC subjects
+                  </label>
+                  <Select
+                    options={subjectsOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '.5rem',
+                        padding: '0rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    onChange={(e) => setTocSubjects(e.value)}
+                    onBlur={() => console.log('Blur')}
+                    onFocus={() => console.log('Focus')}
+                  />
+                </div>
+                <div className="float-end flex  justify-end col-span-3 pt-1">
+                  <div>
+                    <button
+                      className="bg-[#2740CD] text-white rounded-lg text-sm 3xl:text-lg font-semibold w-full p-3 mt-5"
+                      onClick={() => submitHandler()}
+                    >
+                      Modify Student
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </div>) : (
+              <div className="text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center">
+                <img
+                  src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                  className="mix-blend-multiply w-4/6"
+                  alt=""
+                />
+                <h1 className="text-center">No student data available</h1>
+              </div>
+            
+            )}
           </div>
 
           {/* <SidebarComponent /> */}

@@ -5,9 +5,11 @@ import Button from '../Components/Button';
 import MobileNavigation from '../Components/MobileNavigation';
 import axios from 'axios';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 
 function UpdateStudent() {
 
+    const navigate = useNavigate()
 
 
     const [studentData, setStudentData] = useState([]);
@@ -16,13 +18,13 @@ function UpdateStudent() {
     const [course, setCourse] = useState(null);
     const [batch, setBatch] = useState(null);
     const [stream, setStream] = useState(null);
-    const [existingStudent, setExistingStudent] = useState(null);
+    const [existingStudent, setExistingStudent] = useState(true);
     const [enrollmentNumber, setEnrollmentNumber] = useState('');
     const [examMode, setExamMode] = useState(null);
     const [examMonth, setExamMonth] = useState(null);
     const [studyCenter, setStudyCenter] = useState('');
     const [lastNiosYear, setLastNiosYear] = useState('');
-    const [tmaRecieved, setTmaRecieved] = useState(false);
+    const [tmaReceived, setTmaReceived] = useState(false);
     const [tmaSubmitted, setTmaSubmitted] = useState(false);
     const [error, setError] = useState(null);
 
@@ -76,6 +78,8 @@ function UpdateStudent() {
             label: 'Stream 4'
         }
     ]
+
+    const selectedStreamOption = streamOptions.find(option => option.value === stream);
 
     const examModeOptions = [
         {
@@ -139,6 +143,8 @@ function UpdateStudent() {
         }
     ]
 
+    const selectedExamMonthOption = examMonthOptions.find(option => option.value === examMonth);
+
     const booleanOptions = [
         {
             value: 'true',
@@ -149,6 +155,15 @@ function UpdateStudent() {
             label: 'No'
         }
     ]
+
+    const selectedExistingStudentOption = booleanOptions.find(option => option.value === existingStudent);
+    console.log(selectedExistingStudentOption);
+
+
+    
+    const selectedtmaSubmittedOption = booleanOptions.find(option => option.value === String(tmaSubmitted));
+    const selectedtmaReceivedOption = booleanOptions.find(option => option.value === String(tmaReceived));
+    const selectedExamModeOption = examModeOptions.find(option => option.value === examMode);
 
 
     const performSearch = async (query) => {
@@ -179,12 +194,90 @@ function UpdateStudent() {
 
     };
 
+    console.log(tmaReceived);
+
+
+    const submitHandler = async () => {
+        //check if passwords are matching, if yes throw an error
+        //else save that in a modifyStudentRequestObject
+
+        console.log(stream);
+
+        let modifyStudentRequestObject = {
+            admissionNumber: studentData[0].admissionNumber,
+            name: studentData[0].name,
+            course: course,
+            batch: batch,
+            registrationStream: stream,
+            existingStudent: existingStudent,
+            enrollmentNumber: enrollmentNumber,
+            examMode: examMode,
+            examMonth: examMonth,
+            examCentre: studyCenter,
+            lastExamYear: lastNiosYear,
+            tmaReceived: tmaReceived,
+            tmaSubmitted: tmaSubmitted,
+        };
+
+
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        axios
+            .put(
+                'https://lobster-app-yjjm5.ondigitalocean.app/api/students/updateExisting',
+                modifyStudentRequestObject,
+                config
+            )
+            .then((response) => {
+                const data = response.data;
+                console.log(`student data ${data.name}`);
+
+                if (data && data.name) {
+                    console.log(`success`);
+                    window.alert('student data modified successfully');
+
+                    
+
+
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                window.alert('An error occurred while adding the student.');
+            });
+
+    };
+
+
     useEffect(() => {
         if (studentData.length > 0) {
             setCourse(studentData[0].course);
             setBatch(studentData[0].batch);
+            setStream(studentData[0].registrationStream);
+            // Check if there is an enrollment number and set existingStudent accordingly
+            if (studentData[0].enrollmentNumber) {
+                setExistingStudent(true); // This sets the existingStudent to true if there is an enrollment number
+            }
+    
+            setEnrollmentNumber(studentData[0].enrollmentNumber);
+            setExamMode(studentData[0].examMode);
+            setExamMonth(studentData[0].examMonth);
+            setStudyCenter(studentData[0].examCentre);
+            setLastNiosYear(studentData[0].lastExamYear);
+            setTmaReceived(studentData[0].tmaReceived);
+            setTmaSubmitted(studentData[0].tmaSubmitted);
         }
     }, [studentData]);
+
+    console.log(existingStudent);
 
 
 
@@ -368,6 +461,7 @@ function UpdateStudent() {
                                         isSearchable={false}
                                         onChange={(e) => setStream(e.value)}
                                         name="stream"
+                                        value={selectedStreamOption}
 
                                     />
                                 </div>
@@ -403,7 +497,7 @@ function UpdateStudent() {
                                     />
                                 </div>
 
-                                {existingStudent === 'true' &&
+                                {
                                     <div className="flex flex-col gap-2 pt-2">
                                         <label
                                             htmlFor="enrollmentNo"
@@ -450,6 +544,7 @@ function UpdateStudent() {
                                         isSearchable={false}
                                         onChange={(e) => setExamMode(e.value)}
                                         name="examMode"
+                                        value={selectedExamModeOption}
                                     />
                                 </div>
 
@@ -481,6 +576,7 @@ function UpdateStudent() {
                                         isSearchable={false}
                                         onChange={(e) => setExamMonth(e.value)}
                                         name="examMonth"
+                                        value={selectedExamMonthOption}
                                     />
                                 </div>
 
@@ -549,8 +645,9 @@ function UpdateStudent() {
                                         className="border-white text-base text-gray-500"
                                         closeMenuOnSelect={true}
                                         isSearchable={false}
-                                        onChange={(e) => setTmaRecieved(e.value)}
+                                        onChange={(e) => setTmaReceived(e.value)}
                                         name="tmaRecieved"
+                                        value={selectedtmaReceivedOption}
                                     />
                                 </div>
 
@@ -583,6 +680,7 @@ function UpdateStudent() {
                                         isSearchable={false}
                                         onChange={(e) => setTmaSubmitted(e.value)}
                                         name="tmaSubmitted"
+                                        value={selectedtmaSubmittedOption}
                                     />
                                 </div>
 
@@ -591,9 +689,9 @@ function UpdateStudent() {
                                 <div className="pt-2 pb-20">
                                     <button
                                         className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
-
+                                        onClick={() => submitHandler()}
                                     >
-                                        Modify Student
+                                        Update Student
                                     </button>
                                 </div>
                             </div>
@@ -780,6 +878,7 @@ function UpdateStudent() {
                                             isSearchable={false}
                                             onChange={(e) => setStream(e.value)}
                                             name="feeType"
+                                            value={selectedStreamOption}
 
                                         />
                                     </div>
@@ -811,9 +910,10 @@ function UpdateStudent() {
                                             isSearchable={false}
                                             onChange={(e) => setExistingStudent(e.value)}
                                             name="existingStudent"
+                                            value={selectedExistingStudentOption}
                                         />
                                     </div>
-                                    {existingStudent === 'true' &&
+                                    {
                                         <div className="col-span-1 flex flex-col gap-2 pt-2">
                                             <label
                                                 htmlFor="enrollmentNo"
@@ -863,6 +963,7 @@ function UpdateStudent() {
                                             isSearchable={false}
                                             onChange={(e) => setExamMode(e.value)}
                                             name="examMode"
+                                            value={selectedExamModeOption}
                                         />
                                     </div>
                                     <div className="flex flex-col gap-2 pt-2">
@@ -893,6 +994,7 @@ function UpdateStudent() {
                                             isSearchable={false}
                                             onChange={(e) => setExamMonth(e.value)}
                                             name="examMonth"
+                                            value={selectedExamMonthOption}
                                         />
                                     </div>
                                 </div>
@@ -961,8 +1063,9 @@ function UpdateStudent() {
                                             className="border-white text-base text-gray-500"
                                             closeMenuOnSelect={true}
                                             isSearchable={false}
-                                            onChange={(e) => setTmaRecieved(e.value)}
+                                            onChange={(e) => setTmaReceived(e.value)}
                                             name="tmaRecieved"
+                                            value={selectedtmaReceivedOption}
                                         />
                                     </div>
                                     <div className="flex flex-col gap-2 pt-2">
@@ -993,18 +1096,19 @@ function UpdateStudent() {
                                             isSearchable={false}
                                             onChange={(e) => setTmaSubmitted(e.value)}
                                             name="tmaSubmitted"
+                                            value={selectedtmaSubmittedOption}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="float-end flex justify-end col-span-3 pt-10">
                                     <div>
-                                        <Button
-                                            buttonStyle={
-                                                'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '
-                                            }
-                                            text={'Update Student'}
-                                        />
+                                        <button
+                                            className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
+                                            onClick={() => submitHandler()}
+                                        >
+                                            Update Student
+                                        </button>
                                     </div>
                                 </div>
 
@@ -1045,388 +1149,395 @@ function UpdateStudent() {
                                 <SearchBar onSearch={performSearch} />
                             </div>
                         </div>
-                        { studentData.length > 0 ? (
+                        {studentData.length > 0 ? (
                             <div>
-                            <div className="grid grid-cols-3 gap-3 px-12 pt-9">
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="name"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
-                                        placeholder="John doe"
-                                        value={studentData.length > 0 ? studentData[0].name : ''}
-                                        disabled
-                                        required
-                                    />
-                                </div>
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="admn"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Admission Number
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="admn"
-                                        className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
-                                        placeholder="123456"
-                                        value={studentData.length > 0 ? studentData[0].admissionNumber : ''}
-                                        disabled
-                                        required
-                                    />
-                                </div>
-    
-                                <div className={`col-span-1 flex flex-col gap-2 `}>
-                                    <label
-                                        htmlFor="course"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Course
-                                    </label>
-                                    <Select
-                                        options={courseOptions}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                borderRadius: '.5rem',
-                                                padding: '0.2rem',
-                                                borderWidth: '0px',
-                                                backgroundColor: 'RGB(255, 255, 255)',
-                                                fontSize: '1rem',
-                                            }),
-                                            singleValue: (baseStyles) => ({
-                                                ...baseStyles,
-                                                color: '#9E9E9E', // Change the color of the text inside the input container
-                                            }),
-                                        }}
-                                        className="border-white text-base text-gray-500"
-                                        value={selectedCourseOption}
-                                        closeMenuOnSelect={true}
-                                        isSearchable={false}
-                                        onChange={(e) => setCourse(e.value)}
-                                        name="course"
-                                        controlShouldRenderValue={
-                                            course ? true : course === false ? true : false
-                                        }
-                                    />
-                                </div>
-    
-    
-                            </div>
-    
-                            <div className="grid grid-cols-3 gap-3 px-12 pt-2">
-                                {
-                                    course === 'Plustwo' && (
-                                        <div className="col-span-1 flex flex-col gap-2">
-                                            <label
-                                                htmlFor="batch"
-                                                className="block text-sm font-semibold text-gray-500"
-                                            >
-                                                Batch
-                                            </label>
-                                            <Select
-                                                options={batchOptions}
-                                                styles={{
-                                                    control: (baseStyles, state) => ({
-                                                        ...baseStyles,
-                                                        borderRadius: '.5rem',
-                                                        padding: '0.2rem',
-                                                        borderWidth: '0px',
-                                                        backgroundColor: 'RGB(255, 255, 255)',
-                                                        fontSize: '1rem',
-                                                    }),
-                                                    singleValue: (baseStyles) => ({
-                                                        ...baseStyles,
-                                                        color: '#9E9E9E', // Change the color of the text inside the input container
-                                                    }),
-                                                }}
-                                                className="border-white text-base text-gray-500"
-                                                value={selectedBatchOption}
-                                                closeMenuOnSelect={true}
-                                                isSearchable={false}
-                                                onChange={(e) => setBatch(e.value)}
-                                                name="batch"
-                                                controlShouldRenderValue={
-                                                    batch ? true : batch === false ? true : false
-                                                }
-                                            />
-                                        </div>
-                                    )
-                                }
-    
-                                <div className={`col-span-${batch ? '1' : '2'} flex flex-col gap-2`}>
-                                    <label
-                                        htmlFor="stream"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Stream
-                                    </label>
-                                    <Select
-                                        options={streamOptions}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                borderRadius: '.5rem',
-                                                padding: '0.2rem',
-                                                borderWidth: '0px',
-                                                backgroundColor: 'RGB(255, 255, 255)',
-                                                fontSize: '1rem',
-                                            }),
-                                            singleValue: (baseStyles) => ({
-                                                ...baseStyles,
-                                                color: '#9E9E9E', // Change the color of the text inside the input container
-                                            }),
-                                        }}
-                                        className="border-white text-base text-gray-500"
-                                        closeMenuOnSelect={true}
-                                        isSearchable={false}
-                                        onChange={(e) => setStream(e.value)}
-                                        name="stream"
-                                    />
-    
-                                </div>
-    
-                                <div className={`col-span-1 flex flex-col gap-2`}>
-                                    <label
-                                        htmlFor="existingStrudent"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Existing Student
-                                    </label>
-                                    <Select
-                                        options={booleanOptions}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                borderRadius: '.5rem',
-                                                padding: '0.2rem',
-                                                borderWidth: '0px',
-                                                backgroundColor: 'RGB(255, 255, 255)',
-                                                fontSize: '1rem',
-                                            }),
-                                            singleValue: (baseStyles) => ({
-                                                ...baseStyles,
-                                                color: '#9E9E9E', // Change the color of the text inside the input container
-                                            }),
-                                        }}
-                                        className="border-white text-base text-gray-500"
-                                        closeMenuOnSelect={true}
-                                        isSearchable={false}
-                                        onChange={(e) => setExistingStudent(e.value)}
-                                        name="existingStudent"
-                                    />
-                                </div>
-    
-                                {
-                                    existingStudent === 'true' &&
+                                <div className="grid grid-cols-3 gap-3 px-12 pt-9">
                                     <div className="col-span-1 flex flex-col gap-2">
                                         <label
-                                            htmlFor="enrollmentNo"
+                                            htmlFor="name"
                                             className="block text-sm font-semibold text-gray-500"
                                         >
-                                            Enrollment Number
+                                            Name
                                         </label>
                                         <input
                                             type="text"
-                                            id="enrollmentNo"
+                                            id="name"
                                             className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
-                                            placeholder="CJDJGB3UUG"
+                                            placeholder="John doe"
+                                            value={studentData.length > 0 ? studentData[0].name : ''}
+                                            disabled
                                             required
-                                            value={enrollmentNumber}
-                                            onChange={(e) => setEnrollmentNumber(e.target.value)}
                                         />
                                     </div>
-    
-    
-                                }
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="examMode"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Exam Mode
-                                    </label>
-                                    <Select
-                                        options={examModeOptions}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                borderRadius: '.5rem',
-                                                padding: '0.2rem',
-                                                borderWidth: '0px',
-                                                backgroundColor: 'RGB(255, 255, 255)',
-                                                fontSize: '1rem',
-                                            }),
-                                            singleValue: (baseStyles) => ({
-                                                ...baseStyles,
-                                                color: '#9E9E9E', // Change the color of the text inside the input container
-                                            }),
-                                        }}
-                                        className="border-white text-base text-gray-500"
-                                        closeMenuOnSelect={true}
-                                        isSearchable={false}
-                                        onChange={(e) => setExamMode(e.value)}
-                                        name="examMode"
-                                    />
-                                </div>
-    
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="examMonth"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Exam Month
-                                    </label>
-                                    <Select
-                                        options={examMonthOptions}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                borderRadius: '.5rem',
-                                                padding: '0.2rem',
-                                                borderWidth: '0px',
-                                                backgroundColor: 'RGB(255, 255, 255)',
-                                                fontSize: '1rem',
-                                            }),
-                                            singleValue: (baseStyles) => ({
-                                                ...baseStyles,
-                                                color: '#9E9E9E', // Change the color of the text inside the input container
-                                            }),
-                                        }}
-                                        className="border-white text-base text-gray-500"
-                                        closeMenuOnSelect={true}
-                                        isSearchable={false}
-                                        onChange={(e) => setExamMonth(e.value)}
-                                        name="examMonth"
-                                    />
-                                </div>
-    
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="studyCenter"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Study Center
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="studyCenter"
-                                        className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
-                                        placeholder="Kochi"
-                                        required
-                                        value={studyCenter}
-                                        onChange={(e) => setStudyCenter(e.target.value)}
-                                    />
-                                </div>
-    
-    
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="lastNiosYear"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        Year of last NIOS
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="lastNiosYear"
-                                        className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
-                                        placeholder="2021"
-                                        required
-                                        value={lastNiosYear}
-                                        onChange={(e) => setLastNiosYear(e.target.value)}
-                                    />
-                                </div>
-    
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="tmaRecieved"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        TMA Recieved
-                                    </label>
-                                    <Select
-                                        options={booleanOptions}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                borderRadius: '.5rem',
-                                                padding: '0.2rem',
-                                                borderWidth: '0px',
-                                                backgroundColor: 'RGB(255, 255, 255)',
-                                                fontSize: '1rem',
-                                            }),
-                                            singleValue: (baseStyles) => ({
-                                                ...baseStyles,
-                                                color: '#9E9E9E', // Change the color of the text inside the input container
-                                            }),
-                                        }}
-                                        className="border-white text-base text-gray-500"
-                                        closeMenuOnSelect={true}
-                                        isSearchable={false}
-                                        onChange={(e) => setTmaRecieved(e.value)}
-                                        name="tmaRecieved"
-                                    />
-                                </div>
-    
-                                <div className="col-span-1 flex flex-col gap-2">
-                                    <label
-                                        htmlFor="tmaSubmitted"
-                                        className="block text-sm font-semibold text-gray-500"
-                                    >
-                                        TMA Submitted
-                                    </label>
-                                    <Select
-                                        options={booleanOptions}
-                                        styles={{
-                                            control: (baseStyles, state) => ({
-                                                ...baseStyles,
-                                                borderRadius: '.5rem',
-                                                padding: '0.2rem',
-                                                borderWidth: '0px',
-                                                backgroundColor: 'RGB(255, 255, 255)',
-                                                fontSize: '1rem',
-                                            }),
-                                            singleValue: (baseStyles) => ({
-                                                ...baseStyles,
-                                                color: '#9E9E9E', // Change the color of the text inside the input container
-                                            }),
-                                        }}
-                                        className="border-white text-base text-gray-500"
-                                        closeMenuOnSelect={true}
-                                        isSearchable={false}
-                                        onChange={(e) => setTmaSubmitted(e.value)}
-                                        name="tmaSubmitted"
-                                    />
-                                </div>
-    
-    
-    
-                                {/* button */}
-                                <div className="float-end flex  justify-end col-span-3 pt-5 ">
-                                    <div>
-                                        <Button
-                                            buttonStyle={
-                                                'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '
+                                    <div className="col-span-1 flex flex-col gap-2">
+                                        <label
+                                            htmlFor="admn"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Admission Number
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="admn"
+                                            className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="123456"
+                                            value={studentData.length > 0 ? studentData[0].admissionNumber : ''}
+                                            disabled
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className={`col-span-1 flex flex-col gap-2 `}>
+                                        <label
+                                            htmlFor="course"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Course
+                                        </label>
+                                        <Select
+                                            options={courseOptions}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '.5rem',
+                                                    padding: '0.2rem',
+                                                    borderWidth: '0px',
+                                                    backgroundColor: 'RGB(255, 255, 255)',
+                                                    fontSize: '1rem',
+                                                }),
+                                                singleValue: (baseStyles) => ({
+                                                    ...baseStyles,
+                                                    color: '#9E9E9E', // Change the color of the text inside the input container
+                                                }),
+                                            }}
+                                            className="border-white text-base text-gray-500"
+                                            value={selectedCourseOption}
+                                            closeMenuOnSelect={true}
+                                            isSearchable={false}
+                                            onChange={(e) => setCourse(e.value)}
+                                            name="course"
+                                            controlShouldRenderValue={
+                                                course ? true : course === false ? true : false
                                             }
-                                            text={'Update Student'}
                                         />
                                     </div>
+
+
                                 </div>
-    
-    
-    
-    
-    
-                            </div>
-                        </div>) : (
+
+                                <div className="grid grid-cols-3 gap-3 px-12 pt-2">
+                                    {
+                                        course === 'Plustwo' && (
+                                            <div className="col-span-1 flex flex-col gap-2">
+                                                <label
+                                                    htmlFor="batch"
+                                                    className="block text-sm font-semibold text-gray-500"
+                                                >
+                                                    Batch
+                                                </label>
+                                                <Select
+                                                    options={batchOptions}
+                                                    styles={{
+                                                        control: (baseStyles, state) => ({
+                                                            ...baseStyles,
+                                                            borderRadius: '.5rem',
+                                                            padding: '0.2rem',
+                                                            borderWidth: '0px',
+                                                            backgroundColor: 'RGB(255, 255, 255)',
+                                                            fontSize: '1rem',
+                                                        }),
+                                                        singleValue: (baseStyles) => ({
+                                                            ...baseStyles,
+                                                            color: '#9E9E9E', // Change the color of the text inside the input container
+                                                        }),
+                                                    }}
+                                                    className="border-white text-base text-gray-500"
+                                                    value={selectedBatchOption}
+                                                    closeMenuOnSelect={true}
+                                                    isSearchable={false}
+                                                    onChange={(e) => setBatch(e.value)}
+                                                    name="batch"
+                                                    controlShouldRenderValue={
+                                                        batch ? true : batch === false ? true : false
+                                                    }
+                                                />
+                                            </div>
+                                        )
+                                    }
+
+                                    <div className={`col-span-${batch ? '1' : '2'} flex flex-col gap-2`}>
+                                        <label
+                                            htmlFor="stream"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Stream
+                                        </label>
+                                        <Select
+                                            options={streamOptions}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '.5rem',
+                                                    padding: '0.2rem',
+                                                    borderWidth: '0px',
+                                                    backgroundColor: 'RGB(255, 255, 255)',
+                                                    fontSize: '1rem',
+                                                }),
+                                                singleValue: (baseStyles) => ({
+                                                    ...baseStyles,
+                                                    color: '#9E9E9E', // Change the color of the text inside the input container
+                                                }),
+                                            }}
+                                            className="border-white text-base text-gray-500"
+                                            closeMenuOnSelect={true}
+                                            value={selectedStreamOption}
+                                            isSearchable={false}
+                                            onChange={(e) => setStream(e.value)}
+                                            name="stream"
+                                        />
+
+                                    </div>
+
+                                    <div className={`col-span-1 flex flex-col gap-2`}>
+                                        <label
+                                            htmlFor="existingStrudent"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Existing Student
+                                        </label>
+                                        <Select
+                                            options={booleanOptions}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '.5rem',
+                                                    padding: '0.2rem',
+                                                    borderWidth: '0px',
+                                                    backgroundColor: 'RGB(255, 255, 255)',
+                                                    fontSize: '1rem',
+                                                }),
+                                                singleValue: (baseStyles) => ({
+                                                    ...baseStyles,
+                                                    color: '#9E9E9E', // Change the color of the text inside the input container
+                                                }),
+                                            }}
+                                            className="border-white text-base text-gray-500"
+                                            closeMenuOnSelect={true}
+                                            isSearchable={false}
+                                            onChange={(e) => setExistingStudent(e.value)}
+                                            name="existingStudent"
+                                           
+                                        />
+                                    </div>
+
+                                    {
+                                        
+                                        <div className="col-span-1 flex flex-col gap-2">
+                                            <label
+                                                htmlFor="enrollmentNo"
+                                                className="block text-sm font-semibold text-gray-500"
+                                            >
+                                                Enrollment Number
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="enrollmentNo"
+                                                value={enrollmentNumber}
+                                                className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                                                placeholder="CJDJGB3UUG"
+                                                required
+
+                                                onChange={(e) => setEnrollmentNumber(e.target.value)}
+                                            />
+                                        </div>
+
+
+                                    }
+                                    <div className="col-span-1 flex flex-col gap-2">
+                                        <label
+                                            htmlFor="examMode"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Exam Mode
+                                        </label>
+                                        <Select
+                                            options={examModeOptions}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '.5rem',
+                                                    padding: '0.2rem',
+                                                    borderWidth: '0px',
+                                                    backgroundColor: 'RGB(255, 255, 255)',
+                                                    fontSize: '1rem',
+                                                }),
+                                                singleValue: (baseStyles) => ({
+                                                    ...baseStyles,
+                                                    color: '#9E9E9E', // Change the color of the text inside the input container
+                                                }),
+                                            }}
+                                            className="border-white text-base text-gray-500"
+                                            closeMenuOnSelect={true}
+                                            isSearchable={false}
+                                            onChange={(e) => setExamMode(e.value)}
+                                            name="examMode"
+                                            value={selectedExamModeOption}
+                                        />
+                                    </div>
+
+                                    <div className="col-span-1 flex flex-col gap-2">
+                                        <label
+                                            htmlFor="examMonth"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Exam Month
+                                        </label>
+                                        <Select
+                                            options={examMonthOptions}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '.5rem',
+                                                    padding: '0.2rem',
+                                                    borderWidth: '0px',
+                                                    backgroundColor: 'RGB(255, 255, 255)',
+                                                    fontSize: '1rem',
+                                                }),
+                                                singleValue: (baseStyles) => ({
+                                                    ...baseStyles,
+                                                    color: '#9E9E9E', // Change the color of the text inside the input container
+                                                }),
+                                            }}
+                                            className="border-white text-base text-gray-500"
+                                            closeMenuOnSelect={true}
+                                            isSearchable={false}
+                                            onChange={(e) => setExamMonth(e.value)}
+                                            name="examMonth"
+                                            value={selectedExamMonthOption}
+                                        />
+                                    </div>
+
+                                    <div className="col-span-1 flex flex-col gap-2">
+                                        <label
+                                            htmlFor="studyCenter"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Study Center
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="studyCenter"
+                                            className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="Kochi"
+                                            required
+                                            value={studyCenter}
+                                            onChange={(e) => setStudyCenter(e.target.value)}
+                                        />
+                                    </div>
+
+
+                                    <div className="col-span-1 flex flex-col gap-2">
+                                        <label
+                                            htmlFor="lastNiosYear"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            Year of last NIOS
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="lastNiosYear"
+                                            className="bg-white border border-white text-gray-500 text-sm rounded-lg block w-full p-2.5"
+                                            placeholder="2021"
+                                            required
+                                            value={lastNiosYear}
+                                            onChange={(e) => setLastNiosYear(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="col-span-1 flex flex-col gap-2">
+                                        <label
+                                            htmlFor="tmaRecieved"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            TMA Received
+                                        </label>
+                                        <Select
+                                            options={booleanOptions}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '.5rem',
+                                                    padding: '0.2rem',
+                                                    borderWidth: '0px',
+                                                    backgroundColor: 'RGB(255, 255, 255)',
+                                                    fontSize: '1rem',
+                                                }),
+                                                singleValue: (baseStyles) => ({
+                                                    ...baseStyles,
+                                                    color: '#9E9E9E', // Change the color of the text inside the input container
+                                                }),
+                                            }}
+                                            className="border-white text-base text-gray-500"
+                                            closeMenuOnSelect={true}
+                                            isSearchable={false}
+                                            onChange={(e) => setTmaReceived(e.value)}
+                                            name="tmaRecieved"
+                                            value={selectedtmaReceivedOption}
+                                        />
+                                    </div>
+
+                                    <div className="col-span-1 flex flex-col gap-2">
+                                        <label
+                                            htmlFor="tmaSubmitted"
+                                            className="block text-sm font-semibold text-gray-500"
+                                        >
+                                            TMA Submitted
+                                        </label>
+                                        <Select
+                                            options={booleanOptions}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '.5rem',
+                                                    padding: '0.2rem',
+                                                    borderWidth: '0px',
+                                                    backgroundColor: 'RGB(255, 255, 255)',
+                                                    fontSize: '1rem',
+                                                }),
+                                                singleValue: (baseStyles) => ({
+                                                    ...baseStyles,
+                                                    color: '#9E9E9E', // Change the color of the text inside the input container
+                                                }),
+                                            }}
+                                            className="border-white text-base text-gray-500"
+                                            closeMenuOnSelect={true}
+                                            isSearchable={false}
+                                            onChange={(e) => setTmaSubmitted(e.value)}
+                                            name="tmaSubmitted"
+                                            value={selectedtmaReceivedOption}
+                                        />
+                                    </div>
+
+
+
+                                    {/* button */}
+                                    <div className="float-end flex  justify-end col-span-3 pt-5 ">
+                                        <div>
+                                            <button
+                                                className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
+                                                onClick={() => submitHandler()}
+                                            >
+                                                Update Student
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>) : (
                             <div className="text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center">
                                 <img
                                     src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
