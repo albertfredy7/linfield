@@ -167,7 +167,8 @@ function AddStudent() {
         admissionCoordinator: admCoordinator,
         admissionFee,
         utrNumber,
-      };
+        ...(batch ? { batch } : {}), // Include batch only if it's not null
+       };
 
       const config = {
         headers: {

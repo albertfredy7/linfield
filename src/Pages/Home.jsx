@@ -544,7 +544,7 @@ function Home() {
                   <div className="row-span-4 ">
                     <div className="h-full w-full pl-8 grid grid-rows-7">
                       <div className="row-span-1  flex items-center text-gray-500 font-semibold">
-                        <h3>Recent transactions</h3>
+                        <h3>Recent Admissions</h3>
                       </div>
                       <div className="row-span-5  grid grid-rows-6">
                         {recentAdmissions

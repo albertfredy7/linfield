@@ -135,18 +135,7 @@ function ModifyStudent() {
     //check if passwords are matching, if yes throw an error
     //else save that in a modifyStudentRequestObject
 
-    if (
-      !studentData[0].admissionNumber ||
-      !password ||
-      !confirmPassword ||
-      !referenceNo ||
-      !registrationFee ||
-      !examFee ||
-      !subjects
-    ) {
-      window.alert('Please fill all required fields');
-      return;
-    }
+    
 
     if (password !== confirmPassword) {
       window.alert(`passwords doesn't match`);
