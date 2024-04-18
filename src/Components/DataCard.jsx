@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import SchoolIcon from '@mui/icons-material/School';
+import DeleteIcon from '@mui/icons-material/Delete';
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +15,8 @@ function DataCard({
   style,
   tailDataStyle,
   admissionNumber,
+  role,
+  teacherId,
 }) {
   const navigate = useNavigate();
 
@@ -98,6 +101,39 @@ function DataCard({
     setModalOpen(false);
   };
 
+  const teacherDeleteHandler = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    axios
+      .delete(
+        `https://lobster-app-yjjm5.ondigitalocean.app/api/teachers/delete/${teacherId}`,
+        config
+      )
+      .then((response) => {
+        const data = response.data;
+        console.log(`teacher data ${data.name}`);
+
+        if (response.status === 200) {
+          console.log(`success`);
+          window.alert('Teacher deleted successfully');
+
+          setTimeout(() => {
+            navigate('/');
+          }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        window.alert('An error occurred while adding the student.');
+      });
+
+    setModalOpen(false);
+  };
+
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -156,27 +192,38 @@ function DataCard({
           >
             <div
               className="absolute flex flex-col bg-white rounded-lg p-6 shadow-md z-50"
-              style={{ top: dotPosition.y - 86, left: dotPosition.x }}
+              style={{ top: dotPosition.y - 80, left: dotPosition.x }}
             >
-              <button
-                className="w-full flex justify-between text-gray-500 border-b-2 pb-2"
-                onClick={closeModal}
-              >
-                Edit student <EditIcon style={{ color: '#93e9be' }} />
-              </button>
-              <button
-                className="w-full flex justify-between text-gray-500 gap-4 border-b-2 py-3"
-                onClick={() => submitHandler('Pass')}
-              >
-                Mark as passed <SchoolIcon style={{ color: '#5390d9' }} />
-              </button>
-              <button
-                className="w-full flex text-gray-500 justify-between  pt-2"
-                onClick={() => submitHandler('Fail')}
-              >
-                Mark as failed{' '}
-                <NotInterestedOutlinedIcon style={{ color: '#ad2829' }} />
-              </button>
+              {role === 'teacher' ? (
+                <button
+                  className="w-full flex justify-between text-gray-500"
+                  onClick={teacherDeleteHandler}
+                >
+                  Delete teacher <DeleteIcon style={{ color: '#ad2829' }} />
+                </button>
+              ) : (
+                <>
+                  <button
+                    className="w-full flex justify-between text-gray-500 border-b-2 pb-2"
+                    onClick={closeModal}
+                  >
+                    Edit student <EditIcon style={{ color: '#93e9be' }} />
+                  </button>
+                  <button
+                    className="w-full flex justify-between text-gray-500 gap-4 border-b-2 py-3"
+                    onClick={() => submitHandler('Pass')}
+                  >
+                    Mark as passed <SchoolIcon style={{ color: '#5390d9' }} />
+                  </button>
+                  <button
+                    className="w-full flex text-gray-500 justify-between  pt-2"
+                    onClick={() => submitHandler('Fail')}
+                  >
+                    Mark as failed{' '}
+                    <NotInterestedOutlinedIcon style={{ color: '#ad2829' }} />
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </>
