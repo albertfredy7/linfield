@@ -8,8 +8,19 @@ import makeAnimated from 'react-select/animated';
 import axios from 'axios';
 import { set } from 'date-fns';
 import MobileNavigation from '../Components/MobileNavigation';
+import { useParams } from 'react-router-dom';
 
 const StudentProfile = () => {
+  const { number } = useParams();
+
+  useEffect(() => {
+    if (number) {
+      performSearch(number);
+    }
+  }, []);
+
+  console.log('printing the number', number);
+
   const [studentData, setStudentData] = useState(null);
   const [course, setCourse] = useState(null);
   const [batch, setBatch] = useState(null);
@@ -21,7 +32,6 @@ const StudentProfile = () => {
   const [registrationStatus, setRegistrationStatus] = useState(null);
   const [stream, setStream] = useState(null);
   const [onDemandExams, setOnDemandExams] = useState(false);
-
 
   const [academicStatus, setAcademicStatus] = useState('cancelled');
   const [selectedCategory, setSelectedCategory] = useState('personal details');
@@ -41,7 +51,6 @@ const StudentProfile = () => {
     setSelectedCategory(category);
   };
 
-
   const animatedComponents = makeAnimated();
 
   const courseOptions = [
@@ -55,7 +64,9 @@ const StudentProfile = () => {
     },
   ];
 
-  const selectedCourseOption = courseOptions.find(option => option.value === course);
+  const selectedCourseOption = courseOptions.find(
+    (option) => option.value === course
+  );
 
   const batchOptions = [
     {
@@ -72,7 +83,9 @@ const StudentProfile = () => {
     },
   ];
 
-  const selectedBatchOption = batchOptions.find(option => option.value === batch);
+  const selectedBatchOption = batchOptions.find(
+    (option) => option.value === batch
+  );
 
   const intakeOptions = [
     {
@@ -85,8 +98,9 @@ const StudentProfile = () => {
     },
   ];
 
-
-  const selectedIntakeOption = intakeOptions.find(option => option.value === intake);
+  const selectedIntakeOption = intakeOptions.find(
+    (option) => option.value === intake
+  );
 
   const subjectsOptions = [
     {
@@ -111,7 +125,9 @@ const StudentProfile = () => {
     },
   ];
 
-  const selectedSubjectsOption = subjectsOptions.filter(option => subjects.includes(option.value));
+  const selectedSubjectsOption = subjectsOptions.filter((option) =>
+    subjects.includes(option.value)
+  );
 
   const optionalSubjectsOptions = [
     {
@@ -136,8 +152,6 @@ const StudentProfile = () => {
     },
   ];
 
-
-
   const booleanOptions = [
     {
       label: 'Yes',
@@ -156,7 +170,9 @@ const StudentProfile = () => {
     },
   ];
 
-  const selectedBranchOption = branchOptions.find(option => option.value === branch);
+  const selectedBranchOption = branchOptions.find(
+    (option) => option.value === branch
+  );
 
   const modeOptions = [
     {
@@ -173,26 +189,28 @@ const StudentProfile = () => {
     },
   ];
 
-  const selectedModeOption = modeOptions.find(option => option.value === mode);
+  const selectedModeOption = modeOptions.find(
+    (option) => option.value === mode
+  );
 
   const streamOptions = [
     {
       value: 'Stream1',
-      label: 'Stream 1'
+      label: 'Stream 1',
     },
     {
       value: 'Stream2',
-      label: 'Stream 2'
+      label: 'Stream 2',
     },
     {
       value: 'Stream3',
-      label: 'Stream 3'
+      label: 'Stream 3',
     },
     {
       value: 'Stream4',
-      label: 'Stream 4'
-    }
-  ]
+      label: 'Stream 4',
+    },
+  ];
 
   const academicStatusOptions = [
     { value: 'Pass', label: 'Pass' },
@@ -202,18 +220,34 @@ const StudentProfile = () => {
     { value: 'Pursuing', label: 'Pursuing' },
   ];
 
-  const selectedAcademicStatusOption = academicStatusOptions.find(option => option.value === academicStatus);
+  const selectedAcademicStatusOption = academicStatusOptions.find(
+    (option) => option.value === academicStatus
+  );
 
-  const selectedStreamOption = streamOptions.find(option => option.value === stream);
-  const selectedTocOption = booleanOptions.find(option => option.value === toc);
-  const selectedTocRecievedOption = booleanOptions.find(option => option.value === tocReceived);
-  const selectedTocSubmittedOption = booleanOptions.find(option => option.value === tocSubmitted);
-  const selectedtmaSubmittedOption = booleanOptions.find(option => option.value === tmaSubmitted);
-  const selectedtmaReceivedOption = booleanOptions.find(option => option.value === tmaReceived);
-  const selectedOptionalSubjectsExam = booleanOptions.find(option => option.value === optionalExams);
-  const selectedOptionalSubjectsOption = optionalSubjectsOptions.filter(option => optionalSubjects.includes(option.value));
-
-
+  const selectedStreamOption = streamOptions.find(
+    (option) => option.value === stream
+  );
+  const selectedTocOption = booleanOptions.find(
+    (option) => option.value === toc
+  );
+  const selectedTocRecievedOption = booleanOptions.find(
+    (option) => option.value === tocReceived
+  );
+  const selectedTocSubmittedOption = booleanOptions.find(
+    (option) => option.value === tocSubmitted
+  );
+  const selectedtmaSubmittedOption = booleanOptions.find(
+    (option) => option.value === tmaSubmitted
+  );
+  const selectedtmaReceivedOption = booleanOptions.find(
+    (option) => option.value === tmaReceived
+  );
+  const selectedOptionalSubjectsExam = booleanOptions.find(
+    (option) => option.value === optionalExams
+  );
+  const selectedOptionalSubjectsOption = optionalSubjectsOptions.filter(
+    (option) => optionalSubjects.includes(option.value)
+  );
 
   const performSearch = async (query) => {
     try {
@@ -241,7 +275,6 @@ const StudentProfile = () => {
     }
   };
 
-
   useEffect(() => {
     setCourse(studentData ? studentData[0].course : '');
     setBatch(studentData ? studentData[0].batch : '');
@@ -265,13 +298,9 @@ const StudentProfile = () => {
     setOnDemandExams(studentData ? studentData[0].onDemandExam : false);
     setOptionalExams(studentData ? studentData[0].optionalSubjectsExam : false);
     setOptionalSubjects(studentData ? studentData[0].optionalSubjects : []);
-
-
   }, [studentData]);
 
   console.log('studentData:', studentData);
-
-
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
@@ -286,127 +315,199 @@ const StudentProfile = () => {
                 Filter students based on your criteria
               </h1>
             </div>
-            <div className='p-3'>
+            <div className="p-3">
               <SwitchButton
                 category={selectedCategory}
                 onSelect={handleCategorySelect}
               />
             </div>
             <div className="flex flex-col gap-3 px-6 overflow-y-auto scroll-smooth pt-6 pb-20">
-
-              {
-                selectedCategory === 'personal details' && (
-                  <div className='flex flex-col gap-2'>
-                    {/* name */}
-                    <div>
-                      <label htmlFor="name" className="block text-sm lg:text-lg font-medium text-gray-900">
-                        Name
-                      </label>
-                      <input type="text" id="name"
-                        className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                        placeholder="John" value={studentData ? studentData[0].name : ''} required />
-                    </div>
-
-                    {/* place */}
-                    <div>
-                      <label htmlFor="place" className="block text-sm lg:text-lg font-medium text-gray-900">
-                        Place
-                      </label>
-                      <input type="text" id="place"
-                        className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                        placeholder="Kochi" value={studentData ? studentData[0].place : ''} />
-                    </div>
-
-                    {/* dob */}
-                    <div>
-                      <label htmlFor="dob" className="block text-sm lg:text-lg font-medium text-gray-900">
-                        Date of Birth
-                      </label>
-                      <input type="date" id="dob"
-                        className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                        value={studentData ? new Date(studentData[0].dob).toISOString().split('T')[0] : ''} />
-                    </div>
-
-                    {/* phone no */}
-                    <div>
-                      <label htmlFor="phone" className="block text-sm lg:text-lg font-medium text-gray-900">
-                        Phone
-                      </label>
-                      <input type="text" id="phone"
-                        className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                        placeholder="9876543210" value={studentData ? studentData[0].phoneNumber : ''} />
-                    </div>
-
-                    {/* parent phone no */}
-                    <div>
-                      <label htmlFor="parentPhone" className="block text-sm lg:text-lg font-medium text-gray-900">
-                        Parent Phone
-                      </label>
-                      <input type="text" id="parentPhone"
-                        className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                        placeholder="9876543210" value={studentData ? studentData[0].parentNumber : ''} />
-                    </div>
-
-                    {/* email */}
-                    <div>
-                      <label htmlFor="email" className="block text-sm lg:text-lg font-medium text-gray-900">
-                        Email
-                      </label>
-                      <input type="email" id="email"
-                        className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                        placeholder="" value={studentData ? studentData[0].email : ''} />
-                    </div>
+              {selectedCategory === 'personal details' && (
+                <div className="flex flex-col gap-2">
+                  {/* name */}
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                      placeholder="John"
+                      value={studentData ? studentData[0].name : ''}
+                      required
+                    />
                   </div>
-                )
-              }
+
+                  {/* place */}
+                  <div>
+                    <label
+                      htmlFor="place"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
+                      Place
+                    </label>
+                    <input
+                      type="text"
+                      id="place"
+                      className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                      placeholder="Kochi"
+                      value={studentData ? studentData[0].place : ''}
+                    />
+                  </div>
+
+                  {/* dob */}
+                  <div>
+                    <label
+                      htmlFor="dob"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
+                      Date of Birth
+                    </label>
+                    <input
+                      type="date"
+                      id="dob"
+                      className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                      value={
+                        studentData
+                          ? new Date(studentData[0].dob)
+                              .toISOString()
+                              .split('T')[0]
+                          : ''
+                      }
+                    />
+                  </div>
+
+                  {/* phone no */}
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      id="phone"
+                      className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                      placeholder="9876543210"
+                      value={studentData ? studentData[0].phoneNumber : ''}
+                    />
+                  </div>
+
+                  {/* parent phone no */}
+                  <div>
+                    <label
+                      htmlFor="parentPhone"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
+                      Parent Phone
+                    </label>
+                    <input
+                      type="text"
+                      id="parentPhone"
+                      className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                      placeholder="9876543210"
+                      value={studentData ? studentData[0].parentNumber : ''}
+                    />
+                  </div>
+
+                  {/* email */}
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                      placeholder=""
+                      value={studentData ? studentData[0].email : ''}
+                    />
+                  </div>
+                </div>
+              )}
 
               {selectedCategory === 'academic details' && (
-                <div className='flex flex-col gap-2'>
-
+                <div className="flex flex-col gap-2">
                   {/* admn no */}
                   <div>
-                    <label htmlFor="admnNo" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="admnNo"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Admission Number
                     </label>
-                    <input type="text" id="admnNo"
+                    <input
+                      type="text"
+                      id="admnNo"
                       className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                      placeholder="123456" value={studentData ? studentData[0].admissionNumber : ''} />
+                      placeholder="123456"
+                      value={studentData ? studentData[0].admissionNumber : ''}
+                    />
                   </div>
 
                   {/* admission coordinator */}
                   <div>
-                    <label htmlFor="admnCoordinator" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="admnCoordinator"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Admission Coordinator
                     </label>
-                    <input type="text" id="admnCoordinator"
+                    <input
+                      type="text"
+                      id="admnCoordinator"
                       className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                      placeholder="John Doe" value={studentData ? studentData[0].admissionCoordinator : ''} />
+                      placeholder="John Doe"
+                      value={
+                        studentData ? studentData[0].admissionCoordinator : ''
+                      }
+                    />
                   </div>
 
                   {/* year */}
                   <div>
-                    <label htmlFor="year" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="year"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Year
                     </label>
-                    <input type="text" id="year"
+                    <input
+                      type="text"
+                      id="year"
                       className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                      placeholder="2022" value={studentData ? studentData[0].year : ''} />
+                      placeholder="2022"
+                      value={studentData ? studentData[0].year : ''}
+                    />
                   </div>
 
                   {/* intake */}
                   <div>
-                    <label htmlFor="intake" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="intake"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Intake
                     </label>
-                    <Select options={intakeOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={intakeOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -421,18 +522,23 @@ const StudentProfile = () => {
 
                   {/* course */}
                   <div>
-                    <label htmlFor="course" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="course"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Course
                     </label>
-                    <Select options={courseOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={courseOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       value={selectedCourseOption}
                       closeMenuOnSelect={true}
@@ -446,20 +552,25 @@ const StudentProfile = () => {
                   </div>
 
                   {/* if course === pluatwo then batch */}
-                  {course === "Plustwo" && (
+                  {course === 'Plustwo' && (
                     <div>
-                      <label htmlFor="batch" className="block text-sm lg:text-lg font-medium text-gray-900">
+                      <label
+                        htmlFor="batch"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
                         Batch
                       </label>
-                      <Select options={batchOptions} styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderRadius: '.5rem',
-                          padding: '0.4rem',
-                          borderWidth: '0px',
-                          backgroundColor: 'RGB(255, 255, 255)',
-                        }),
-                      }}
+                      <Select
+                        options={batchOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '.5rem',
+                            padding: '0.4rem',
+                            borderWidth: '0px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
                         className="border-white text-sm lg:text-lg"
                         value={selectedBatchOption}
                         closeMenuOnSelect={true}
@@ -475,18 +586,23 @@ const StudentProfile = () => {
 
                   {/* mode */}
                   <div>
-                    <label htmlFor="mode" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="mode"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Mode
                     </label>
-                    <Select options={modeOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={modeOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -501,18 +617,23 @@ const StudentProfile = () => {
 
                   {/* branch */}
                   <div>
-                    <label htmlFor="branch" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="branch"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Branch
                     </label>
-                    <Select options={branchOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={branchOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -527,52 +648,77 @@ const StudentProfile = () => {
 
                   {/* reference no */}
                   <div>
-                    <label htmlFor="referenceNo" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="referenceNo"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Reference Number
                     </label>
-                    <input type="text" id="referenceNo"
+                    <input
+                      type="text"
+                      id="referenceNo"
                       className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                      placeholder="123456" value={referenceNo} onChange={(e) => setReferenceNo(e.target.value)}
+                      placeholder="123456"
+                      value={referenceNo}
+                      onChange={(e) => setReferenceNo(e.target.value)}
                     />
                   </div>
 
                   {/* enrollment no */}
                   <div>
-                    <label htmlFor="enrollmentNo" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="enrollmentNo"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Enrollment Number
                     </label>
-                    <input type="text" id="enrollmentNo"
+                    <input
+                      type="text"
+                      id="enrollmentNo"
                       className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                      placeholder="123456" value={enrollmentNo} onChange={(e) => setEnrollmentNo(e.target.value)}
+                      placeholder="123456"
+                      value={enrollmentNo}
+                      onChange={(e) => setEnrollmentNo(e.target.value)}
                     />
                   </div>
 
                   {/* registration status */}
                   <div>
-                    <label htmlFor="registrationStatus" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="registrationStatus"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Registration Status
                     </label>
-                    <input type="text" id="registrationStatus"
+                    <input
+                      type="text"
+                      id="registrationStatus"
                       className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                      placeholder="Registered" value={registrationStatus} onChange={(e) =>
-                        setRegistrationStatus(e.target.value)}
+                      placeholder="Registered"
+                      value={registrationStatus}
+                      onChange={(e) => setRegistrationStatus(e.target.value)}
                     />
                   </div>
 
                   {/* academic status */}
                   <div>
-                    <label htmlFor="academicStatus" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="academicStatus"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Academic Status
                     </label>
-                    <Select options={academicStatusOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={academicStatusOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -580,25 +726,34 @@ const StudentProfile = () => {
                       name="academicStatus"
                       value={selectedAcademicStatusOption}
                       controlShouldRenderValue={
-                        academicStatus ? true : academicStatus === false ? true : false
+                        academicStatus
+                          ? true
+                          : academicStatus === false
+                          ? true
+                          : false
                       }
                     />
                   </div>
 
                   {/* stream */}
                   <div>
-                    <label htmlFor="stream" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="stream"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Stream
                     </label>
-                    <Select options={streamOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={streamOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -611,45 +766,50 @@ const StudentProfile = () => {
                     />
                   </div>
 
-                  {
-                    academicStatus === 'Cancelled' && (
-                      <div>
-                        <label htmlFor="reason" className="block text-sm lg:text-lg font-medium text-gray-900">
-                          Reason
-                        </label>
-                        <input type="text" id="reason"
-                          className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="Reason for cancellation" />
-                      </div>
-
-                    )
-                  }
-
+                  {academicStatus === 'Cancelled' && (
+                    <div>
+                      <label
+                        htmlFor="reason"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Reason
+                      </label>
+                      <input
+                        type="text"
+                        id="reason"
+                        className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="Reason for cancellation"
+                      />
+                    </div>
+                  )}
                 </div>
-              )
-              }
+              )}
 
               {selectedCategory === 'subjects & assignments' && (
-                <div className='flex flex-col gap-2'>
-
+                <div className="flex flex-col gap-2">
                   {/* subjects */}
                   <div>
-                    <label htmlFor="subjects" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="subjects"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Subjects
                     </label>
-                    <Select options={subjectsOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={subjectsOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
-                      onChange={(e) => setSubjects(e.map(sub => sub.value))}
+                      onChange={(e) => setSubjects(e.map((sub) => sub.value))}
                       name="subjects"
                       value={selectedSubjectsOption}
                       controlShouldRenderValue={
@@ -660,13 +820,17 @@ const StudentProfile = () => {
                     />
                   </div>
 
-                  {
-                    onDemandExams && (
-                      <div>
-                        <label htmlFor="ondemandSubjects" className="block text-sm lg:text-lg font-medium text-gray-900">
-                          On Demand Subjects
-                        </label>
-                        <Select options={subjectsOptions} styles={{
+                  {onDemandExams && (
+                    <div>
+                      <label
+                        htmlFor="ondemandSubjects"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        On Demand Subjects
+                      </label>
+                      <Select
+                        options={subjectsOptions}
+                        styles={{
                           control: (baseStyles, state) => ({
                             ...baseStyles,
                             borderRadius: '.5rem',
@@ -675,36 +839,46 @@ const StudentProfile = () => {
                             backgroundColor: 'RGB(255, 255, 255)',
                           }),
                         }}
-                          className="border-white text-sm lg:text-lg"
-                          closeMenuOnSelect={true}
-                          isSearchable={false}
-                          onChange={(e) => setOndemandSubjects(e.map(sub => sub.value))}
-                          name="ondemandSubjects"
-                          value={ondemandSubjects}
-                          controlShouldRenderValue={
-                            ondemandSubjects ? true : ondemandSubjects === false ? true : false
-                          }
-                          isMulti
-                          components={animatedComponents}
-                        />
-                      </div>
-                    )
-                  }
+                        className="border-white text-sm lg:text-lg"
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        onChange={(e) =>
+                          setOndemandSubjects(e.map((sub) => sub.value))
+                        }
+                        name="ondemandSubjects"
+                        value={ondemandSubjects}
+                        controlShouldRenderValue={
+                          ondemandSubjects
+                            ? true
+                            : ondemandSubjects === false
+                            ? true
+                            : false
+                        }
+                        isMulti
+                        components={animatedComponents}
+                      />
+                    </div>
+                  )}
 
                   {/* toc */}
                   <div>
-                    <label htmlFor="toc" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="toc"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       TOC
                     </label>
-                    <Select options={booleanOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -719,26 +893,37 @@ const StudentProfile = () => {
 
                   {/* toc subjects */}
                   <div>
-                    <label htmlFor="tocSubjects" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="tocSubjects"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       TOC Subjects
                     </label>
-                    <Select options={subjectsOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={subjectsOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
-                      onChange={(e) => setTocSubjects(e.map(sub => sub.value))}
+                      onChange={(e) =>
+                        setTocSubjects(e.map((sub) => sub.value))
+                      }
                       name="tocSubjects"
                       value={tocSubjects}
                       controlShouldRenderValue={
-                        tocSubjects ? true : tocSubjects === false ? true : false
+                        tocSubjects
+                          ? true
+                          : tocSubjects === false
+                          ? true
+                          : false
                       }
                       isMulti
                       components={animatedComponents}
@@ -747,18 +932,23 @@ const StudentProfile = () => {
 
                   {/* toc received */}
                   <div>
-                    <label htmlFor="tocReceived" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="tocReceived"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       TOC Received
                     </label>
-                    <Select options={booleanOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -766,25 +956,34 @@ const StudentProfile = () => {
                       name="tocReceived"
                       value={selectedTocRecievedOption}
                       controlShouldRenderValue={
-                        tocReceived ? true : tocReceived === false ? true : false
+                        tocReceived
+                          ? true
+                          : tocReceived === false
+                          ? true
+                          : false
                       }
                     />
                   </div>
 
                   {/* toc submitted */}
                   <div>
-                    <label htmlFor="tocSubmitted" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="tocSubmitted"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       TOC Submitted
                     </label>
-                    <Select options={booleanOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -792,25 +991,34 @@ const StudentProfile = () => {
                       name="tocSubmitted"
                       value={selectedTocSubmittedOption}
                       controlShouldRenderValue={
-                        tocSubmitted ? true : tocSubmitted === false ? true : false
+                        tocSubmitted
+                          ? true
+                          : tocSubmitted === false
+                          ? true
+                          : false
                       }
                     />
                   </div>
 
                   {/* tma */}
                   <div>
-                    <label htmlFor="tma" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="tma"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       TMA
                     </label>
-                    <Select options={booleanOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -825,18 +1033,23 @@ const StudentProfile = () => {
 
                   {/* tma received */}
                   <div>
-                    <label htmlFor="tmaReceived" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="tmaReceived"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       TMA Received
                     </label>
-                    <Select options={booleanOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -844,25 +1057,34 @@ const StudentProfile = () => {
                       name="tmaReceived"
                       value={selectedtmaReceivedOption}
                       controlShouldRenderValue={
-                        tmaReceived ? true : tmaReceived === false ? true : false
+                        tmaReceived
+                          ? true
+                          : tmaReceived === false
+                          ? true
+                          : false
                       }
                     />
                   </div>
 
                   {/* tma submitted */}
                   <div>
-                    <label htmlFor="tmaSubmitted" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="tmaSubmitted"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       TMA Submitted
                     </label>
-                    <Select options={booleanOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -870,25 +1092,34 @@ const StudentProfile = () => {
                       name="tmaSubmitted"
                       value={selectedtmaSubmittedOption}
                       controlShouldRenderValue={
-                        tmaSubmitted ? true : tmaSubmitted === false ? true : false
+                        tmaSubmitted
+                          ? true
+                          : tmaSubmitted === false
+                          ? true
+                          : false
                       }
                     />
                   </div>
 
                   {/* optional exams */}
                   <div>
-                    <label htmlFor="optionalExams" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="optionalExams"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Optional Exams
                     </label>
-                    <Select options={booleanOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
@@ -896,48 +1127,59 @@ const StudentProfile = () => {
                       name="optionalExams"
                       value={selectedOptionalSubjectsExam}
                       controlShouldRenderValue={
-                        optionalExams ? true : optionalExams === false ? true : false
+                        optionalExams
+                          ? true
+                          : optionalExams === false
+                          ? true
+                          : false
                       }
                     />
                   </div>
 
                   {/* optional subjects */}
                   <div>
-                    <label htmlFor="optionalSubjects" className="block text-sm lg:text-lg font-medium text-gray-900">
+                    <label
+                      htmlFor="optionalSubjects"
+                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                    >
                       Optional Subjects
                     </label>
-                    <Select options={optionalSubjectsOptions} styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderRadius: '.5rem',
-                        padding: '0.4rem',
-                        borderWidth: '0px',
-                        backgroundColor: 'RGB(255, 255, 255)',
-                      }),
-                    }}
+                    <Select
+                      options={optionalSubjectsOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.4rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                      }}
                       className="border-white text-sm lg:text-lg"
                       closeMenuOnSelect={true}
                       isSearchable={false}
-                      onChange={(e) => setOptionalSubjects(e.map(sub => sub.value))}
+                      onChange={(e) =>
+                        setOptionalSubjects(e.map((sub) => sub.value))
+                      }
                       name="optionalSubjects"
                       value={selectedOptionalSubjectsOption}
                       controlShouldRenderValue={
-                        optionalSubjects ? true : optionalSubjects === false ? true : false
+                        optionalSubjects
+                          ? true
+                          : optionalSubjects === false
+                          ? true
+                          : false
                       }
                       isMulti
                       components={animatedComponents}
                     />
                   </div>
-
-
                 </div>
               )}
 
-
               {selectedCategory === 'fees & payments' && (
-                <FeeStatus studentData={studentData}/>
+                <FeeStatus studentData={studentData} />
               )}
-
             </div>
           </div>
 
@@ -951,7 +1193,6 @@ const StudentProfile = () => {
           <div className="md:col-span-1 lg:col-span-1">
             {/* <SidebarComponent /> */}
             <SidebarNew />
-
           </div>
           <div className="col-span-6 h-full  px-12  overflow-hidden ">
             <div className="  flex flex-col justify-center 3xl:justify-center px-4 ">
@@ -963,114 +1204,119 @@ const StudentProfile = () => {
               </h1>
             </div>
             <div className=" h-full flex flex-col gap-3">
-              <div className='p-5'>
+              <div className="p-5">
                 <SwitchButton
                   category={selectedCategory}
                   onSelect={handleCategorySelect}
                 />
               </div>
 
-              <div className='bg-white rounded-xl overflow-y-auto  p-10'>
-                {
-                  selectedCategory === 'personal details' ? (
-                    <div className='grid grid-cols-2  items-center gap-5'>
-                      <div>
-                        <label
-                          htmlFor="name"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="John"
-                          value={studentData ? studentData[0].name : ''}
-                          required
-                        />
-                      </div>
-                      {/* place */}
-                      <div>
-                        <label
-                          htmlFor="place"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Place
-                        </label>
-                        <input
-                          type="text"
-                          id="place"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="Kochi"
-                          value={studentData ? studentData[0].place : ''}
-                        />
-                      </div>
-                      {/* dob */}
-                      <div>
-                        <label
-                          htmlFor="dob"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Date of Birth
-                        </label>
-                        <input
-                          type="date"
-                          id="dob"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          value={studentData ? new Date(studentData[0].dob).toISOString().split('T')[0] : ''}
-                        />
-                      </div>
-                      {/* phone no */}
-                      <div>
-                        <label
-                          htmlFor="phone"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Phone
-                        </label>
-                        <input
-                          type="text"
-                          id="phone"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="9876543210"
-                          value={studentData ? studentData[0].phoneNumber : ''}
-                        />
-                      </div>
-                      {/* parent phone no */}
-                      <div>
-                        <label
-                          htmlFor="parentPhone"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Parent Phone
-                        </label>
-                        <input
-                          type="text"
-                          id="parentPhone"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="9876543210"
-                          value={studentData ? studentData[0].parentNumber : ''}
-                        />
-                      </div>
-                      {/* email */}
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="student@gmail.com"
-                          value={studentData ? studentData[0].email : ''}
-                        />
-                      </div>
-                      {/* password */}
-                      {/* <div>
+              <div className="bg-white rounded-xl overflow-y-auto  p-10">
+                {selectedCategory === 'personal details' ? (
+                  <div className="grid grid-cols-2  items-center gap-5">
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="John"
+                        value={studentData ? studentData[0].name : ''}
+                        required
+                      />
+                    </div>
+                    {/* place */}
+                    <div>
+                      <label
+                        htmlFor="place"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Place
+                      </label>
+                      <input
+                        type="text"
+                        id="place"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="Kochi"
+                        value={studentData ? studentData[0].place : ''}
+                      />
+                    </div>
+                    {/* dob */}
+                    <div>
+                      <label
+                        htmlFor="dob"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Date of Birth
+                      </label>
+                      <input
+                        type="date"
+                        id="dob"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        value={
+                          studentData
+                            ? new Date(studentData[0].dob)
+                                .toISOString()
+                                .split('T')[0]
+                            : ''
+                        }
+                      />
+                    </div>
+                    {/* phone no */}
+                    <div>
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Phone
+                      </label>
+                      <input
+                        type="text"
+                        id="phone"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="9876543210"
+                        value={studentData ? studentData[0].phoneNumber : ''}
+                      />
+                    </div>
+                    {/* parent phone no */}
+                    <div>
+                      <label
+                        htmlFor="parentPhone"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Parent Phone
+                      </label>
+                      <input
+                        type="text"
+                        id="parentPhone"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="9876543210"
+                        value={studentData ? studentData[0].parentNumber : ''}
+                      />
+                    </div>
+                    {/* email */}
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="student@gmail.com"
+                        value={studentData ? studentData[0].email : ''}
+                      />
+                    </div>
+                    {/* password */}
+                    {/* <div>
                         <label
                           htmlFor="password"
                           className="block text-sm lg:text-lg font-medium text-gray-900"
@@ -1085,692 +1331,675 @@ const StudentProfile = () => {
                           value={studentData ? studentData[0].password : ''}
                         />
                       </div> */}
-                    </div>
-                  )
-                    :
-                    selectedCategory === 'academic details' ? (
+                  </div>
+                ) : selectedCategory === 'academic details' ? (
+                  <div>
+                    <div className="grid grid-cols-2 items-center gap-5">
+                      {/* admn no */}
                       <div>
-                        <div className='grid grid-cols-2 items-center gap-5'>
-                          {/* admn no */}
-                          <div>
-                            <label
-                              htmlFor="admnNo"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Admission Number
-                            </label>
-                            <input
-                              type="text"
-                              id="admnNo"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="123456"
-                              value={studentData ? studentData[0].admissionNumber : ''}
-                            />
-                          </div>
-                          {/* admission coordinator */}
-                          <div>
-                            <label
-                              htmlFor="admnCoordinator"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Admission Coordinator
-                            </label>
-                            <input
-                              type="text"
-                              id="admnCoordinator"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="John Doe"
-                              value={studentData ? studentData[0].admissionCoordinator : ''}
-                            />
-                          </div>
-                          {/* year */}
-                          <div>
-                            <label
-                              htmlFor="year"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Year
-                            </label>
-                            <input
-                              type="text"
-                              id="year"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="2022"
-                              value={studentData ? studentData[0].year : ''}
-                            />
-                          </div>
-                          {/* intake */}
-                          <div>
-                            <label
-                              htmlFor="intake"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Intake
-                            </label>
-                            <Select
-                              options={intakeOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                }),
-                              }}
-                              className="border-white text-sm lg:text-lg"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setIntake(e.value)}
-                              name="intake"
-                              value={selectedIntakeOption}
-                              controlShouldRenderValue={
-                                intake ? true : intake === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* course */}
-                          <div>
-                            <label
-                              htmlFor="course"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Course
-                            </label>
-                            <Select
-                              options={courseOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base "
-                              value={selectedCourseOption}
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setCourse(e.value)}
-                              name="feeType"
-                              controlShouldRenderValue={
-                                course ? true : course === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* if course === pluatwo then batch */}
-                          {
-                            course === "Plustwo" && (
-                              <div>
-                                <label
-                                  htmlFor="batch"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Batch
-                                </label>
-                                <Select
-                                  options={batchOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '.5rem',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                      fontSize: '1rem',
-                                    }),
-                                    singleValue: (baseStyles) => ({
-                                      ...baseStyles,
-                                      color: '#000000', // Change the color of the text inside the input container
-                                    }),
-                                  }}
-                                  className="border-white text-base text-gray-500"
-                                  value={selectedBatchOption}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setBatch(e.value)}
-                                  name="batch"
-                                  controlShouldRenderValue={
-                                    batch ? true : batch === false ? true : false
-                                  }
-                                />
-                              </div>
-                            )
+                        <label
+                          htmlFor="admnNo"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Admission Number
+                        </label>
+                        <input
+                          type="text"
+                          id="admnNo"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="123456"
+                          value={
+                            studentData ? studentData[0].admissionNumber : ''
                           }
-
-                          {/* mode */}
-                          <div>
-                            <label
-                              htmlFor="mode"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Mode
-                            </label>
-                            <Select
-                              options={modeOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setMode(e.value)}
-                              name="feeType"
-                              value={selectedModeOption}
-                              controlShouldRenderValue={
-                                mode ? true : mode === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* branch */}
-                          <div>
-                            <label
-                              htmlFor="branch"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Branch
-                            </label>
-                            <Select
-                              options={branchOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setBranch(e.value)}
-                              name="branch"
-                              value={selectedBranchOption}
-                              controlShouldRenderValue={
-                                branch ? true : branch === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* reference no */}
-                          <div>
-                            <label
-                              htmlFor="referenceNo"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Reference Number
-                            </label>
-                            <input
-                              type="text"
-                              id="referenceNo"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="123456"
-                              value={referenceNo}
-                              onChange={(e) => setReferenceNo(e.target.value)}
-                            />
-                          </div>
-
-                          {/* enrollment no */}
-                          <div>
-                            <label
-                              htmlFor="enrollmentNo"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Enrollment Number
-                            </label>
-                            <input
-                              type="text"
-                              id="enrollmentNo"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="123456"
-                              value={enrollmentNo}
-                              onChange={(e) => setEnrollmentNo(e.target.value)}
-                            />
-                          </div>
-
-                          {/* registration status */}
-                          <div>
-                            <label
-                              htmlFor="registrationStatus"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Registration Status
-                            </label>
-                            <input
-                              type="text"
-                              id="registrationStatus"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="Registered"
-                              value={registrationStatus}
-                              onChange={(e) => setRegistrationStatus(e.target.value)}
-                            />
-                          </div>
-
-                          {/* academic status */}
-                          <div>
-                            <label
-                              htmlFor="academicStatus"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Academic Status
-                            </label>
-                            <Select
-                              options={academicStatusOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setAcademicStatus(e.value)}
-                              value={selectedAcademicStatusOption}
-                            />
-                          </div>
-
-                          {/* stream */}
-                          <div>
-                            <label
-                              htmlFor="stream"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Stream
-                            </label>
-                            <Select
-                              options={streamOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setStream(e.value)}
-                              name="stream"
-                              value={selectedStreamOption}
-
-                            />
-                          </div>
-
-                          {/* if academic status is cancelled, then reason for cancellation */}
-                          {
-                            academicStatus === 'cancelled' && (
-                              <div>
-                                <label
-                                  htmlFor="reasonForCancellation"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Reason for Cancellation
-                                </label>
-                                <input
-                                  type="text"
-                                  id="reasonForCancellation"
-                                  className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                                  placeholder="Not interested"
-                                />
-                              </div>
-                            )
+                        />
+                      </div>
+                      {/* admission coordinator */}
+                      <div>
+                        <label
+                          htmlFor="admnCoordinator"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Admission Coordinator
+                        </label>
+                        <input
+                          type="text"
+                          id="admnCoordinator"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="John Doe"
+                          value={
+                            studentData
+                              ? studentData[0].admissionCoordinator
+                              : ''
                           }
+                        />
+                      </div>
+                      {/* year */}
+                      <div>
+                        <label
+                          htmlFor="year"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Year
+                        </label>
+                        <input
+                          type="text"
+                          id="year"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="2022"
+                          value={studentData ? studentData[0].year : ''}
+                        />
+                      </div>
+                      {/* intake */}
+                      <div>
+                        <label
+                          htmlFor="intake"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Intake
+                        </label>
+                        <Select
+                          options={intakeOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                            }),
+                          }}
+                          className="border-white text-sm lg:text-lg"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setIntake(e.value)}
+                          name="intake"
+                          value={selectedIntakeOption}
+                          controlShouldRenderValue={
+                            intake ? true : intake === false ? true : false
+                          }
+                        />
+                      </div>
 
+                      {/* course */}
+                      <div>
+                        <label
+                          htmlFor="course"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Course
+                        </label>
+                        <Select
+                          options={courseOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base "
+                          value={selectedCourseOption}
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setCourse(e.value)}
+                          name="feeType"
+                          controlShouldRenderValue={
+                            course ? true : course === false ? true : false
+                          }
+                        />
+                      </div>
 
+                      {/* if course === pluatwo then batch */}
+                      {course === 'Plustwo' && (
+                        <div>
+                          <label
+                            htmlFor="batch"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Batch
+                          </label>
+                          <Select
+                            options={batchOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '.5rem',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                                fontSize: '1rem',
+                              }),
+                              singleValue: (baseStyles) => ({
+                                ...baseStyles,
+                                color: '#000000', // Change the color of the text inside the input container
+                              }),
+                            }}
+                            className="border-white text-base text-gray-500"
+                            value={selectedBatchOption}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setBatch(e.value)}
+                            name="batch"
+                            controlShouldRenderValue={
+                              batch ? true : batch === false ? true : false
+                            }
+                          />
+                        </div>
+                      )}
+
+                      {/* mode */}
+                      <div>
+                        <label
+                          htmlFor="mode"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Mode
+                        </label>
+                        <Select
+                          options={modeOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setMode(e.value)}
+                          name="feeType"
+                          value={selectedModeOption}
+                          controlShouldRenderValue={
+                            mode ? true : mode === false ? true : false
+                          }
+                        />
+                      </div>
+
+                      {/* branch */}
+                      <div>
+                        <label
+                          htmlFor="branch"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Branch
+                        </label>
+                        <Select
+                          options={branchOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setBranch(e.value)}
+                          name="branch"
+                          value={selectedBranchOption}
+                          controlShouldRenderValue={
+                            branch ? true : branch === false ? true : false
+                          }
+                        />
+                      </div>
+
+                      {/* reference no */}
+                      <div>
+                        <label
+                          htmlFor="referenceNo"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Reference Number
+                        </label>
+                        <input
+                          type="text"
+                          id="referenceNo"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="123456"
+                          value={referenceNo}
+                          onChange={(e) => setReferenceNo(e.target.value)}
+                        />
+                      </div>
+
+                      {/* enrollment no */}
+                      <div>
+                        <label
+                          htmlFor="enrollmentNo"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Enrollment Number
+                        </label>
+                        <input
+                          type="text"
+                          id="enrollmentNo"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="123456"
+                          value={enrollmentNo}
+                          onChange={(e) => setEnrollmentNo(e.target.value)}
+                        />
+                      </div>
+
+                      {/* registration status */}
+                      <div>
+                        <label
+                          htmlFor="registrationStatus"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Registration Status
+                        </label>
+                        <input
+                          type="text"
+                          id="registrationStatus"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="Registered"
+                          value={registrationStatus}
+                          onChange={(e) =>
+                            setRegistrationStatus(e.target.value)
+                          }
+                        />
+                      </div>
+
+                      {/* academic status */}
+                      <div>
+                        <label
+                          htmlFor="academicStatus"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Academic Status
+                        </label>
+                        <Select
+                          options={academicStatusOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setAcademicStatus(e.value)}
+                          value={selectedAcademicStatusOption}
+                        />
+                      </div>
+
+                      {/* stream */}
+                      <div>
+                        <label
+                          htmlFor="stream"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Stream
+                        </label>
+                        <Select
+                          options={streamOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setStream(e.value)}
+                          name="stream"
+                          value={selectedStreamOption}
+                        />
+                      </div>
+
+                      {/* if academic status is cancelled, then reason for cancellation */}
+                      {academicStatus === 'cancelled' && (
+                        <div>
+                          <label
+                            htmlFor="reasonForCancellation"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Reason for Cancellation
+                          </label>
+                          <input
+                            type="text"
+                            id="reasonForCancellation"
+                            className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                            placeholder="Not interested"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : selectedCategory === 'subjects & assignments' ? (
+                  <div>
+                    <div className="grid grid-cols-2 items-center gap-5">
+                      {/* subjects */}
+                      {/* use react select for subjects */}
+                      <div
+                        className={
+                          onDemandExams === false ? 'col-span-2' : 'col-span-1'
+                        }
+                      >
+                        <label
+                          htmlFor="subjects"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Subjects
+                        </label>
+                        <Select
+                          options={subjectsOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                            }),
+                          }}
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          isMulti
+                          onChange={(e) => setSubjects(e.value)}
+                          onBlur={() => console.log('Blur')}
+                          onFocus={() => console.log('Focus')}
+                          value={selectedSubjectsOption}
+                        />
+                      </div>
+
+                      {/* ondemand subjects */}
+                      {onDemandExams === 'true' && (
+                        <div>
+                          <label
+                            htmlFor="ondemandSubjects"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            On-demand subjects
+                          </label>
+                          <Select
+                            options={subjectsOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '.5rem',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            onChange={(e) => setOndemandSubjects(e.value)}
+                            onBlur={() => console.log('Blur')}
+                            onFocus={() => console.log('Focus')}
+                          />
+                        </div>
+                      )}
+
+                      <div className="col-span-3 grid grid-cols-2 gap-5">
+                        {/* toc -yes or no */}
+                        <div>
+                          <label
+                            htmlFor="toc"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TOC
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setToc(e.value)}
+                            value={selectedTocOption}
+                          />
+                        </div>
+
+                        {/* toc recieved */}
+                        <div>
+                          <label
+                            htmlFor="tocRecieved"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TOC Recieved
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTocRecieved(e.value)}
+                            value={selectedTocRecievedOption}
+                          />
+                        </div>
+
+                        {/* toc submitted */}
+                        <div>
+                          <label
+                            htmlFor="tocSubmitted"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TOC Submitted
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTocSubmitted(e.value)}
+                            value={selectedTocSubmittedOption}
+                          />
+                        </div>
+
+                        {/* optional exam */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="optionalExams"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Optional Exams
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setOptionalExams(e.value)}
+                            value={selectedOptionalSubjectsExam}
+                          />
                         </div>
                       </div>
-                    )
-                      :
-                      selectedCategory === 'subjects & assignments' ? (
-                        <div>
-                          <div className='grid grid-cols-2 items-center gap-5'>
-                            {/* subjects */}
-                            {/* use react select for subjects */}
-                            <div className={onDemandExams === false ? 'col-span-2' : 'col-span-1'}>
-                              <label
-                                htmlFor="subjects"
-                                className="block text-sm lg:text-lg font-medium text-gray-900"
-                              >
-                                Subjects
-                              </label>
-                              <Select
-                                options={subjectsOptions}
-                                styles={{
-                                  control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    borderRadius: '.5rem',
-                                    padding: '0.4rem',
-                                    borderWidth: '0px',
-                                    backgroundColor: 'RGB(240, 240, 240)',
-                                  }),
-                                }}
-                                closeMenuOnSelect={false}
-                                components={animatedComponents}
-                                isMulti
-                                onChange={(e) => setSubjects(e.value)}
-                                onBlur={() => console.log('Blur')}
-                                onFocus={() => console.log('Focus')}
-                                value={selectedSubjectsOption}
-                              />
-                            </div>
 
-                            {/* ondemand subjects */}
-                            {onDemandExams === 'true' &&
-                              <div>
-                                <label
-                                  htmlFor="ondemandSubjects"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  On-demand subjects
-                                </label>
-                                <Select
-                                  options={subjectsOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '.5rem',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={false}
-                                  components={animatedComponents}
-                                  isMulti
-                                  onChange={(e) => setOndemandSubjects(e.value)}
-                                  onBlur={() => console.log('Blur')}
-                                  onFocus={() => console.log('Focus')}
-                                />
-                              </div>}
-
-
-                            <div className='col-span-3 grid grid-cols-2 gap-5'>
-                              {/* toc -yes or no */}
-                              <div>
-                                <label
-                                  htmlFor="toc"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TOC
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setToc(e.value)}
-                                  value={selectedTocOption}
-                                />
-                              </div>
-
-                              {/* toc recieved */}
-                              <div>
-                                <label
-                                  htmlFor="tocRecieved"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TOC Recieved
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTocRecieved(e.value)}
-                                  value={selectedTocRecievedOption}
-                                />
-
-                              </div>
-
-                              {/* toc submitted */}
-                              <div>
-                                <label
-                                  htmlFor="tocSubmitted"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TOC Submitted
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTocSubmitted(e.value)}
-                                  value={selectedTocSubmittedOption}
-                                />
-                              </div>
-
-                              {/* optional exam */}
-                              <div className='col-span-1'>
-                                <label
-                                  htmlFor="optionalExams"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Optional Exams
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setOptionalExams(e.value)}
-                                  value={selectedOptionalSubjectsExam}
-
-                                />
-                              </div>
-
-
-                            </div>
-
-                            <div className='col-span-3 grid grid-cols-2 gap-5'>
-
-
-                              {/* optional subjects */}
-                              <div className='col-span-2'>
-                                <label
-                                  htmlFor="optionalSubjects"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Optional Subjects
-                                </label>
-                                <Select
-                                  options={optionalSubjectsOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '.5rem',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={false}
-                                  components={animatedComponents}
-                                  isMulti
-                                  onChange={(e) => setOptionalSubjects(e.value)}
-                                  value={selectedOptionalSubjectsOption}
-                                />
-                              </div>
-                            </div>
-
-                            {/* toc subjects */}
-                            <div className='col-span-2'>
-                              <label
-                                htmlFor="tocSubjects"
-                                className="block text-sm lg:text-lg font-medium text-gray-900"
-                              >
-                                TOC Subjects
-                              </label>
-                              <Select
-                                options={subjectsOptions}
-                                styles={{
-                                  control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    borderRadius: '.5rem',
-                                    padding: '0.4rem',
-                                    borderWidth: '0px',
-                                    backgroundColor: 'RGB(240, 240, 240)',
-                                  }),
-                                }}
-                                closeMenuOnSelect={false}
-                                components={animatedComponents}
-                                isMulti
-                                onChange={(e) => setTocSubjects(e.value)}
-                                onBlur={() => console.log('Blur')}
-                                onFocus={() => console.log('Focus')}
-                              // value={selectedTocSubjectsOption}
-                              />
-                            </div>
-
-                            <div className='col-span-3 grid grid-cols-2 gap-5'>
-
-
-                              {/* tma recieved */}
-                              <div>
-                                <label
-                                  htmlFor="tmaRecieved"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TMA Recieved
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTmaRecieved(e.value)}
-                                  value={selectedtmaReceivedOption}
-                                />
-                              </div>
-
-                              {/* tma submitted */}
-                              <div>
-                                <label
-                                  htmlFor="tmaSubmitted"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TMA Submitted
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTmaSubmitted(e.value)}
-                                  value={selectedtmaSubmittedOption}
-                                />
-                              </div>
-                            </div>
-
-
-                          </div>
+                      <div className="col-span-3 grid grid-cols-2 gap-5">
+                        {/* optional subjects */}
+                        <div className="col-span-2">
+                          <label
+                            htmlFor="optionalSubjects"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Optional Subjects
+                          </label>
+                          <Select
+                            options={optionalSubjectsOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '.5rem',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            onChange={(e) => setOptionalSubjects(e.value)}
+                            value={selectedOptionalSubjectsOption}
+                          />
                         </div>
-                      )
-                        :
-                        selectedCategory === 'fee details' ? (
-                          <div>
-                            <FeeStatus studentData={studentData} />
-                          </div>
-                        )
-                          :
-                          (
-                            <div>
-                              No data available
-                            </div>
-                          )
-                }
-              </div>
+                      </div>
 
+                      {/* toc subjects */}
+                      <div className="col-span-2">
+                        <label
+                          htmlFor="tocSubjects"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          TOC Subjects
+                        </label>
+                        <Select
+                          options={subjectsOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                            }),
+                          }}
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          isMulti
+                          onChange={(e) => setTocSubjects(e.value)}
+                          onBlur={() => console.log('Blur')}
+                          onFocus={() => console.log('Focus')}
+                          // value={selectedTocSubjectsOption}
+                        />
+                      </div>
+
+                      <div className="col-span-3 grid grid-cols-2 gap-5">
+                        {/* tma recieved */}
+                        <div>
+                          <label
+                            htmlFor="tmaRecieved"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TMA Recieved
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTmaRecieved(e.value)}
+                            value={selectedtmaReceivedOption}
+                          />
+                        </div>
+
+                        {/* tma submitted */}
+                        <div>
+                          <label
+                            htmlFor="tmaSubmitted"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TMA Submitted
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTmaSubmitted(e.value)}
+                            value={selectedtmaSubmittedOption}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : selectedCategory === 'fee details' ? (
+                  <div>
+                    <FeeStatus studentData={studentData} />
+                  </div>
+                ) : (
+                  <div>No data available</div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -1791,9 +2020,7 @@ const StudentProfile = () => {
                 </h3>
               </div>
               <div className="w-1/2 flex items-center">
-                <SearchBar
-                  onSearch={performSearch}
-                />
+                <SearchBar onSearch={performSearch} />
               </div>
             </div>
             <div className="h-full flex flex-col  ">
@@ -1811,810 +2038,785 @@ const StudentProfile = () => {
               ) : (
                 <div>Student data available </div>
               )} */}
-              <div className='pt-3 pb-10'>
+              <div className="pt-3 pb-10">
                 <SwitchButton
                   category={selectedCategory}
                   onSelect={handleCategorySelect}
                 />
               </div>
 
-              <div className='bg-white rounded-xl overflow-y-auto  p-10'>
-                {
-                  selectedCategory === 'personal details' ? (
-                    <div className='grid grid-cols-2  items-center gap-5'>
-                      <div>
-                        <label
-                          htmlFor="name"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="John"
-                          value={studentData ? studentData[0].name : ''}
-                          required
-                        />
-                      </div>
-                      {/* place */}
-                      <div>
-                        <label
-                          htmlFor="place"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Place
-                        </label>
-                        <input
-                          type="text"
-                          id="place"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="Kochi"
-                          value={studentData ? studentData[0].place : ''}
-                        />
-                      </div>
-                      {/* dob */}
-                      <div>
-                        <label
-                          htmlFor="dob"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Date of Birth
-                        </label>
-                        <input
-                          type="date"
-                          id="dob"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          value={studentData ? new Date(studentData[0].dob).toISOString().split('T')[0] : ''}
-                        />
-                      </div>
-                      {/* phone no */}
-                      <div>
-                        <label
-                          htmlFor="phone"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Phone
-                        </label>
-                        <input
-                          type="text"
-                          id="phone"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="9876543210"
-                          value={studentData ? studentData[0].phoneNumber : ''}
-                        />
-                      </div>
-                      {/* parent phone no */}
-                      <div>
-                        <label
-                          htmlFor="parentPhone"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Parent Phone
-                        </label>
-                        <input
-                          type="text"
-                          id="parentPhone"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="9876543210"
-                          value={studentData ? studentData[0].parentNumber : ''}
-                        />
-                      </div>
-                      {/* email */}
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="student@gmail.com"
-                          value={studentData ? studentData[0].email : ''}
-                        />
-                      </div>
-                      {/* password */}
-                      {/* <div>
-                        <label
-                          htmlFor="password"
-                          className="block text-sm lg:text-lg font-medium text-gray-900"
-                        >
-                          Password
-                        </label>
-                        <input
-                          type="password"
-                          id="password"
-                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                          placeholder="password"
-                          value={studentData ? studentData[0].password : ''}
-                        />
-                      </div> */}
+              <div className="bg-white rounded-xl overflow-y-auto  p-10">
+                {selectedCategory === 'personal details' ? (
+                  <div className="grid grid-cols-2  items-center gap-5">
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="John"
+                        value={studentData ? studentData[0].name : ''}
+                        required
+                      />
                     </div>
-                  )
-                    :
-                    selectedCategory === 'academic details' ? (
+                    {/* place */}
+                    <div>
+                      <label
+                        htmlFor="place"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Place
+                      </label>
+                      <input
+                        type="text"
+                        id="place"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="Kochi"
+                        value={studentData ? studentData[0].place : ''}
+                      />
+                    </div>
+                    {/* dob */}
+                    <div>
+                      <label
+                        htmlFor="dob"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Date of Birth
+                      </label>
+                      <input
+                        type="date"
+                        id="dob"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        value={
+                          studentData
+                            ? new Date(studentData[0].dob)
+                                .toISOString()
+                                .split('T')[0]
+                            : ''
+                        }
+                      />
+                    </div>
+                    {/* phone no */}
+                    <div>
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Phone
+                      </label>
+                      <input
+                        type="text"
+                        id="phone"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="9876543210"
+                        value={studentData ? studentData[0].phoneNumber : ''}
+                      />
+                    </div>
+                    {/* parent phone no */}
+                    <div>
+                      <label
+                        htmlFor="parentPhone"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Parent Phone
+                      </label>
+                      <input
+                        type="text"
+                        id="parentPhone"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="9876543210"
+                        value={studentData ? studentData[0].parentNumber : ''}
+                      />
+                    </div>
+                    {/* email */}
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm lg:text-lg font-medium text-gray-900"
+                      >
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                        placeholder="student@gmail.com"
+                        value={studentData ? studentData[0].email : ''}
+                      />
+                    </div>
+                  </div>
+                ) : selectedCategory === 'academic details' ? (
+                  <div>
+                    <div className="grid grid-cols-3 items-center gap-5">
+                      {/* admn no */}
                       <div>
-                        <div className='grid grid-cols-3 items-center gap-5'>
-                          {/* admn no */}
-                          <div>
-                            <label
-                              htmlFor="admnNo"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Admission Number
-                            </label>
-                            <input
-                              type="text"
-                              id="admnNo"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="123456"
-                              value={studentData ? studentData[0].admissionNumber : ''}
-                            />
-                          </div>
-                          {/* admission coordinator */}
-                          <div>
-                            <label
-                              htmlFor="admnCoordinator"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Admission Coordinator
-                            </label>
-                            <input
-                              type="text"
-                              id="admnCoordinator"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="John Doe"
-                              value={studentData ? studentData[0].admissionCoordinator : ''}
-                            />
-                          </div>
-                          {/* year */}
-                          <div>
-                            <label
-                              htmlFor="year"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Year
-                            </label>
-                            <input
-                              type="text"
-                              id="year"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="2022"
-                              value={studentData ? studentData[0].year : ''}
-                            />
-                          </div>
-                          {/* intake */}
-                          <div>
-                            <label
-                              htmlFor="intake"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Intake
-                            </label>
-                            <Select
-                              options={intakeOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                }),
-                              }}
-                              className="border-white text-sm lg:text-lg"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setIntake(e.value)}
-                              name="intake"
-                              value={selectedIntakeOption}
-                              controlShouldRenderValue={
-                                intake ? true : intake === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* course */}
-                          <div>
-                            <label
-                              htmlFor="course"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Course
-                            </label>
-                            <Select
-                              options={courseOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base "
-                              value={selectedCourseOption}
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setCourse(e.value)}
-                              name="feeType"
-                              controlShouldRenderValue={
-                                course ? true : course === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* if course === pluatwo then batch */}
-                          {
-                            course === "Plustwo" && (
-                              <div>
-                                <label
-                                  htmlFor="batch"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Batch
-                                </label>
-                                <Select
-                                  options={batchOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '.5rem',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                      fontSize: '1rem',
-                                    }),
-                                    singleValue: (baseStyles) => ({
-                                      ...baseStyles,
-                                      color: '#000000', // Change the color of the text inside the input container
-                                    }),
-                                  }}
-                                  className="border-white text-base text-gray-500"
-                                  value={selectedBatchOption}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setBatch(e.value)}
-                                  name="batch"
-                                  controlShouldRenderValue={
-                                    batch ? true : batch === false ? true : false
-                                  }
-                                />
-                              </div>
-                            )
+                        <label
+                          htmlFor="admnNo"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Admission Number
+                        </label>
+                        <input
+                          type="text"
+                          id="admnNo"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="123456"
+                          value={
+                            studentData ? studentData[0].admissionNumber : ''
                           }
-
-                          {/* mode */}
-                          <div>
-                            <label
-                              htmlFor="mode"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Mode
-                            </label>
-                            <Select
-                              options={modeOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setMode(e.value)}
-                              name="feeType"
-                              value={selectedModeOption}
-                              controlShouldRenderValue={
-                                mode ? true : mode === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* branch */}
-                          <div>
-                            <label
-                              htmlFor="branch"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Branch
-                            </label>
-                            <Select
-                              options={branchOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setBranch(e.value)}
-                              name="branch"
-                              value={selectedBranchOption}
-                              controlShouldRenderValue={
-                                branch ? true : branch === false ? true : false
-                              }
-                            />
-                          </div>
-
-                          {/* reference no */}
-                          <div>
-                            <label
-                              htmlFor="referenceNo"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Reference Number
-                            </label>
-                            <input
-                              type="text"
-                              id="referenceNo"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="123456"
-                              value={referenceNo}
-                              onChange={(e) => setReferenceNo(e.target.value)}
-                            />
-                          </div>
-
-                          {/* enrollment no */}
-                          <div>
-                            <label
-                              htmlFor="enrollmentNo"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Enrollment Number
-                            </label>
-                            <input
-                              type="text"
-                              id="enrollmentNo"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="123456"
-                              value={enrollmentNo}
-                              onChange={(e) => setEnrollmentNo(e.target.value)}
-                            />
-                          </div>
-
-                          {/* registration status */}
-                          <div>
-                            <label
-                              htmlFor="registrationStatus"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Registration Status
-                            </label>
-                            <input
-                              type="text"
-                              id="registrationStatus"
-                              className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                              placeholder="Registered"
-                              value={registrationStatus}
-                              onChange={(e) => setRegistrationStatus(e.target.value)}
-                            />
-                          </div>
-
-                          {/* academic status */}
-                          <div>
-                            <label
-                              htmlFor="academicStatus"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Academic Status
-                            </label>
-                            <Select
-                              options={academicStatusOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setAcademicStatus(e.value)}
-                              value={selectedAcademicStatusOption}
-                            />
-                          </div>
-
-                          {/* stream */}
-                          <div>
-                            <label
-                              htmlFor="stream"
-                              className="block text-sm lg:text-lg font-medium text-gray-900"
-                            >
-                              Stream
-                            </label>
-                            <Select
-                              options={streamOptions}
-                              styles={{
-                                control: (baseStyles, state) => ({
-                                  ...baseStyles,
-                                  borderRadius: '.5rem',
-                                  padding: '0.4rem',
-                                  borderWidth: '0px',
-                                  backgroundColor: 'RGB(240, 240, 240)',
-                                  fontSize: '1rem',
-                                }),
-                                singleValue: (baseStyles) => ({
-                                  ...baseStyles,
-                                  color: '#000000', // Change the color of the text inside the input container
-                                }),
-                              }}
-                              className="border-white text-base text-gray-500"
-                              closeMenuOnSelect={true}
-                              isSearchable={false}
-                              onChange={(e) => setStream(e.value)}
-                              name="stream"
-                              value={selectedStreamOption}
-
-                            />
-                          </div>
-
-                          {/* if academic status is cancelled, then reason for cancellation */}
-                          {
-                            academicStatus === 'cancelled' && (
-                              <div>
-                                <label
-                                  htmlFor="reasonForCancellation"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Reason for Cancellation
-                                </label>
-                                <input
-                                  type="text"
-                                  id="reasonForCancellation"
-                                  className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
-                                  placeholder="Not interested"
-                                />
-                              </div>
-                            )
+                        />
+                      </div>
+                      {/* admission coordinator */}
+                      <div>
+                        <label
+                          htmlFor="admnCoordinator"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Admission Coordinator
+                        </label>
+                        <input
+                          type="text"
+                          id="admnCoordinator"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="John Doe"
+                          value={
+                            studentData
+                              ? studentData[0].admissionCoordinator
+                              : ''
                           }
+                        />
+                      </div>
+                      {/* year */}
+                      <div>
+                        <label
+                          htmlFor="year"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Year
+                        </label>
+                        <input
+                          type="text"
+                          id="year"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="2022"
+                          value={studentData ? studentData[0].year : ''}
+                        />
+                      </div>
+                      {/* intake */}
+                      <div>
+                        <label
+                          htmlFor="intake"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Intake
+                        </label>
+                        <Select
+                          options={intakeOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                            }),
+                          }}
+                          className="border-white text-sm lg:text-lg"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setIntake(e.value)}
+                          name="intake"
+                          value={selectedIntakeOption}
+                          controlShouldRenderValue={
+                            intake ? true : intake === false ? true : false
+                          }
+                        />
+                      </div>
 
+                      {/* course */}
+                      <div>
+                        <label
+                          htmlFor="course"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Course
+                        </label>
+                        <Select
+                          options={courseOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base "
+                          value={selectedCourseOption}
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setCourse(e.value)}
+                          name="feeType"
+                          controlShouldRenderValue={
+                            course ? true : course === false ? true : false
+                          }
+                        />
+                      </div>
 
+                      {/* if course === pluatwo then batch */}
+                      {course === 'Plustwo' && (
+                        <div>
+                          <label
+                            htmlFor="batch"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Batch
+                          </label>
+                          <Select
+                            options={batchOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '.5rem',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                                fontSize: '1rem',
+                              }),
+                              singleValue: (baseStyles) => ({
+                                ...baseStyles,
+                                color: '#000000', // Change the color of the text inside the input container
+                              }),
+                            }}
+                            className="border-white text-base text-gray-500"
+                            value={selectedBatchOption}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setBatch(e.value)}
+                            name="batch"
+                            controlShouldRenderValue={
+                              batch ? true : batch === false ? true : false
+                            }
+                          />
+                        </div>
+                      )}
+
+                      {/* mode */}
+                      <div>
+                        <label
+                          htmlFor="mode"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Mode
+                        </label>
+                        <Select
+                          options={modeOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setMode(e.value)}
+                          name="feeType"
+                          value={selectedModeOption}
+                          controlShouldRenderValue={
+                            mode ? true : mode === false ? true : false
+                          }
+                        />
+                      </div>
+
+                      {/* branch */}
+                      <div>
+                        <label
+                          htmlFor="branch"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Branch
+                        </label>
+                        <Select
+                          options={branchOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setBranch(e.value)}
+                          name="branch"
+                          value={selectedBranchOption}
+                          controlShouldRenderValue={
+                            branch ? true : branch === false ? true : false
+                          }
+                        />
+                      </div>
+
+                      {/* reference no */}
+                      <div>
+                        <label
+                          htmlFor="referenceNo"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Reference Number
+                        </label>
+                        <input
+                          type="text"
+                          id="referenceNo"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="123456"
+                          value={referenceNo}
+                          onChange={(e) => setReferenceNo(e.target.value)}
+                        />
+                      </div>
+
+                      {/* enrollment no */}
+                      <div>
+                        <label
+                          htmlFor="enrollmentNo"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Enrollment Number
+                        </label>
+                        <input
+                          type="text"
+                          id="enrollmentNo"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="123456"
+                          value={enrollmentNo}
+                          onChange={(e) => setEnrollmentNo(e.target.value)}
+                        />
+                      </div>
+
+                      {/* registration status */}
+                      <div>
+                        <label
+                          htmlFor="registrationStatus"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Registration Status
+                        </label>
+                        <input
+                          type="text"
+                          id="registrationStatus"
+                          className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                          placeholder="Registered"
+                          value={registrationStatus}
+                          onChange={(e) =>
+                            setRegistrationStatus(e.target.value)
+                          }
+                        />
+                      </div>
+
+                      {/* academic status */}
+                      <div>
+                        <label
+                          htmlFor="academicStatus"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Academic Status
+                        </label>
+                        <Select
+                          options={academicStatusOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setAcademicStatus(e.value)}
+                          value={selectedAcademicStatusOption}
+                        />
+                      </div>
+
+                      {/* stream */}
+                      <div>
+                        <label
+                          htmlFor="stream"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Stream
+                        </label>
+                        <Select
+                          options={streamOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                              fontSize: '1rem',
+                            }),
+                            singleValue: (baseStyles) => ({
+                              ...baseStyles,
+                              color: '#000000', // Change the color of the text inside the input container
+                            }),
+                          }}
+                          className="border-white text-base text-gray-500"
+                          closeMenuOnSelect={true}
+                          isSearchable={false}
+                          onChange={(e) => setStream(e.value)}
+                          name="stream"
+                          value={selectedStreamOption}
+                        />
+                      </div>
+
+                      {/* if academic status is cancelled, then reason for cancellation */}
+                      {academicStatus === 'cancelled' && (
+                        <div>
+                          <label
+                            htmlFor="reasonForCancellation"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Reason for Cancellation
+                          </label>
+                          <input
+                            type="text"
+                            id="reasonForCancellation"
+                            className="bg-[#f0f0f0] border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                            placeholder="Not interested"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : selectedCategory === 'subjects & assignments' ? (
+                  <div>
+                    <div className="grid grid-cols-2 items-center gap-5">
+                      {/* subjects */}
+                      {/* use react select for subjects */}
+                      <div
+                        className={
+                          onDemandExams === false ? 'col-span-2' : 'col-span-1'
+                        }
+                      >
+                        <label
+                          htmlFor="subjects"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          Subjects
+                        </label>
+                        <Select
+                          options={subjectsOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                            }),
+                          }}
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          isMulti
+                          onChange={(e) => window.alert(e)}
+                          onBlur={() => console.log('Blur')}
+                          onFocus={() => console.log('Focus')}
+                          value={selectedSubjectsOption}
+                        />
+                      </div>
+
+                      {/* ondemand subjects */}
+                      {onDemandExams === 'true' && (
+                        <div>
+                          <label
+                            htmlFor="ondemandSubjects"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            On-demand subjects
+                          </label>
+                          <Select
+                            options={subjectsOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '.5rem',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            onChange={(e) => setOndemandSubjects(e.value)}
+                            onBlur={() => console.log('Blur')}
+                            onFocus={() => console.log('Focus')}
+                          />
+                        </div>
+                      )}
+
+                      <div className="col-span-3 grid grid-cols-3 gap-5">
+                        {/* toc -yes or no */}
+                        <div>
+                          <label
+                            htmlFor="toc"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TOC
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setToc(e.value)}
+                            value={selectedTocOption}
+                          />
+                        </div>
+
+                        {/* toc recieved */}
+                        <div>
+                          <label
+                            htmlFor="tocRecieved"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TOC Recieved
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTocRecieved(e.value)}
+                            value={selectedTocRecievedOption}
+                          />
+                        </div>
+
+                        {/* toc submitted */}
+                        <div>
+                          <label
+                            htmlFor="tocSubmitted"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TOC Submitted
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTocSubmitted(e.value)}
+                            value={selectedTocSubmittedOption}
+                          />
                         </div>
                       </div>
-                    )
-                      :
-                      selectedCategory === 'subjects & assignments' ? (
-                        <div>
-                          <div className='grid grid-cols-2 items-center gap-5'>
-                            {/* subjects */}
-                            {/* use react select for subjects */}
-                            <div className={onDemandExams === false ? 'col-span-2' : 'col-span-1'}>
-                              <label
-                                htmlFor="subjects"
-                                className="block text-sm lg:text-lg font-medium text-gray-900"
-                              >
-                                Subjects
-                              </label>
-                              <Select
-                                options={subjectsOptions}
-                                styles={{
-                                  control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    borderRadius: '.5rem',
-                                    padding: '0.4rem',
-                                    borderWidth: '0px',
-                                    backgroundColor: 'RGB(240, 240, 240)',
-                                  }),
-                                }}
-                                closeMenuOnSelect={false}
-                                components={animatedComponents}
-                                isMulti
-                                onChange={(e) => setSubjects(e.value)}
-                                onBlur={() => console.log('Blur')}
-                                onFocus={() => console.log('Focus')}
-                                value={selectedSubjectsOption}
-                              />
-                            </div>
 
-                            {/* ondemand subjects */}
-                            {onDemandExams === 'true' &&
-                              <div>
-                                <label
-                                  htmlFor="ondemandSubjects"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  On-demand subjects
-                                </label>
-                                <Select
-                                  options={subjectsOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '.5rem',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={false}
-                                  components={animatedComponents}
-                                  isMulti
-                                  onChange={(e) => setOndemandSubjects(e.value)}
-                                  onBlur={() => console.log('Blur')}
-                                  onFocus={() => console.log('Focus')}
-                                />
-                              </div>}
-
-
-                            <div className='col-span-3 grid grid-cols-3 gap-5'>
-                              {/* toc -yes or no */}
-                              <div>
-                                <label
-                                  htmlFor="toc"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TOC
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setToc(e.value)}
-                                  value={selectedTocOption}
-                                />
-                              </div>
-
-                              {/* toc recieved */}
-                              <div>
-                                <label
-                                  htmlFor="tocRecieved"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TOC Recieved
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTocRecieved(e.value)}
-                                  value={selectedTocRecievedOption}
-                                />
-
-                              </div>
-
-                              {/* toc submitted */}
-                              <div>
-                                <label
-                                  htmlFor="tocSubmitted"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TOC Submitted
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTocSubmitted(e.value)}
-                                  value={selectedTocSubmittedOption}
-                                />
-                              </div>
-
-
-                            </div>
-
-                            <div className='col-span-3 grid grid-cols-3 gap-5'>
-                              {/* optional exam */}
-                              <div className='col-span-1'>
-                                <label
-                                  htmlFor="optionalExams"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Optional Exams
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setOptionalExams(e.value)}
-                                  value={selectedOptionalSubjectsExam}
-
-                                />
-                              </div>
-
-                              {/* optional subjects */}
-                              <div className='col-span-2'>
-                                <label
-                                  htmlFor="optionalSubjects"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  Optional Subjects
-                                </label>
-                                <Select
-                                  options={optionalSubjectsOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '.5rem',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={false}
-                                  components={animatedComponents}
-                                  isMulti
-                                  onChange={(e) => setOptionalSubjects(e.value)}
-                                  value={selectedOptionalSubjectsOption}
-                                />
-                              </div>
-                            </div>
-
-                            {/* toc subjects */}
-                            <div className='col-span-2'>
-                              <label
-                                htmlFor="tocSubjects"
-                                className="block text-sm lg:text-lg font-medium text-gray-900"
-                              >
-                                TOC Subjects
-                              </label>
-                              <Select
-                                options={subjectsOptions}
-                                styles={{
-                                  control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    borderRadius: '.5rem',
-                                    padding: '0.4rem',
-                                    borderWidth: '0px',
-                                    backgroundColor: 'RGB(240, 240, 240)',
-                                  }),
-                                }}
-                                closeMenuOnSelect={false}
-                                components={animatedComponents}
-                                isMulti
-                                onChange={(e) => setTocSubjects(e.value)}
-                                onBlur={() => console.log('Blur')}
-                                onFocus={() => console.log('Focus')}
-                              // value={selectedTocSubjectsOption}
-                              />
-                            </div>
-
-                            <div className='col-span-3 grid grid-cols-3 gap-5'>
-
-
-                              {/* tma recieved */}
-                              <div>
-                                <label
-                                  htmlFor="tmaRecieved"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TMA Recieved
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTmaRecieved(e.value)}
-                                  value={selectedtmaReceivedOption}
-                                />
-                              </div>
-
-                              {/* tma submitted */}
-                              <div>
-                                <label
-                                  htmlFor="tmaSubmitted"
-                                  className="block text-sm lg:text-lg font-medium text-gray-900"
-                                >
-                                  TMA Submitted
-                                </label>
-                                <Select
-                                  options={booleanOptions}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      borderRadius: '12px',
-                                      padding: '0.4rem',
-                                      borderWidth: '0px',
-                                      backgroundColor: 'RGB(240, 240, 240)',
-                                    }),
-                                  }}
-                                  closeMenuOnSelect={true}
-                                  isSearchable={false}
-                                  onChange={(e) => setTmaSubmitted(e.value)}
-                                  value={selectedtmaSubmittedOption}
-                                />
-                              </div>
-                            </div>
-
-
-                          </div>
+                      <div className="col-span-3 grid grid-cols-3 gap-5">
+                        {/* optional exam */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="optionalExams"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Optional Exams
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setOptionalExams(e.value)}
+                            value={selectedOptionalSubjectsExam}
+                          />
                         </div>
-                      )
-                        :
-                        selectedCategory === 'fee details' ? (
-                          <div>
-                            <FeeStatus studentData={studentData} />
-                          </div>
-                        )
-                          :
-                          (
-                            <div>
-                              No data available
-                            </div>
-                          )
-                }
+
+                        {/* optional subjects */}
+                        <div className="col-span-2">
+                          <label
+                            htmlFor="optionalSubjects"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            Optional Subjects
+                          </label>
+                          <Select
+                            options={optionalSubjectsOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '.5rem',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            onChange={(e) => setOptionalSubjects(e.value)}
+                            value={selectedOptionalSubjectsOption}
+                          />
+                        </div>
+                      </div>
+
+                      {/* toc subjects */}
+                      <div className="col-span-2">
+                        <label
+                          htmlFor="tocSubjects"
+                          className="block text-sm lg:text-lg font-medium text-gray-900"
+                        >
+                          TOC Subjects
+                        </label>
+                        <Select
+                          options={subjectsOptions}
+                          styles={{
+                            control: (baseStyles, state) => ({
+                              ...baseStyles,
+                              borderRadius: '.5rem',
+                              padding: '0.4rem',
+                              borderWidth: '0px',
+                              backgroundColor: 'RGB(240, 240, 240)',
+                            }),
+                          }}
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          isMulti
+                          onChange={(e) => setTocSubjects(e.value)}
+                          onBlur={() => console.log('Blur')}
+                          onFocus={() => console.log('Focus')}
+                          // value={selectedTocSubjectsOption}
+                        />
+                      </div>
+
+                      <div className="col-span-3 grid grid-cols-3 gap-5">
+                        {/* tma recieved */}
+                        <div>
+                          <label
+                            htmlFor="tmaRecieved"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TMA Recieved
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTmaRecieved(e.value)}
+                            value={selectedtmaReceivedOption}
+                          />
+                        </div>
+
+                        {/* tma submitted */}
+                        <div>
+                          <label
+                            htmlFor="tmaSubmitted"
+                            className="block text-sm lg:text-lg font-medium text-gray-900"
+                          >
+                            TMA Submitted
+                          </label>
+                          <Select
+                            options={booleanOptions}
+                            styles={{
+                              control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderRadius: '12px',
+                                padding: '0.4rem',
+                                borderWidth: '0px',
+                                backgroundColor: 'RGB(240, 240, 240)',
+                              }),
+                            }}
+                            closeMenuOnSelect={true}
+                            isSearchable={false}
+                            onChange={(e) => setTmaSubmitted(e.value)}
+                            value={selectedtmaSubmittedOption}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : selectedCategory === 'fee details' ? (
+                  <div>
+                    <FeeStatus studentData={studentData} />
+                  </div>
+                ) : (
+                  <div>No data available</div>
+                )}
               </div>
             </div>
           </div>

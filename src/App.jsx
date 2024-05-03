@@ -15,8 +15,7 @@ import FeeUpdateForm from './Pages/FeeUpdateForm';
 import AddRevenue from './Pages/AddRevenue';
 import UpdateStudent from './Pages/UpdateStudent';
 import Teacher from './Pages/Teacher';
-import StudentProfile from './Pages/StudentProfile'
-
+import StudentProfile from './Pages/StudentProfile';
 
 function App() {
   const location = useLocation();
@@ -37,9 +36,8 @@ function App() {
         <Route path="/updatefee" element={<UpdateFee />} />
         <Route path="/feeUpdate/:number" element={<FeeUpdateForm />} />
         <Route path="/addRevenue" element={<AddRevenue />} />
-        <Route path='/createTeacher' element ={<Teacher />} />
-        <Route path='/student' element={<StudentProfile />} />
-
+        <Route path="/createTeacher" element={<Teacher />} />
+        <Route path="/student/:number" element={<StudentProfile />} />
 
         <Route path="/login" element={<Login />} />
       </Routes>

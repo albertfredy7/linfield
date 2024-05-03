@@ -202,7 +202,6 @@ function UpdateFee() {
       window.alert('success');
     } else if (data.message && !data.status) {
       window.alert(data.message);
-      naviga;
     }
   };
 

@@ -58,7 +58,9 @@ function ModifyStudent() {
     },
   ];
 
-  const selectedSubjectsOption = subjectsOptions.filter(option => subjects.includes(option.value));
+  const selectedSubjectsOption = subjectsOptions.filter((option) =>
+    subjects.includes(option.value)
+  );
 
   const optionalSubjectsOptions = [
     {
@@ -114,18 +116,9 @@ function ModifyStudent() {
       const response = await axios.get(
         `https://lobster-app-yjjm5.ondigitalocean.app/api/students/search/${query}`
       );
-      // Check if the response data is an object
-      if (typeof response.data === 'object' && response.data !== null) {
-        // Wrap the object in an array
-        setStudentData([response.data]);
-      } else if (Array.isArray(response.data)) {
-        // If the response data is an array, set it directly
-        setStudentData(response.data);
-      } else {
-        // If the response data is neither an object nor an array, log an error or set studentData to an empty array
-        console.error('Error: response.data is not an object or an array');
-        setStudentData([]);
-      }
+
+      console.log(`printing the data ${response.data}`);
+      setStudentData(response.data);
     } catch (error) {
       console.error('Error fetching search results:', error);
       // Set studentData to an empty array in case of an error
@@ -137,29 +130,42 @@ function ModifyStudent() {
     //check if passwords are matching, if yes throw an error
     //else save that in a modifyStudentRequestObject
 
-
-
     if (password !== confirmPassword) {
       window.alert(`passwords doesn't match`);
       return;
     }
 
-    let modifyStudentRequestObject = {
-      admissionNumber: studentData[0].admissionNumber,
-      password,
-      referenceNumber: referenceNo,
-      registrationFees: registrationFee,
-      examFees: examFee,
-      subjects,
-      toc,
-      tocReceived: tocRecieved,
-      tocSubmitted,
-    };
-
-    if (optionalSubjectsExam) {
-      modifyStudentRequestObject.optionalSubjectsExam = optionalSubjectsExam;
-      modifyStudentRequestObject.optionalSubjects = optionalSubjects;
+    if (!studentData.optionalSubjectsExam) {
+      studentData.optionalSubjects = [];
     }
+
+    if (!studentData.toc) {
+      studentData.tocSubjects = [];
+      studentData.tocSubmitted = false;
+      studentData.tocReceived = false;
+    }
+
+    // let modifyStudentRequestObject = {
+    //   admissionNumber: studentData[0].admissionNumber,
+    //   password,
+    //   referenceNumber: referenceNo,
+    //   registrationFees: registrationFee,
+    //   examFees: examFee,
+    //   subjects,
+    //   toc,
+    //   tocReceived: tocRecieved,
+    //   tocSubmitted,
+    // };
+
+    // if (optionalSubjectsExam) {
+    //   modifyStudentRequestObject.optionalSubjectsExam = optionalSubjectsExam;
+    //   modifyStudentRequestObject.optionalSubjects = optionalSubjects;
+    // }
+
+    const modifyStudentRequestObject = {
+      ...studentData,
+      password,
+    };
 
     const config = {
       headers: {
@@ -179,7 +185,7 @@ function ModifyStudent() {
 
         if (data && data.name) {
           console.log(`success`);
-          window.alert('student added successfully');
+          window.alert('student modified successfully');
 
           setTimeout(() => {
             navigate('/');
@@ -188,57 +194,40 @@ function ModifyStudent() {
       })
       .catch((error) => {
         console.error('Error:', error);
-        window.alert('An error occurred while adding the student.');
+        window.alert('An error occurred while modifying the student.');
       });
-
-
-    console.log(subjects);
-
-    // navigate('/');
-
-    // console.log(`printing the request object`);
-    // console.log(modifyStudentRequestObject);
-
-    // console.log(`admissionNo ${studentData[0].admissionNumber}`);
-    // console.log(`password ${password}`);
-    // console.log(`reference no ${referenceNo}`);
-    // console.log(`registration fees ${registrationFee}`);
-    // console.log(`exam fees ${examFee}`);
-    // console.log(`subjects ${subjects}`);
-    // console.log(`optional subjects ${optionalSubjectsExam}`);
-    // console.log(`optionalSubjects ${optionalSubjects}`);
-    // console.log(`Toc ${toc}`);
-    // console.log(`Toc submitted ${tocSubmitted}`);
-    // console.log(`Toc received ${tocRecieved}`);
   };
 
   console.log(subjects);
 
-  const selectedOptionalSubjectsExam = booleanOptions.find(option => option.value === optionalSubjectsExam);
-  const selectedTocOption = booleanOptions.find(option => option.value === toc);
-  const selectedTocRecievedOption = booleanOptions.find(option => option.value === tocRecieved);
-  const selectedTocSubmittedOption = booleanOptions.find(option => option.value === tocSubmitted);
-
+  const selectedOptionalSubjectsExam = booleanOptions.find(
+    (option) => option.value === optionalSubjectsExam
+  );
+  const selectedTocOption = booleanOptions.find(
+    (option) => option.value === toc
+  );
+  const selectedTocRecievedOption = booleanOptions.find(
+    (option) => option.value === tocRecieved
+  );
+  const selectedTocSubmittedOption = booleanOptions.find(
+    (option) => option.value === tocSubmitted
+  );
 
   useEffect(() => {
-    if (studentData.length > 0) {
-      setName(studentData[0].name);
-      setEmail(studentData[0].email);
-      setPhone(studentData[0].phoneNumber);
-      setReferenceNo(studentData[0].referenceNumber);
-      setSubjects(studentData[0].subjects);
-      setOptionalSubjectsExam(studentData[0].optionalSubjectsExam);
-      setToc(studentData[0].toc);
-      setTocRecieved(studentData[0].tocReceived);
-      setTocSubmitted(studentData[0].tocSubmitted);
-
-
-
-
+    if (studentData._id) {
+      setName(studentData.name);
+      setEmail(studentData.email);
+      setPhone(studentData.phoneNumber);
+      setReferenceNo(studentData.referenceNumber);
+      setSubjects(studentData.subjects);
+      setOptionalSubjectsExam(studentData.optionalSubjectsExam);
+      setToc(studentData.toc);
+      setTocRecieved(studentData.tocReceived);
+      setTocSubmitted(studentData.tocSubmitted);
+      setPassword(studentData.password);
+      setConfirmPassword(studentData.password);
     }
   }, [studentData]);
-
-  // console.log(studentData);
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
@@ -255,29 +244,7 @@ function ModifyStudent() {
             <div className="p-5">
               <SearchBar onSearch={performSearch} />
             </div>
-
-            {/* <div className='p-5'>
-              {studentData.length > 0 ? (
-                studentData.map((student, index) => (
-                  <DataCard
-                    key={index}
-                    type="admissions"
-                    title={student.name}
-                    tailData={student.course}
-                  />
-                ))
-              ) : (
-                <div className="text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center">
-                  <img
-                    src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
-                    className="mix-blend-multiply w-4/6"
-                    alt=""
-                  />
-                  <h1 className="text-center">No student data available</h1>
-                </div>
-              )}
-           </div> */}
-            {studentData.length > 0 ? (
+            {studentData._id ? (
               <div className="flex flex-col gap-2 px-5 overflow-y-auto">
                 <div className="pt-2">
                   <label
@@ -291,7 +258,10 @@ function ModifyStudent() {
                     id="name"
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder="John"
-                    value={studentData[0]?.name}
+                    value={studentData.name}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, name: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -307,7 +277,10 @@ function ModifyStudent() {
                     id="email"
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder=""
-                    value={studentData[0]?.email}
+                    value={studentData.email}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, name: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -323,7 +296,13 @@ function ModifyStudent() {
                     id="phone"
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder=""
-                    value={studentData[0]?.phoneNumber}
+                    value={studentData.phoneNumber}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        phoneNumber: e.target.value,
+                      })
+                    }
                     required
                   />
                 </div>
@@ -340,6 +319,7 @@ function ModifyStudent() {
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder="******"
                     required
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
@@ -356,6 +336,7 @@ function ModifyStudent() {
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder="******"
                     required
+                    value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
@@ -373,7 +354,13 @@ function ModifyStudent() {
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder="Reference No"
                     required
-                    onChange={(e) => setReferenceNo(e.target.value)}
+                    value={studentData.referenceNumber}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        referenceNumber: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="pt-2">
@@ -389,7 +376,16 @@ function ModifyStudent() {
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder="Registration Fees"
                     required
-                    onChange={(e) => setRegistrationFee(e.target.value)}
+                    value={studentData.feeDetails.registrationFees}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        feeDetails: {
+                          ...studentData.feeDetails,
+                          registrationFees: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </div>
                 <div className="pt-2">
@@ -405,7 +401,16 @@ function ModifyStudent() {
                     className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                     placeholder="Exam Fees"
                     required
-                    onChange={(e) => setExamFee(e.target.value)}
+                    value={studentData.feeDetails.examFees}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        feeDetails: {
+                          ...studentData.feeDetails,
+                          examFees: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </div>
                 <div className="pt-2">
@@ -429,11 +434,19 @@ function ModifyStudent() {
                     closeMenuOnSelect={false}
                     components={animatedComponents}
                     isMulti
+                    value={studentData.subjects.map((subject) => ({
+                      value: subject,
+                      label: subject, // Assuming the subject value is the same as the label
+                    }))}
                     onChange={(selectedOptions) => {
                       const selectedValues = selectedOptions.map(
                         (option) => option.value
                       );
-                      setSubjects(selectedValues);
+                      setStudentData({
+                        ...studentData,
+                        subjects: selectedValues,
+                      });
+                      // setSubjects(selectedValues);
                     }}
                   />
                 </div>
@@ -457,7 +470,16 @@ function ModifyStudent() {
                     }}
                     closeMenuOnSelect={true}
                     isSearchable={false}
-                    onChange={(e) => setOptionalSubjectsExam(e.value)}
+                    value={booleanOptions.find(
+                      (option) =>
+                        option.value === studentData.optionalSubjectsExam
+                    )}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        optionalSubjectsExam: e.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="pt-2">
@@ -480,18 +502,24 @@ function ModifyStudent() {
                     }}
                     closeMenuOnSelect={true}
                     isSearchable={false}
-                    onChange={(e) => setToc(e.value)}
+                    value={booleanOptions.find(
+                      (option) => option.value === studentData.toc
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, toc: e.value })
+                    }
                   />
                 </div>
                 <div
-                  className={`pt-2 ${!optionalSubjectsExam ? 'hidden' : 'block'
-                    }`}
+                  className={`pt-2 ${
+                    !studentData.optionalSubjectsExam ? 'hidden' : 'block'
+                  }`}
                 >
                   <label
-                    htmlFor="optionalSubjectsOptions"
+                    htmlFor="subjects"
                     className="block text-base font-medium text-gray-500 pb-1"
                   >
-                    Optional Subjects Options
+                    Optional Subjects
                   </label>
                   <Select
                     options={optionalSubjectsOptions}
@@ -507,11 +535,19 @@ function ModifyStudent() {
                     closeMenuOnSelect={false}
                     components={animatedComponents}
                     isMulti
+                    value={studentData.optionalSubjects.map((subject) => ({
+                      value: subject,
+                      label: subject, // Assuming the subject value is the same as the label
+                    }))}
                     onChange={(selectedOptions) => {
                       const selectedValues = selectedOptions.map(
                         (option) => option.value
                       );
-                      setOptionalSubjects(selectedValues);
+                      setStudentData({
+                        ...studentData,
+                        optionalSubjects: selectedValues,
+                      });
+                      // setSubjects(selectedValues);
                     }}
                   />
                 </div>
@@ -536,15 +572,24 @@ function ModifyStudent() {
                     closeMenuOnSelect={false}
                     components={animatedComponents}
                     isMulti
+                    value={studentData.tocSubjects.map((subject) => ({
+                      value: subject,
+                      label: subject, // Assuming the subject value is the same as the label
+                    }))}
                     onChange={(selectedOptions) => {
                       const selectedValues = selectedOptions.map(
                         (option) => option.value
                       );
-                      setTocSubjects(selectedValues);
+                      setStudentData({
+                        ...studentData,
+                        tocSubjects: selectedValues,
+                      });
                     }}
                   />
                 </div>
-                <div className={`pt-2 ${!toc ? 'hidden' : 'block'}`}>
+                <div
+                  className={`pt-2 ${!studentData.toc ? 'hidden' : 'block'}`}
+                >
                   <label
                     htmlFor="tocSubmitted"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -564,10 +609,17 @@ function ModifyStudent() {
                     }}
                     closeMenuOnSelect={true}
                     isSearchable={false}
-                    onChange={(e) => setTocSubmitted(e.value)}
+                    value={booleanOptions.find(
+                      (option) => option.value === studentData.tocSubmitted
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, tocSubmitted: e.value })
+                    }
                   />
                 </div>
-                <div className={`pt-2 ${!toc ? 'hidden' : 'block'}`}>
+                <div
+                  className={`pt-2 ${!studentData.toc ? 'hidden' : 'block'}`}
+                >
                   <label
                     htmlFor="tocRecieved"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -587,7 +639,12 @@ function ModifyStudent() {
                     }}
                     closeMenuOnSelect={true}
                     isSearchable={false}
-                    onChange={(e) => setTocRecieved(e.value)}
+                    value={booleanOptions.find(
+                      (option) => option.value === studentData.tocReceived
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, tocReceived: e.value })
+                    }
                   />
                 </div>
                 <div className="pt-2 pb-20">
@@ -635,7 +692,7 @@ function ModifyStudent() {
               <SearchBar onSearch={performSearch} />
             </div>
 
-            {studentData.length > 0 ? (
+            {studentData._id ? (
               <div className="  h-full">
                 <div className="row-span-1 grid grid-cols-12 gap-4">
                   <div className="col-span-6">
@@ -651,7 +708,13 @@ function ModifyStudent() {
                         id="name"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder="John"
-                        value={studentData[0]?.name}
+                        value={studentData.name}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            name: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -669,7 +732,13 @@ function ModifyStudent() {
                         id="email"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder=""
-                        value={studentData[0]?.email}
+                        value={studentData.email}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            email: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -690,7 +759,13 @@ function ModifyStudent() {
                         id="phone"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder=""
-                        value={studentData[0]?.phoneNumber}
+                        value={studentData.phoneNumber}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            phoneNumber: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -708,7 +783,13 @@ function ModifyStudent() {
                         id="parentPhone"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder=""
-                        value={studentData[0]?.parentNumber}
+                        value={studentData.parentNumber}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            parentNumber: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -729,6 +810,8 @@ function ModifyStudent() {
                         id="password"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder="******"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                       />
                     </div>
@@ -746,6 +829,8 @@ function ModifyStudent() {
                         id="confirmPassword"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder="******"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
                     </div>
@@ -753,7 +838,7 @@ function ModifyStudent() {
                 </div>
 
                 <div className="row-span-1 grid grid-cols-12 gap-4">
-                  <div className="col-span-6">
+                  {/* <div className="col-span-6">
                     <div className="pt-2">
                       <label
                         htmlFor="previousNiosResult"
@@ -769,8 +854,8 @@ function ModifyStudent() {
                         required
                       />
                     </div>
-                  </div>
-                  <div className="col-span-6">
+                  </div> */}
+                  <div className="col-span-12">
                     <div className="pt-2">
                       <label
                         htmlFor="referenceNo"
@@ -783,6 +868,13 @@ function ModifyStudent() {
                         id="referenceNo"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder="Reference No"
+                        value={studentData.referenceNumber}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            referenceNumber: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -803,6 +895,16 @@ function ModifyStudent() {
                         id="registrationFee"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder="Registration Fees"
+                        value={studentData.feeDetails.registrationFees}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            feeDetails: {
+                              ...studentData.feeDetails,
+                              registrationFees: e.target.value,
+                            },
+                          })
+                        }
                         required
                       />
                     </div>
@@ -820,6 +922,16 @@ function ModifyStudent() {
                         id="examFee"
                         className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
                         placeholder="Exam Fees"
+                        value={studentData.feeDetails.examFees}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            feeDetails: {
+                              ...studentData.feeDetails,
+                              examFees: e.target.value,
+                            },
+                          })
+                        }
                         required
                       />
                     </div>
@@ -848,8 +960,20 @@ function ModifyStudent() {
                       closeMenuOnSelect={false}
                       components={animatedComponents}
                       isMulti
-                      onChange={(e) => valuesOnlyArraySubjects(e)}
-
+                      value={studentData.subjects.map((subject) => ({
+                        value: subject,
+                        label: subject, // Assuming the subject value is the same as the label
+                      }))}
+                      onChange={(selectedOptions) => {
+                        const selectedValues = selectedOptions.map(
+                          (option) => option.value
+                        );
+                        setStudentData({
+                          ...studentData,
+                          subjects: selectedValues,
+                        });
+                        // setSubjects(selectedValues);
+                      }}
                     />
                   </div>
                 </div>
@@ -876,7 +1000,12 @@ function ModifyStudent() {
                         }}
                         closeMenuOnSelect={true}
                         isSearchable={false}
-                        onChange={(e) => setToc(e.value)}
+                        value={booleanOptions.find(
+                          (option) => option.value === studentData.toc
+                        )}
+                        onChange={(e) =>
+                          setStudentData({ ...studentData, toc: e.value })
+                        }
                         controlShouldRenderValue={toc !== null ? true : false}
                       />
                     </div>
@@ -902,7 +1031,16 @@ function ModifyStudent() {
                         }}
                         closeMenuOnSelect={true}
                         isSearchable={false}
-                        onChange={(e) => setOptionalSubjectsExam(e.value)}
+                        value={booleanOptions.find(
+                          (option) =>
+                            option.value === studentData.optionalSubjectsExam
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            optionalSubjectsExam: e.value,
+                          })
+                        }
                         controlShouldRenderValue={
                           optionalSubjectsExam !== null ? true : false
                         }
@@ -912,8 +1050,9 @@ function ModifyStudent() {
                 </div>
 
                 <div
-                  className={`row-span-1 ${!optionalSubjectsExam ? 'hidden' : 'block'
-                    }`}
+                  className={`row-span-1 ${
+                    !studentData.optionalSubjectsExam ? 'hidden' : 'block'
+                  }`}
                 >
                   <div className="pt-2">
                     <label
@@ -936,14 +1075,31 @@ function ModifyStudent() {
                       closeMenuOnSelect={false}
                       components={animatedComponents}
                       isMulti
-                      onChange={(e) => valuesOnlyOptionalSubjects(e)}
+                      value={studentData.optionalSubjects.map((subject) => ({
+                        value: subject,
+                        label: subject, // Assuming the subject value is the same as the label
+                      }))}
+                      onChange={(selectedOptions) => {
+                        const selectedValues = selectedOptions.map(
+                          (option) => option.value
+                        );
+                        setStudentData({
+                          ...studentData,
+                          optionalSubjects: selectedValues,
+                        });
+                        // setSubjects(selectedValues);
+                      }}
                       onBlur={() => console.log('Blur')}
                       onFocus={() => console.log('Focus')}
                     />
                   </div>
                 </div>
 
-                <div className={`row-span-1 ${!toc ? 'hidden' : 'block'}`}>
+                <div
+                  className={`row-span-1 ${
+                    !studentData.toc ? 'hidden' : 'block'
+                  }`}
+                >
                   <div className="pt-2">
                     <label
                       htmlFor="tocSubjects"
@@ -965,7 +1121,20 @@ function ModifyStudent() {
                       closeMenuOnSelect={false}
                       components={animatedComponents}
                       isMulti
-                      onChange={(e) => valuesOnlyArrayTocSubjects(e)}
+                      value={studentData.tocSubjects.map((subject) => ({
+                        value: subject,
+                        label: subject, // Assuming the subject value is the same as the label
+                      }))}
+                      onChange={(selectedOptions) => {
+                        const selectedValues = selectedOptions.map(
+                          (option) => option.value
+                        );
+                        setStudentData({
+                          ...studentData,
+                          tocSubjects: selectedValues,
+                        });
+                        // setSubjects(selectedValues);
+                      }}
                       onBlur={() => console.log('Blur')}
                       onFocus={() => console.log('Focus')}
                     />
@@ -973,8 +1142,9 @@ function ModifyStudent() {
                 </div>
 
                 <div
-                  className={`row-span-1 grid grid-cols-12 gap-4 ${!toc ? 'hidden' : 'block'
-                    }`}
+                  className={`row-span-1 grid grid-cols-12 gap-4 ${
+                    !studentData.toc ? 'hidden' : 'block'
+                  }`}
                 >
                   <div className="col-span-6">
                     <div className="pt-2">
@@ -997,7 +1167,15 @@ function ModifyStudent() {
                         }}
                         closeMenuOnSelect={true}
                         isSearchable={false}
-                        onChange={(e) => setTocSubmitted(e.value)}
+                        value={booleanOptions.find(
+                          (option) => option.value === studentData.tocSubmitted
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            tocSubmitted: e.value,
+                          })
+                        }
                         controlShouldRenderValue={
                           tocSubmitted !== null ? true : false
                         }
@@ -1025,7 +1203,15 @@ function ModifyStudent() {
                         }}
                         closeMenuOnSelect={true}
                         isSearchable={false}
-                        onChange={(e) => setTocRecieved(e.value)}
+                        value={booleanOptions.find(
+                          (option) => option.value === studentData.tocReceived
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            tocReceived: e.value,
+                          })
+                        }
                         controlShouldRenderValue={
                           tocRecieved !== null ? true : false
                         }
@@ -1063,7 +1249,7 @@ function ModifyStudent() {
           <div className="col-span-2 ">
             <SidebarNew />
           </div>
-          <div className="col-span-9  ">
+          <div className="col-span-9 overflow-auto ">
             <div className="w-full flex justify-between pt-7 px-12">
               <div className="">
                 <h1 className="text-xl 3xl:text-2xl font-semibold">
@@ -1077,7 +1263,7 @@ function ModifyStudent() {
                 <SearchBar onSearch={performSearch} />
               </div>
             </div>
-            {studentData.length > 0 ? (
+            {studentData._id ? (
               <div>
                 <div className="grid grid-cols-3 gap-3 px-12 pt-9">
                   <div className="">
@@ -1092,9 +1278,10 @@ function ModifyStudent() {
                       id="name"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="John doe"
-                      value={studentData.length > 0 ? studentData[0].name : ''}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled
+                      value={studentData.name}
+                      onChange={(e) =>
+                        setStudentData({ ...studentData, name: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -1110,9 +1297,13 @@ function ModifyStudent() {
                       id="email"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="somehing@gmail.com"
-                      value={studentData.length > 0 ? studentData[0].email : ''}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled
+                      value={studentData.email}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          email: studentData.email,
+                        })
+                      }
                       required
                     />
                   </div>
@@ -1128,11 +1319,13 @@ function ModifyStudent() {
                       id="phoneNumber"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="967335361"
-                      value={
-                        studentData.length > 0 ? studentData[0].phoneNumber : ''
+                      value={studentData.phoneNumber}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          phoneNumber: e.target.value,
+                        })
                       }
-                      onChange={(e) => setPhone(e.target.value)}
-                      disabled
                       required
                     />
                   </div>
@@ -1148,6 +1341,7 @@ function ModifyStudent() {
                       id="password"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="**********"
+                      value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
@@ -1164,6 +1358,7 @@ function ModifyStudent() {
                       id="confirmPassword"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="**********"
+                      value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
                     />
@@ -1180,8 +1375,13 @@ function ModifyStudent() {
                       id="refNo"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="UIXO89654"
-                      onChange={(e) => setReferenceNo(e.target.value)}
-                      value={referenceNo}
+                      value={studentData.referenceNumber}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          referenceNumber: e.target.value,
+                        })
+                      }
                       required
                     />
                   </div>
@@ -1206,8 +1406,19 @@ function ModifyStudent() {
                       closeMenuOnSelect={false}
                       components={animatedComponents}
                       isMulti
-                      onChange={(e) => valuesOnlyArraySubjects(e)}
-                      value={selectedSubjectsOption}
+                      value={studentData.subjects.map((subject) => ({
+                        value: subject,
+                        label: subject,
+                      }))}
+                      onChange={(selectedOptions) => {
+                        const selectedValues = selectedOptions.map(
+                          (option) => option.value
+                        );
+                        setStudentData({
+                          ...studentData,
+                          subjects: selectedValues,
+                        });
+                      }}
                     />
                   </div>
                   <div className="">
@@ -1228,8 +1439,16 @@ function ModifyStudent() {
                           backgroundColor: 'RGB(255, 255, 255)',
                         }),
                       }}
-                      onChange={(e) => setOptionalSubjectsExam(e.value)}
-                      value={selectedOptionalSubjectsExam}
+                      value={booleanOptions.find(
+                        (option) =>
+                          option.value === studentData.optionalSubjectsExam
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          optionalSubjectsExam: e.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="">
@@ -1244,7 +1463,15 @@ function ModifyStudent() {
                       id="examFee"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="1500"
-                      onChange={(e) => setExamFee(e.target.value)}
+                      value={studentData.feeDetails.examFees}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          feeDetails: {
+                            examFees: e.target.value,
+                          },
+                        })
+                      }
                       required
                     />
                   </div>
@@ -1260,13 +1487,24 @@ function ModifyStudent() {
                       id="regFee"
                       class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="1500"
-                      onChange={(e) => setRegistrationFee(e.target.value)}
+                      value={studentData.feeDetails.registrationFees}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          feeDetails: {
+                            registrationFees: e.target.value,
+                          },
+                        })
+                      }
                       required
                     />
                   </div>
                   <div
-                    className={`${optionalSubjectsExam ? 'block col-span-3' : 'hidden'
-                      }`}
+                    className={`${
+                      studentData.optionalSubjectsExam
+                        ? 'block col-span-3'
+                        : 'hidden'
+                    }`}
                   >
                     <label
                       htmlFor="optionalSubjects"
@@ -1288,7 +1526,19 @@ function ModifyStudent() {
                       closeMenuOnSelect={false}
                       components={animatedComponents}
                       isMulti
-                      onChange={(e) => setOptionalSubjects(e.value)}
+                      value={studentData.optionalSubjects.map((subject) => ({
+                        value: subject,
+                        label: subject,
+                      }))}
+                      onChange={(selectedOptions) => {
+                        const selectedValues = selectedOptions.map(
+                          (option) => option.value
+                        );
+                        setStudentData({
+                          ...studentData,
+                          optionalSubjects: selectedValues,
+                        });
+                      }}
                       onBlur={() => console.log('Blur')}
                       onFocus={() => console.log('Focus')}
                     />
@@ -1313,11 +1563,18 @@ function ModifyStudent() {
                       }}
                       closeMenuOnSelect={true}
                       isSearchable={false}
-                      onChange={(e) => setToc(e.value)}
-                      value={selectedTocOption}
+                      value={booleanOptions.find(
+                        (option) => option.value === studentData.toc
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          toc: e.value,
+                        })
+                      }
                     />
                   </div>
-                  <div className={`${toc ? 'block' : 'hidden'}`}>
+                  <div className={`${studentData.toc ? 'block' : 'hidden'}`}>
                     <label
                       htmlFor="tocReceived"
                       className="block text-sm 3xl:text-lg font-semibold text-gray-500"
@@ -1337,11 +1594,18 @@ function ModifyStudent() {
                       }}
                       closeMenuOnSelect={true}
                       isSearchable={false}
-                      onChange={(e) => setTocRecieved(e.value)}
-                      value={selectedTocRecievedOption}
+                      value={booleanOptions.find(
+                        (option) => option.value === studentData.tocReceived
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          tocReceived: e.value,
+                        })
+                      }
                     />
                   </div>
-                  <div className={`${toc ? 'block' : 'hidden'}`}>
+                  <div className={`${studentData.toc ? 'block' : 'hidden'}`}>
                     <label
                       htmlFor="tocSubmitted"
                       className="block text-sm 3xl:text-lg font-semibold text-gray-500"
@@ -1361,11 +1625,22 @@ function ModifyStudent() {
                       }}
                       closeMenuOnSelect={true}
                       isSearchable={false}
-                      onChange={(e) => setTocSubmitted(e.value)}
-                      value={selectedTocSubmittedOption}
+                      value={booleanOptions.find(
+                        (option) => option.value === studentData.tocSubmitted
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          tocSubmitted: e.value,
+                        })
+                      }
                     />
                   </div>
-                  <div className={`${toc ? 'block col-span-3' : 'hidden'}`}>
+                  <div
+                    className={`${
+                      studentData.toc ? 'block col-span-3' : 'hidden'
+                    }`}
+                  >
                     <label
                       htmlFor="tocSubjets"
                       className="block text-sm 3xl:text-lg font-semibold text-gray-500"
@@ -1386,7 +1661,19 @@ function ModifyStudent() {
                       closeMenuOnSelect={false}
                       components={animatedComponents}
                       isMulti
-                      onChange={(e) => valuesOnlyArrayTocSubjects(e)}
+                      value={studentData.tocSubjects.map((subject) => ({
+                        value: subject,
+                        label: subject,
+                      }))}
+                      onChange={(selectedOptions) => {
+                        const selectedValues = selectedOptions.map(
+                          (option) => option.value
+                        );
+                        setStudentData({
+                          ...studentData,
+                          tocSubjects: selectedValues,
+                        });
+                      }}
                       onBlur={() => console.log('Blur')}
                       onFocus={() => console.log('Focus')}
                     />
@@ -1402,7 +1689,8 @@ function ModifyStudent() {
                     </div>
                   </div>
                 </div>
-              </div>) : (
+              </div>
+            ) : (
               <div className="text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center">
                 <img
                   src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
@@ -1411,7 +1699,6 @@ function ModifyStudent() {
                 />
                 <h1 className="text-center">No student data available</h1>
               </div>
-
             )}
           </div>
 
