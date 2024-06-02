@@ -35,10 +35,7 @@ function AddExpense() {
         config
       );
 
-      console.log(data);
-
       if (data.transaction && data.transaction.type) {
-        console.log('iam working');
         window.alert('Expense added successfully');
         setCategory(null);
         setAmount(null);
@@ -47,13 +44,11 @@ function AddExpense() {
       }
     } catch (error) {
       if (error.response) {
-        // Extracting the error message from the response
-        console.log(error.response.data.message);
         const errorMessage = error.response.data.message;
         window.alert(errorMessage);
       } else {
         // Handling other types of errors
-        console.error('An error occurred:', error.message);
+        window.alert(`something weent wrong. pls connect admin for more info`);
       }
     }
   };

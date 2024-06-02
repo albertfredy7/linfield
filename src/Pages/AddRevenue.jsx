@@ -12,7 +12,7 @@ function AddRevenue() {
   const [date, setDate] = useState(null);
   const revenueCategories = [
     {
-      value: 'Excess Registration',
+      value: 'Excess Reg',
       label: 'Excess Registration',
     },
     { value: 'Excess TOC', label: 'Excess TOC' },
@@ -31,15 +31,17 @@ function AddRevenue() {
         date: date,
       };
 
-      const response = await axios.post(
+      const { data } = await axios.post(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/addRevenue',
         revenueData
       );
 
+      console.log(data.transaction.amount);
+
       // Handle the response from the API
-      if (response.status >= 200 && response.status < 300) {
+      if (data.transaction.amount) {
         // Successfully added revenue
-        console.log('Revenue added successfully:', response.data);
+        window.alert('Revenue added successfully');
         // You can also update the state or UI here if needed
         setCategory(null);
         setAmount(null);
@@ -47,12 +49,9 @@ function AddRevenue() {
         setDate(null);
 
         navigate('/insights');
-      } else {
-        // Handle error
-        console.error('Failed to add revenue:', response.statusText);
       }
     } catch (error) {
-      console.error('Error adding revenue:', error);
+      window.alert(error.response.data.message);
     }
   };
   return (

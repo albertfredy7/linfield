@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 function FeeStatus({ studentData }) {
-  console.log(studentData && studentData[0] && studentData[0]);
-
   // if student data not available
   // if(!studentData || studentData.length < 1) {
   //   return(
@@ -10,7 +8,7 @@ function FeeStatus({ studentData }) {
   //   )
   // }
   return (
-    <div className="bg-white rounded-lg h-full 4xl:h-3/4 w-full grid grid-rows-2 4xl:space-y-1 p-4 space-y-2  items-center">
+    <div className="bg-white rounded-lg h-full 4xl:h-3/4 w-full grid grid-rows-2 4xl:space-y-1 p-4 space-y-2  items-center pt-2 pb-2">
       <div className="h-full w-full grid grid-cols-3 space-x-2">
         <div
           className={`border ${

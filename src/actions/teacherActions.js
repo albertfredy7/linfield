@@ -3,8 +3,6 @@ import {TEACHER_LOGIN_REQUEST, TEACHER_LOGIN_SUCCESS, TEACHER_LOGIN_FAIL, TEACHE
 
 export const teacherLogin = (email, password) => async (dispatch) => {
 
-    console.log('buddy you are at the actions page')
-
     try {
       dispatch({
         type: TEACHER_LOGIN_REQUEST,
@@ -21,8 +19,6 @@ export const teacherLogin = (email, password) => async (dispatch) => {
         { email, password },
         config
       )
-
-      console.log(`printing the data ${data}`)
   
       dispatch({
         type: TEACHER_LOGIN_SUCCESS,

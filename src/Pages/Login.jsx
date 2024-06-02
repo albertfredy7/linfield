@@ -30,13 +30,10 @@ const Login = () => {
   }, [teacherInfo, error]);
 
   const handleSubmit = (event) => {
-    console.log('Email:', email);
-    console.log('Password:', password);
     if (!email || !password) {
       toast.error('Please enter both email and password'); // Use toast for error message
       return;
     } else {
-      console.log('im the else condition');
       dispatch(teacherLogin(email, password));
     }
 

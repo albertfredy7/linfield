@@ -85,8 +85,8 @@ function Filter() {
       label: 'Offline',
     },
     {
-      value: 'Correspondence',
-      label: 'Correspondence',
+      value: 'Correspondent',
+      label: 'Correspondent',
     },
   ];
   const pendingFeeOptions = [

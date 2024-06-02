@@ -10,13 +10,11 @@ function SearchBar({ onSearch }) {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      console.log('Enter key pressed');
       handleSearch();
     }
   };
 
   const handleSearch = () => {
-    console.log('Search function called');
     if (onSearch) {
       onSearch(searchQuery);
     }
@@ -26,7 +24,7 @@ function SearchBar({ onSearch }) {
     <div className="w-full">
       <div className="relative w-full h-11 sm:h-14 md:h-14 xl:h-11  3xl:h-14 flex ">
         <input
-          className="block w-full p-3 leading-5 text-gray-500 placeholder-gray-400 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base placeholder:text-sm sm:text-sm xl:text-sm 3xl:text-lg"
+          className="block w-full p-3 leading-5 text-gray-700 placeholder-gray-400 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base placeholder:text-sm sm:text-sm xl:text-sm 3xl:text-lg"
           placeholder="Enter admission number"
           type="text"
           value={searchQuery}

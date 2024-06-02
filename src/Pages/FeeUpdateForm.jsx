@@ -15,7 +15,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function FeeUpdateForm() {
   const { number } = useParams();
-  console.log(number);
 
   useEffect(() => {
     if (number == undefined) {
@@ -96,7 +95,6 @@ function FeeUpdateForm() {
   const updateFeeHandler = async () => {
     //the conditions to satisfy stuffs
     if (feeType === 'examFees') {
-      console.log('iam executing on behalf of examfees');
       if (studentData.feeDetails.installments[0].isPaid === false) {
         window.alert('Please pay first term fees first to continue');
         return;
@@ -125,8 +123,6 @@ function FeeUpdateForm() {
 
     feeBody.number = number;
 
-    console.log(number, feeType, amount, utrNumber);
-
     if (!number || !feeType || !amount || !utrNumber) {
       window.alert('please enter all details');
       return;
@@ -152,17 +148,19 @@ function FeeUpdateForm() {
       },
     };
 
-    const { data } = await axios.put(
-      'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
-      feeBody,
-      config
-    );
+    try {
+      const { data } = await axios.put(
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
+        feeBody,
+        config
+      );
 
-    if (data.status === 'success') {
-      window.alert('success');
-      navigate('/');
-    } else if (data.message && !data.status) {
-      window.alert(data.message);
+      if (data.status === 'success') {
+        window.alert('success');
+        navigate('/');
+      }
+    } catch (error) {
+      window.alert(error.response.data.message);
     }
   };
 
@@ -198,7 +196,6 @@ function FeeUpdateForm() {
       }
     };
     fetchStudent();
-    console.log(studentData);
   }, []);
 
   useEffect(() => {
@@ -310,7 +307,9 @@ function FeeUpdateForm() {
           <div className="flex flex-col h-screen">
             <div className="flex flex-col px-5 pt-10">
               <h1 className="text-xl font-bold">Update Fee</h1>
-              <h1 className="text-sm text-gray-500">Update fee of student</h1>
+              <h1 className="text-sm text-gray-500">
+                Enter fee details to update{' '}
+              </h1>
             </div>
             <div className="flex flex-col gap-3 px-6 pt-6 overflow-y-auto scroll-smooth">
               {
@@ -335,7 +334,7 @@ function FeeUpdateForm() {
                         }),
                         singleValue: (baseStyles) => ({
                           ...baseStyles,
-                          color: '#9E9E9E', // Change the color of the text inside the input container
+                          color: '#2E2E2E', // Change the color of the text inside the input container
                         }),
                       }}
                       className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 4xl:text-md text-gray-600 rounded-xl"
@@ -372,7 +371,7 @@ function FeeUpdateForm() {
                         }),
                         singleValue: (baseStyles) => ({
                           ...baseStyles,
-                          color: '#9E9E9E', // Change the color of the text inside the input container
+                          color: '#2E2E2E', // Change the color of the text inside the input container
                         }),
                       }}
                       className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-md text-gray-600 rounded-xl"
@@ -409,7 +408,7 @@ function FeeUpdateForm() {
                         }),
                         singleValue: (baseStyles) => ({
                           ...baseStyles,
-                          color: '#9E9E9E', // Change the color of the text inside the input container
+                          color: '#2E2E2E', // Change the color of the text inside the input container
                         }),
                       }}
                       className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
@@ -442,7 +441,7 @@ function FeeUpdateForm() {
                         }),
                         singleValue: (baseStyles) => ({
                           ...baseStyles,
-                          color: '#9E9E9E', // Change the color of the text inside the input container
+                          color: '#2E2E2E', // Change the color of the text inside the input container
                         }),
                       }}
                       className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
@@ -466,7 +465,7 @@ function FeeUpdateForm() {
                       <input
                         type="text"
                         id="feeName"
-                        className="bg-[#ffffff] text-gray-600 border border-gray-200 text-base 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                        className="bg-[#ffffff] text-gray-700 border border-gray-200 text-base 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                         placeholder="Enter custom fee"
                         onChange={(e) => setFeeName(e.target.value)}
                         required
@@ -483,7 +482,7 @@ function FeeUpdateForm() {
                     <input
                       type="text"
                       id="amount"
-                      className="bg-[#ffffff] text-gray-600 text-base 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                      className="bg-[#ffffff] text-gray-700 text-base 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                       placeholder="1000"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
@@ -500,7 +499,7 @@ function FeeUpdateForm() {
                     <input
                       type="text"
                       id="UtrNo"
-                      className="bg-[#ffffff] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-base rounded-lg block w-full p-2.5"
+                      className="bg-[#ffffff] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-700 text-base rounded-lg block w-full p-2.5"
                       placeholder="CHJSU2UHBSA"
                       value={utrNumber}
                       onChange={(e) => setUtrNumber(e.target.value)}
@@ -559,6 +558,10 @@ function FeeUpdateForm() {
                       backgroundColor: 'RGB(255, 255, 255)',
                       fontSize: '0.9rem',
                     }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#2E2E2E', // Change the color of the text inside the input container
+                    }),
                   }}
                   className=" bg-[#ffffff] 2xl:text-sm xl:text-xs 4xl:text-md text-gray-600 rounded-xl"
                   closeMenuOnSelect={true}
@@ -585,6 +588,10 @@ function FeeUpdateForm() {
                       backgroundColor: 'RGB(255, 255, 255)',
                       fontSize: '1.03rem',
                     }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#2E2E2E', // Change the color of the text inside the input container
+                    }),
                   }}
                   className=" bg-[#f0f0f0] 2xl:text-sm xl:text-xs 3xl:text-md text-gray-600 rounded-xl"
                   closeMenuOnSelect={true}
@@ -610,6 +617,10 @@ function FeeUpdateForm() {
                       borderWidth: '0px',
                       backgroundColor: 'RGB(255, 255, 255)',
                       fontSize: '.9rem',
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
@@ -640,6 +651,10 @@ function FeeUpdateForm() {
                       backgroundColor: 'RGB(240, 240, 240)',
                       fontSize: '1.03rem',
                     }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: '#2E2E2E', // Change the color of the text inside the input container
+                    }),
                   }}
                   className="border border-gray-200 rounded 2xl:text-sm xl:text-xs 3xl:text-md"
                   closeMenuOnSelect={true}
@@ -662,7 +677,7 @@ function FeeUpdateForm() {
                   <input
                     type="text"
                     id="feeName"
-                    className="bg-[#ffffff] text-gray-600 border border-gray-200 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                    className="bg-[#ffffff] text-gray-700 border border-gray-200 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                     placeholder="Enter custom fee"
                     onChange={(e) => setFeeName(e.target.value)}
                     required
@@ -679,7 +694,7 @@ function FeeUpdateForm() {
                 <input
                   type="text"
                   id="amount"
-                  className="bg-[#ffffff] text-gray-600 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
+                  className="bg-[#ffffff] text-gray-700 text-sm 2xl:text-sm xl:text-xs 3xl:text-lg rounded-lg block w-full p-2.5"
                   placeholder="1000"
                   onChange={(e) => setAmount(e.target.value)}
                   required
@@ -695,7 +710,7 @@ function FeeUpdateForm() {
                 <input
                   type="text"
                   id="UtrNo"
-                  className="bg-[#ffffff] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-600 text-sm rounded-lg block w-full p-2.5"
+                  className="bg-[#ffffff] 2xl:text-sm xl:text-xs 3xl:text-lg text-gray-700 text-sm rounded-lg block w-full p-2.5"
                   placeholder="CHJSU2UHBSA"
                   value={utrNumber}
                   onChange={(e) => setUtrNumber(e.target.value)}

@@ -44,7 +44,6 @@ function ExpenseTracker() {
   );
 
   const handleDurationChange = (duration) => {
-    console.log(duration);
     setSelectedDuration(duration);
   };
 
@@ -68,16 +67,18 @@ function ExpenseTracker() {
 
       if (data.transaction && data.transaction.type) {
         window.alert('Expense added successfully');
+        setAmount('');
+        setCategory('');
+        setDescription('');
+        setDate('');
       }
     } catch (error) {
       if (error.response) {
-        // Extracting the error message from the response
-        console.log(error.response.data.message);
         const errorMessage = error.response.data.message;
         window.alert(errorMessage);
       } else {
         // Handling other types of errors
-        console.error('An error occurred:', error.message);
+        window.alert('something went wrong. connect admin for more info');
       }
     }
   };
@@ -103,7 +104,6 @@ function ExpenseTracker() {
       const { data } = await axios.get(
         `https://lobster-app-yjjm5.ondigitalocean.app/api/expense?duration=${selectedDuration}`
       );
-      console.log(data);
       setExpenseData(data.expenses);
       setTotalExpense(formatNumber(data.totalAmount));
     } else {
@@ -160,6 +160,7 @@ function ExpenseTracker() {
                 </div>
               </div>
               <div>
+                {console.log(totalExpense)}
                 <MobileOverviewCard
                   title={'Spend so far'}
                   subtitle={totalExpense}
@@ -174,7 +175,11 @@ function ExpenseTracker() {
                   Add
                 </button>
               </div>
-              <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-32">
+              <div
+                className={`px-3 flex flex-col pt-0${
+                  expenseData.length > 0 && 'justify-end'
+                } gap-3 overflow-y-auto pb-32 `}
+              >
                 {expenseData.length > 0 ? (
                   expenseData.map((x, idx) => (
                     <DataCard
@@ -184,7 +189,7 @@ function ExpenseTracker() {
                     />
                   ))
                 ) : (
-                  <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center">
+                  <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-end items-center pt-20">
                     <img
                       src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
                       className="mix-blend-multiply w-4/6"
@@ -465,87 +470,37 @@ function ExpenseTracker() {
                   duration={selectedDuration}
                   onSelect={handleDurationChange}
                 />
-                {console.log(selectedDuration)}
               </div>
               <div className="row-span-3 3xl:row-span-4 pb-3 px-3 h-full">
                 <div className=" w-full h-full overflow-y-auto">
                   <div className="space-y-3">
-                    {expenseData.map((x, idx) => {
-                      return (
+                    {expenseData.length > 0 ? (
+                      expenseData.map((x, idx) => (
                         <DataCard
                           title={x.category}
                           tailData={x.amount}
                           type={x.category.toLowerCase()}
                         />
-                      );
-                    })}
-                    {/* <DataCard
-                      title={'Rent'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'rent'}
-                    />
-                    <DataCard
-                      title={'Stationary'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'stationary'}
-                    />
-                    <DataCard
-                      title={'Refreshment'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'refreshment'}
-                    />
-                    <DataCard
-                      title={'Electricity'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'electricity'}
-                    />
-                    <DataCard
-                      title={'Repair'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'repair'}
-                    />
-                    <DataCard
-                      title={'Equipments'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'equipments'}
-                    />
-                    <DataCard
-                      title={'Miscallaneous'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'miscallaneous'}
-                    />
-                    <DataCard
-                      title={'Miscallaneous'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'miscallaneous'}
-                    />
-                    <DataCard
-                      title={'Miscallaneous'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'miscallaneous'}
-                    />
-                    <DataCard
-                      title={'Miscallaneous'}
-                      subTitle={'11.00am'}
-                      tailData={'$500'}
-                      type={'miscallaneous'}
-                    /> */}
+                      ))
+                    ) : (
+                      <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-end items-center pt-20">
+                        <img
+                          src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                          className="mix-blend-multiply w-4/6"
+                          alt=""
+                        />
+                        <h1 className="text-center text-gray-500">
+                          No expense to show
+                        </h1>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-span-3 grid grid-rows-12 gap-10 overflow-hidden">
               <div className="row-span-3 py-4 px-2">
-                <OverviewCard title={'Spend so far'} value={'5000'} />
+                <OverviewCard title={'Spend so far'} value={totalExpense} />
               </div>
               <div className="row-span-9 bg-white  px-10 py-6 rounded-xl overflow-y-auto">
                 <div className="row-span-1 flex flex-col justify-center space-y-1 overflow-hidden 3xl:pb-4">
@@ -571,6 +526,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] text-gray-600 bg text-sm 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
                       placeholder="Enter the amount"
                       required
+                      value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                     />
                   </div>
@@ -596,6 +552,15 @@ function ExpenseTracker() {
                           fontSize: '14px',
                         }),
                       }}
+                      value={
+                        options.find((option) => option.value === category) ||
+                        null
+                      }
+                      // value={!category && { value: null, label: null }}
+                      // value={studentData.tocSubjects.map((subject) => ({
+                      //   value: 'subject',
+                      //   label: 'subject',
+                      // }))}
                       onChange={(e) => setCategory(e.value)}
                     />
                   </div>
@@ -637,6 +602,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] text-gray-600 text-sm 3xl:text-lg rounded-md block w-full h-16 3xl:h-32 p-2 md:p-4 xl:p-2"
                       placeholder="Describe the expense"
                       required
+                      value={description}
                       onChange={(e) => setDescription(e.target.value)}
                     />
                   </div>
@@ -654,6 +620,7 @@ function ExpenseTracker() {
                       className="bg-[#f0f0f0] px-3 border text-gray-600 text-sm 3xl:text-lg rounded-md w-full p-2 md:p-4 xl:p-2"
                       required
                       placeholder="Select date"
+                      value={date}
                       onChange={(e) => setDate(e.target.value)}
                     />
                   </div>

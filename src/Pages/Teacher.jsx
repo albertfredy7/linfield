@@ -4,6 +4,7 @@ import MobileNavigation from '../Components/MobileNavigation';
 import Button from '../Components/Button';
 import Select from 'react-select';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Teacher() {
   const [name, setName] = useState('');
@@ -11,6 +12,8 @@ function Teacher() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState(null);
+
+  const navigate = useNavigate();
 
   const options = [
     { value: 'Admin', label: 'Admin' },
@@ -51,10 +54,10 @@ function Teacher() {
         setPassword('');
         setContactNo('');
         setRole('');
+        navigate('/');
       }
     } catch (error) {
-      console.log(error);
-      window.alert(error.message);
+      window.alert(error.response.data.message);
     }
   };
 
@@ -81,6 +84,7 @@ function Teacher() {
                 <input
                   type="text"
                   id="name"
+                  value={name}
                   placeholder="Enter name"
                   className="bg-[#FFFFFF] text-gray-600 bg text-base rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
                   onChange={(e) => setName(e.target.value)}
@@ -98,6 +102,7 @@ function Teacher() {
                 <input
                   type="text"
                   id="contactNo"
+                  value={contactNo}
                   placeholder="Enter contact number"
                   className="bg-[#FFFFFF] text-gray-600 bg text-base  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
                   onChange={(e) => setContactNo(e.target.value)}
@@ -115,6 +120,7 @@ function Teacher() {
                 <input
                   type="email"
                   id="email"
+                  value={email}
                   placeholder="Enter email"
                   className="bg-[#FFFFFF] text-gray-600 bg text-base 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
                   onChange={(e) => setEmail(e.target.value)}
@@ -132,6 +138,7 @@ function Teacher() {
                 <input
                   type="password"
                   id="password"
+                  value={password}
                   placeholder="Enter password"
                   className="bg-[#FFFFFF] text-gray-600 bg text-base 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
                   onChange={(e) => setPassword(e.target.value)}
@@ -166,6 +173,9 @@ function Teacher() {
                   closeMenuOnSelect={true}
                   isSearchable={false}
                   name="roles"
+                  value={
+                    options.find((option) => option.value === role) || null
+                  }
                   onChange={(e) => setRole(e.value)}
                 />
               </div>

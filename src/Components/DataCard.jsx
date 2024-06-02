@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateFilteredStudents } from '../actions/studentFilterActions';
 
 function DataCard({
   type,
@@ -17,8 +19,13 @@ function DataCard({
   admissionNumber,
   role,
   teacherId,
+  showPopUp,
 }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const filterStudentsData = useSelector((state) => state.studentFilter);
+  const { loading, filteredStudents } = filterStudentsData;
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [dotPosition, setDotPosition] = useState({ x: 0, y: 0 });
@@ -52,7 +59,6 @@ function DataCard({
   };
 
   const imageSrc = imageMap[type] || null;
-  // console.log(imageSrc);
   const height = style && style.h ? style.h : null;
 
   const openModal = (event) => {
@@ -64,10 +70,32 @@ function DataCard({
     });
   };
 
-  const submitHandler = (value) => {
-    console.log(value);
-    console.log(admissionNumber);
+  const updateFilteredStudentsData = (updatedData) => {
+    dispatch(updateFilteredStudents(updatedData));
+  };
 
+  const handleUpdateData = (value, admissionNumber) => {
+    // Clone the filteredStudents array
+    const updatedData = [...filteredStudents];
+
+    // Find the index of the student with the matching admissionNumber
+    const index = updatedData.findIndex(
+      (student) => student.admissionNumber === admissionNumber
+    );
+
+    // Check if the student with the admissionNumber exists
+    if (index !== -1) {
+      // Remove the element at the found index from updatedData
+      const removedStudent = updatedData.splice(index, 1)[0];
+
+      // Dispatch action to update filteredStudents data
+      updateFilteredStudentsData(updatedData);
+    } else {
+      navigate('/');
+    }
+  };
+
+  const submitHandler = (value, admNo) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -82,19 +110,14 @@ function DataCard({
       )
       .then((response) => {
         const data = response.data;
-        console.log(`student data ${data.name}`);
 
         if (data && data.name) {
-          console.log(`success`);
           window.alert('Status updated successfully');
-
-          setTimeout(() => {
-            navigate('/');
-          }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
         }
+
+        handleUpdateData(value, admNo);
       })
       .catch((error) => {
-        console.error('Error:', error);
         window.alert('An error occurred while adding the student.');
       });
 
@@ -115,10 +138,8 @@ function DataCard({
       )
       .then((response) => {
         const data = response.data;
-        console.log(`teacher data ${data.name}`);
 
         if (response.status === 200) {
-          console.log(`success`);
           window.alert('Teacher deleted successfully');
 
           setTimeout(() => {
@@ -127,7 +148,6 @@ function DataCard({
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
         window.alert('An error occurred while adding the student.');
       });
 
@@ -153,7 +173,7 @@ function DataCard({
           className={`col-span-3   h-full ${dots && 'flex items-center'}`}
           onClick={openModal}
         >
-          {dots && <MoreVertIcon />}
+          {dots && showPopUp && <MoreVertIcon />}
           {imageSrc && (
             <div className={`w-full h-full flex justify-center items-center `}>
               <img
@@ -188,7 +208,7 @@ function DataCard({
           </h1>
         </div>
       </div>
-      {isModalOpen && (
+      {isModalOpen && showPopUp && (
         <>
           <div
             className="fixed inset-0 bg-black bg-opacity-65 z-40"
@@ -208,20 +228,14 @@ function DataCard({
               ) : (
                 <>
                   <button
-                    className="w-full flex justify-between text-gray-500 border-b-2 pb-2"
-                    onClick={redirectStudentProfile}
-                  >
-                    Edit student <EditIcon style={{ color: '#93e9be' }} />
-                  </button>
-                  <button
                     className="w-full flex justify-between text-gray-500 gap-4 border-b-2 py-3"
-                    onClick={() => submitHandler('Pass')}
+                    onClick={() => submitHandler('Pass', admissionNumber)}
                   >
                     Mark as passed <SchoolIcon style={{ color: '#5390d9' }} />
                   </button>
                   <button
                     className="w-full flex text-gray-500 justify-between  pt-2"
-                    onClick={() => submitHandler('Fail')}
+                    onClick={() => submitHandler('Fail', admissionNumber)}
                   >
                     Mark as failed{' '}
                     <NotInterestedOutlinedIcon style={{ color: '#ad2829' }} />

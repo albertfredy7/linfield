@@ -19,8 +19,6 @@ const StudentProfile = () => {
     }
   }, []);
 
-  console.log('printing the number', number);
-
   const [studentData, setStudentData] = useState(null);
   const [course, setCourse] = useState(null);
   const [batch, setBatch] = useState(null);
@@ -267,8 +265,7 @@ const StudentProfile = () => {
         setStudentData([]);
       }
     } catch (error) {
-      console.error('Error fetching search results:', error);
-      alert('Error fetching search results:', error);
+      window.alert(error.response.data.message);
       // Set studentData to an empty array in case of an error
 
       setStudentData([]);
@@ -299,8 +296,6 @@ const StudentProfile = () => {
     setOptionalExams(studentData ? studentData[0].optionalSubjectsExam : false);
     setOptionalSubjects(studentData ? studentData[0].optionalSubjects : []);
   }, [studentData]);
-
-  console.log('studentData:', studentData);
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
@@ -1737,8 +1732,6 @@ const StudentProfile = () => {
                           components={animatedComponents}
                           isMulti
                           onChange={(e) => setSubjects(e.value)}
-                          onBlur={() => console.log('Blur')}
-                          onFocus={() => console.log('Focus')}
                           value={selectedSubjectsOption}
                         />
                       </div>
@@ -1767,8 +1760,6 @@ const StudentProfile = () => {
                             components={animatedComponents}
                             isMulti
                             onChange={(e) => setOndemandSubjects(e.value)}
-                            onBlur={() => console.log('Blur')}
-                            onFocus={() => console.log('Focus')}
                           />
                         </div>
                       )}
@@ -1931,8 +1922,6 @@ const StudentProfile = () => {
                           components={animatedComponents}
                           isMulti
                           onChange={(e) => setTocSubjects(e.value)}
-                          onBlur={() => console.log('Blur')}
-                          onFocus={() => console.log('Focus')}
                           // value={selectedTocSubjectsOption}
                         />
                       </div>
@@ -2555,8 +2544,6 @@ const StudentProfile = () => {
                           components={animatedComponents}
                           isMulti
                           onChange={(e) => window.alert(e)}
-                          onBlur={() => console.log('Blur')}
-                          onFocus={() => console.log('Focus')}
                           value={selectedSubjectsOption}
                         />
                       </div>
@@ -2585,8 +2572,6 @@ const StudentProfile = () => {
                             components={animatedComponents}
                             isMulti
                             onChange={(e) => setOndemandSubjects(e.value)}
-                            onBlur={() => console.log('Blur')}
-                            onFocus={() => console.log('Focus')}
                           />
                         </div>
                       )}
@@ -2749,9 +2734,6 @@ const StudentProfile = () => {
                           components={animatedComponents}
                           isMulti
                           onChange={(e) => setTocSubjects(e.value)}
-                          onBlur={() => console.log('Blur')}
-                          onFocus={() => console.log('Focus')}
-                          // value={selectedTocSubjectsOption}
                         />
                       </div>
 

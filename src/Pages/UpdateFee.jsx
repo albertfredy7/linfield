@@ -11,6 +11,7 @@ import FeeStatus from '../Components/FeeStatus';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 function UpdateFee() {
   const [feeType, setFeeType] = useState(null);
@@ -28,6 +29,9 @@ function UpdateFee() {
   const [number, setNumber] = useState(null);
   const [student, setStudent] = useState(null);
   const [transactions, setTransactions] = useState(null);
+
+  //defining the navigate for navigation purposes
+  const navigate = useNavigate();
 
   const searchValueHandler = (value) => {
     setNumber(value);
@@ -102,7 +106,6 @@ function UpdateFee() {
           );
           // Assuming the response contains the transactions data
           setTransactions(transactionsResponse.data);
-          console.log(transactionsResponse.data);
         } else {
           // Clear transactions if no student data is found
           setTransactions([]);
@@ -110,7 +113,6 @@ function UpdateFee() {
       } else if (typeof data === 'object' && data !== null) {
         // If the response is an object, wrap it in an array
         setStudentData([data]);
-        console.log(data.admissionNumber);
         if (data.admissionNumber) {
           // Perform the second API call using the admissionNumber from the object
           const transactionsResponse = await axios.get(
@@ -123,13 +125,11 @@ function UpdateFee() {
           setTransactions([]);
         }
       } else {
-        console.error('Error: response.data is not an object or an array');
         setStudentData([]);
         // Clear transactions if the response is not valid
         setTransactions([]);
       }
     } catch (error) {
-      console.error('Error fetching search results:', error);
       window.alert('No student data available');
       setStudentData([]);
       // Clear transactions on error
@@ -137,37 +137,35 @@ function UpdateFee() {
     }
   };
 
-  console.log(searchValue);
-
   const updateFeeHandler = async () => {
-    //the conditions to satisfy stuffs
+    // the conditions to satisfy stuffs
     if (feeType === 'examFees') {
-      console.log('iam executing on behalf of examfees');
-      if (
-        studentData[0].length > 0 &&
-        studentData[0].feeDetails.installments[0] &&
-        studentData[0].feeDetails.installments[0].isPaid === false
-      ) {
+      if (studentData[0].feeDetails.installments[0].isPaid === false) {
         window.alert('Please pay first term fees first to continue');
         return;
       } else if (
-        (studentData[0].length > 0 &&
-          studentData[0].feeDetails.examFees === null) ||
+        studentData[0].feeDetails.examFees === null ||
         studentData[0].feeDetails.examFees === undefined
       ) {
         window.alert(
           'Exam fee for the student is not recorded. Please connect admin'
         );
+        return;
       }
+    } else if (feeType === 'registrationFees') {
+      if (!studentData[0].feeDetails.registrationFees) {
+        window.alert(
+          'Registration fee for the student is not recorded. Please connect admin'
+        );
+      }
+      return;
     }
-
-    let number = searchValue;
 
     let feeBody = {};
 
-    feeBody.number = number;
+    feeBody.number = studentData[0].admissionNumber;
 
-    if (!number || !feeType || !amount || !utrNumber) {
+    if (!studentData[0].admissionNumber || !feeType || !amount || !utrNumber) {
       window.alert('please enter all details');
       return;
     } else {
@@ -192,16 +190,27 @@ function UpdateFee() {
       },
     };
 
-    const { data } = await axios.put(
-      'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
-      feeBody,
-      config
-    );
+    try {
+      console.log('Sending request with body:', feeBody);
+      const { data } = await axios.put(
+        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
+        feeBody,
+        config
+      );
+      console.log('Response received:', data);
 
-    if (data.status === 'success') {
-      window.alert('success');
-    } else if (data.message && !data.status) {
-      window.alert(data.message);
+      if (data.status === 'success') {
+        window.alert('Fee info updated successfully');
+        navigate('/');
+      } else {
+        // This handles any case where the status is not 'success'
+        console.log('Unexpected status received:', data.status);
+        window.alert('Something went wrong: ' + data.message);
+      }
+    } catch (error) {
+      // Log the error to understand what went wrong
+      console.error('An error occurred:', error);
+      window.alert('An error occurred: ' + error.message);
     }
   };
 
@@ -280,8 +289,6 @@ function UpdateFee() {
   }),
     [feeType, paymentType];
 
-  console.log(studentData[0]?.admissionNumber);
-
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
@@ -356,7 +363,13 @@ function UpdateFee() {
                     <span className="text-red-500">
                       {studentData.length > 0 &&
                         studentData[0].feeDetails.totalAmount -
-                          studentData[0].feeDetails.paidAmount}
+                          (studentData[0].feeDetails.installments[0]
+                            .paidAmount +
+                            studentData[0].feeDetails.installments[1]
+                              .paidAmount +
+                            studentData[0].feeDetails.installments[2]
+                              .paidAmount +
+                            studentData[0].feeDetails.admissionFeePaidAmount)}
                     </span>
                   </h2>
                 </div>
@@ -581,7 +594,6 @@ function UpdateFee() {
                 <div className="h-full overflow-y-auto space-y-2 px-5  pb-20">
                   {transactions && transactions.length > 0 ? (
                     transactions.map((transaction) => {
-                      console.log(transaction.purpose); // Logging each transaction's purpose
                       return (
                         <DataCard
                           key={transaction._id} // Assuming _id is a unique identifier

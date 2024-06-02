@@ -77,7 +77,6 @@ function Home() {
       const { data } = await axios.get(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/recentTransactions'
       );
-      console.log(data);
       setRecentTransactions(data);
     };
     getRecentTransactions();
@@ -158,6 +157,7 @@ function Home() {
                   {recentTransactions
                     .slice(0, 3)
                     .reverse()
+                    .reverse()
                     .map((x, index) => {
                       const formatDate = (dateString) => {
                         const date = new Date(dateString);
@@ -217,9 +217,8 @@ function Home() {
                   {recentAdmissions
                     .slice(0, 3)
                     .reverse()
+                    .reverse()
                     .map((x, index) => {
-                      console.log('im printing the admissions stuff');
-                      console.log(x);
                       return (
                         <DataCard
                           key={index} // Make sure to provide a unique key for each item in the list
@@ -501,9 +500,6 @@ function Home() {
                           };
 
                           const formattedDate = formatDate(x.date);
-                          console.log(formattedDate);
-
-                          console.log(x);
 
                           return (
                             <div className=" row-span-2 pr-4 pb-1.5">

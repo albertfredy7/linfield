@@ -9,6 +9,7 @@ import Button from '../Components/Button';
 import SidebarNew from '../Components/SidebarNew';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
 
 function AddExpense() {
   const navigate = useNavigate();
@@ -31,39 +32,51 @@ function AddExpense() {
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
 
-  const addExpenseHandler = () => {
-    console.log('inside expense handler');
+  const addExpenseHandler = async () => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
 
-    axios
-      .post(
+    try {
+      const { data } = await axios.post(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
         { category, description, amount, date },
         config
-      )
-      .then(({ data }) => {
-        if (data.transaction && data.transaction.type) {
-          //  toast.success('Expense added successfully');
-          alert('Expense added successfully');
-          navigate('/expense');
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          // Extracting the error message from the response
-          console.log(error.response.data.message);
-          const errorMessage = error.response.data.message;
-          //  toast.error(errorMessage);
-          alert(errorMessage);
-        } else {
-          // Handling other types of errors
-          console.error('An error occurred:', error.message);
-        }
-      });
+      );
+      if (data.transaction.type) {
+        window.alert('Expense added successfully');
+        navigate('/expense');
+      }
+    } catch (error) {
+      window.alert(error.response.data.message);
+    }
+
+    // axios
+    //   .post(
+    //     'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/add',
+    //     { category, description, amount, date },
+    //     config
+    //   )
+    //   .then(({ data }) => {
+    //     if (data.transaction && data.transaction.type) {
+    //       //  toast.success('Expense added successfully');
+    //       alert('Expense added successfully');
+    //       navigate('/expense');
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response) {
+    //       // Extracting the error message from the response
+    //       const errorMessage = error.response.data.message;
+    //       //  toast.error(errorMessage);
+    //       window.alert(errorMessage);
+    //     } else {
+    //       // Handling other types of errors
+    //       window.alert('An error occurred:', error.mresponse.data.message);
+    //     }
+    //   });
   };
 
   return (

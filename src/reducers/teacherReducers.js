@@ -5,7 +5,6 @@ export const teacherLoginReducer = (state = {}, action) => {
       case TEACHER_LOGIN_REQUEST:
         return { loading: true }
       case TEACHER_LOGIN_SUCCESS:
-        console.log('iam at the reducers page')
         return { loading: false, teacherInfo: action.payload }
       case TEACHER_LOGIN_FAIL:
         return { loading: false, error: action.payload }

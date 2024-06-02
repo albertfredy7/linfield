@@ -58,8 +58,7 @@ function CreateTeacher() {
         setRole('');
       }
     } catch (error) {
-      console.log(error);
-      window.alert(error.message);
+      window.alert(error.response.data.message);
     }
   };
 

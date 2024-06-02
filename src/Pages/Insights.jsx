@@ -24,8 +24,8 @@ function Insights() {
 
   const revenueCategories = [
     {
-      value: 'Excess registration',
-      label: 'Excess registration',
+      value: 'Excess reg',
+      label: 'Excess reg',
     },
     { value: 'Excess TOC', label: 'Excess TOC' },
     { value: 'Old Students Fee', label: 'Old Students Fee' },
@@ -120,7 +120,6 @@ function Insights() {
         apiUrl = `https://lobster-app-yjjm5.ondigitalocean.app/api/general/insights?duration=custom&start_date=${selectedDuration}&category=${selectedCategory}`;
       }
       const response = await axios.get(apiUrl);
-      console.log(response.data);
 
       // Transform the data based on the selected category
       const transformedData = response.data
@@ -168,29 +167,25 @@ function Insights() {
 
       // Set the transformed data to the state
       setInsightCategoryData(transformedData);
-      console.log(transformedData);
     } catch (error) {
-      console.error('Failed to fetch insight category data:', error);
+      window.alert(error.response.data.message);
     }
   };
 
-  useEffect(() => {
-    const fetchInsightsData = async () => {
-      const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/info'
-      );
+  const fetchInsightsData = async () => {
+    const { data } = await axios.get(
+      'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/info'
+    );
+    setInsightData(data);
+  };
 
-      console.log(data);
-      setInsightData(data);
-    };
+  useEffect(() => {
     fetchInsightsData();
   }, [selectedCategory]);
 
   useEffect(() => {
     fetchInsightCategoryData();
   }, [selectedCategory, selectedDuration]);
-
-  console.log(insightCategoryData);
 
   const handleClick = () => {
     navigate('/');
@@ -205,30 +200,26 @@ function Insights() {
         date: date,
       };
 
-      const response = await axios.post(
+      const { data } = await axios.post(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/addRevenue',
         revenueData
       );
 
+      console.log(data.transaction.amount);
+
       // Handle the response from the API
-      if (response.status === 200) {
-        // Successfully added revenue
-        console.log('Revenue added successfully:', response.data);
-        // You can also update the state or UI here if needed
-      } else {
-        // Handle error
-        console.error('Failed to add revenue:', response.statusText);
+      if (data.transaction.amount) {
+        window.alert('Revenue added successfully');
+        fetchInsightCategoryData();
+        fetchInsightsData();
       }
     } catch (error) {
-      console.error('Error adding revenue:', error);
+      window.alert(error.response.data.message);
     } finally {
       // Close the modal after the API call is complete
       handleCloseModal();
     }
   };
-
-  console.log(selectedCategory);
-  console.log(selectedDuration);
 
   const Modal = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
@@ -265,14 +256,14 @@ function Insights() {
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         {/* mobile screens */}
-        <div className="block md:hidden w-full ">
+        <div className="block md:hidden w-full">
           <div className="flex flex-col h-screen">
-            <div className="px-5 pt-10 pb-6">
+            <div className="px-5 pt-10">
               <h1 className="text-xl font-semibold">Insights</h1>
               <p className="">All your data is here</p>
             </div>
 
-            <div className=" px-5">
+            <div className="px-5 py-2">
               <InsightsSwitch
                 category={selectedCategory}
                 onSelect={handleCategorySelect}
@@ -352,11 +343,13 @@ function Insights() {
                 )}
               </div>
             </div>
-            <div className="px-3 flex flex-col gap-3  overflow-y-auto pb-40">
-              {insightCategoryData ? (
+            <div
+              className={`px-3 flex flex-col gap-3 overflow-y-auto ${
+                insightCategoryData.length > 0 && 'pb-16'
+              }`}
+            >
+              {insightCategoryData.length > 0 ? (
                 insightCategoryData.map((data, index) => {
-                  // console.log(data);
-
                   return (
                     <DataCard
                       type={
@@ -385,7 +378,16 @@ function Insights() {
                   );
                 })
               ) : (
-                <h1>No data available</h1>
+                <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center">
+                  <img
+                    src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                    className="mix-blend-multiply w-4/6"
+                    alt=""
+                  />
+                  <h1 className="text-center text-gray-500">
+                    No student data available
+                  </h1>
+                </div>
               )}
             </div>
 
@@ -559,10 +561,8 @@ function Insights() {
                     </div>
                   </div>
                   <div className="row-span-5 3xl:row-span-5  h-full overflow-y-auto space-y-2 px-4 py-2">
-                    {insightCategoryData &&
-                      insightCategoryData.map((data, index) => {
-                        // console.log(data);
-
+                    {insightCategoryData.length > 0 ? (
+                      insightCategoryData.reverse().map((data, index) => {
                         return (
                           <DataCard
                             type={
@@ -576,34 +576,36 @@ function Insights() {
                             subTitle={
                               selectedDuration === 'today'
                                 ? data.time
-                                : `${data.date} ,${data.time}`
+                                : `${data.date},${data.time}`
                             }
                             tailData={data.tailData}
-                            style={{ h: '1/3' }}
+                            tailDataStyle={`${
+                              selectedCategory === 'revenue'
+                                ? 'text-green-500 font-semibold'
+                                : selectedCategory === 'expense'
+                                ? 'text-red-500 font-semibold'
+                                : 'text-gray-500 font-semibold'
+                            }`}
+                            style={{ h: '1/4' }}
                           />
                         );
-                      })}
-                    {/* <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div>
-                    <div className="h-16 w-full bg-indigo-200"></div> */}
+                      })
+                    ) : (
+                      <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center">
+                        <img
+                          src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                          className="mix-blend-multiply w-4/6"
+                          alt=""
+                        />
+                        <h1 className="text-center text-gray-500">
+                          No student data available
+                        </h1>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* <div className="col-span-3 bg-violet-200 h-full w-full overflow-y-auto space-y-2">
-                <div className="h-24 w-full bg-indigo-200"></div>
-                <div className="h-24 w-full bg-indigo-200"></div>
-                <div className="h-24 w-full bg-indigo-200"></div>
-                <div className="h-24 w-full bg-indigo-200"></div>
-                <div className="h-24 w-full bg-indigo-200"></div>
-                <div className="h-24 w-full bg-indigo-200"></div>
-              </div> */}
               <div className="col-span-2  px-4 py-4 overflow-hidden">
                 <div className="h-full w-full grid grid-rows-9 3xl:grid-rows-8 space-y-3">
                   <div
@@ -634,11 +636,11 @@ function Insights() {
                           >
                             &#8203;
                           </span>
-                          <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                              <div className="flex flex-col  ">
-                                <div className="flex flex-col items-start  px-8  pt-20">
-                                  <h1 className="text-2xl sm:text-2xl  font-bold ">
+                          <div className="inline-block align-bottom rounded-lg bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div className="bg-white px-0 sm:p-6 sm:pb-4">
+                              <div className="flex flex-col ">
+                                <div className="flex flex-col items-start px-8 pt-8">
+                                  <h1 className="text-xl font-bold ">
                                     Add new revenue
                                   </h1>
                                   <h2 className="text-[#66666] text-sm sm:text-lg  ">
@@ -646,12 +648,12 @@ function Insights() {
                                   </h2>
                                 </div>
 
-                                <div className="px-8 flex flex-col gap-2  py-10 ">
+                                <div className="px-8 flex flex-col gap-2 py-4">
                                   <div className="flex flex-col gap-3">
                                     <div>
                                       <label
                                         htmlFor="category"
-                                        className="block text-sm font-medium text-gray-600 text-md lg:text-xl  mb-2"
+                                        className="block font-medium text-gray-600 text-base mb-1"
                                       >
                                         Category
                                       </label>
@@ -661,12 +663,12 @@ function Insights() {
                                           control: (baseStyles, state) => ({
                                             ...baseStyles,
                                             borderRadius: '.5rem',
-                                            padding: '0.2rem',
-                                            borderWidth: '0px',
+                                            padding: '0.05rem',
+                                            borderWidth: '1px',
                                             backgroundColor: 'RGB(255,255,255)',
                                           }),
                                         }}
-                                        className="border border-gray-200 text-md lg:text-xl rounded"
+                                        className="border border-gray-200 text-md rounded"
                                         closeMenuOnSelect={true}
                                         isSearchable={false}
                                         name="category"
@@ -676,14 +678,14 @@ function Insights() {
                                     <div>
                                       <label
                                         htmlFor="amount"
-                                        className="block text-md lg:text-xl font-medium text-gray-900 mb-2"
+                                        className="block text-base font-medium text-gray-900 mb-1"
                                       >
                                         Amount
                                       </label>
                                       <input
                                         type="text"
                                         id="amount"
-                                        className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                                        className="bg-white text-gray-600 text-md border-2 border-gray-200 text-md rounded-lg block w-full p-1.5 focus:outline-blue-400"
                                         placeholder="1000"
                                         onChange={(e) =>
                                           setAmount(e.target.value)
@@ -694,14 +696,14 @@ function Insights() {
                                     <div>
                                       <label
                                         htmlFor="description"
-                                        className="block text-md lg:text-xl font-medium text-gray-900 mb-2"
+                                        className="block text-md font-medium text-gray-900 mb-1"
                                       >
                                         Description
                                       </label>
                                       <input
                                         type="text"
                                         id="description"
-                                        className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                                        className="bg-white text-gray-600 text-md border-2 border-gray-200 rounded-lg block w-full p-1.5 focus:outline-blue-400"
                                         placeholder="Description"
                                         required
                                         onChange={(e) =>
@@ -712,14 +714,14 @@ function Insights() {
                                     <div>
                                       <label
                                         htmlFor="date"
-                                        className="block text-md lg:text-xl font-medium text-gray-900 mb-2"
+                                        className="block text-md font-medium text-gray-900 mb-1"
                                       >
                                         Date
                                       </label>
                                       <input
                                         type="date"
                                         id="date"
-                                        className="bg-white text-gray-600 text-md border border-gray-200   text-md lg:text-xl rounded-lg block w-full p-2.5 focus:outline-blue-400"
+                                        className="bg-white text-gray-600 text-md border-2 border-gray-200 rounded-lg block w-full p-1.5 focus:outline-blue-400"
                                         placeholder="Date"
                                         onChange={(e) =>
                                           setDate(e.target.value)
@@ -730,7 +732,7 @@ function Insights() {
                                     <div className="flex items-center justify-center pt-5">
                                       <Button
                                         text="Add Revenue"
-                                        buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl"
+                                        buttonStyle="bg-[#2740CD] text-white p-2.5 text-md rounded-md"
                                         onClick={handleAddRevenue}
                                       />
                                     </div>

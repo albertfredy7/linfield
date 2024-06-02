@@ -41,7 +41,6 @@ function AddStudent() {
 
   const changeIntake = (e) => {
     setIntake(e.value);
-    console.log(e.value);
   };
 
   const modeOptions = [
@@ -125,9 +124,7 @@ function AddStudent() {
     },
   ];
 
-  const addStudentHandler = () => {
-    console.log('add student handler');
-
+  const addStudentHandler = async () => {
     if (
       !place &&
       !admYear &&
@@ -145,12 +142,12 @@ function AddStudent() {
       !confirmEmail &&
       !utrNumber
     ) {
-      console.log('test error');
       window.alert('Please fill all fields to continue');
       navigate('/add');
     } else if (email !== confirmEmail) {
-      console.log('2nd test error ');
       window.alert('emails doesnt match');
+    } else if (phoneNum.length !== 10 || parentNum.length !== 10) {
+      window.alert('Invalid phone numbers');
     } else {
       const requestData = {
         name,
@@ -176,51 +173,61 @@ function AddStudent() {
         },
       };
 
-      axios
-        .post(
+      try {
+        const { data } = await axios.post(
           'https://lobster-app-yjjm5.ondigitalocean.app/api/students/nios',
           requestData,
           config
-        )
-        .then((response) => {
-          const data = response.data;
-          console.log(`student data ${data.name}`);
+        );
+        if (data && data.name) {
+          window.alert('Student added successfully');
+          // Reset all states to their initial values
+          setName('');
+          setPlace('');
+          setCourse(null);
+          setBatch(null);
+          setIntake(null);
+          setMode(null);
+          setPhoneNum('');
+          setParentNum('');
+          setDob('');
+          setEmail('');
+          setConfirmEmail('');
+          setBranch(null);
+          setAdmCoordinator('');
+          setAdmYear(null);
+          setAdmissionFee(null);
+          setUtrNumber(null);
 
-          if (data && data.message) {
-            console.log(`error ${data.message}`);
-            window.alert(data.message);
-            return;
-          } else if (data && data.name) {
-            console.log(`success`);
-            window.alert('student added successfully');
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
+        }
+      } catch (error) {
+        window.alert(error.response.data.message);
+      }
 
-            // Reset all states to their initial values
-            setName('');
-            setPlace('');
-            setCourse(null);
-            setBatch(null);
-            setIntake(null);
-            setMode(null);
-            setPhoneNum('');
-            setParentNum('');
-            setDob('');
-            setEmail('');
-            setConfirmEmail('');
-            setBranch(null);
-            setAdmCoordinator('');
-            setAdmYear(null);
-            setAdmissionFee(null);
-            setUtrNumber(null);
+      // axios
+      //   .post('http://127.0.0.1:5000/api/students/nios', requestData, config)
+      //   .then((response) => {
+      //     const data = response.data;
+      //     console.log(`student data ${data.name}`);
 
-            setTimeout(() => {
-              navigate('/');
-            }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          window.alert('An error occurred while adding the student.');
-        });
+      //     if (data && data.message) {
+      //       console.log(`error ${data.message}`);
+      //       window.alert(data.message);
+      //       return;
+      //     } else if (data && data.name) {
+      //       console.log(`success`);
+      //       window.alert('student added successfully');
+
+      //        // Adjust the time as needed (2000 milliseconds = 2 seconds)
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error:', error);
+      //     window.alert('An error occurred while adding the student.');
+      //   });
     }
   };
 
@@ -246,7 +253,7 @@ function AddStudent() {
               <input
                 type="text"
                 id="name"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="John"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -263,7 +270,7 @@ function AddStudent() {
               <input
                 type="text"
                 id="place"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="nyc"
                 value={place}
                 onChange={(e) => setPlace(e.target.value)}
@@ -290,7 +297,7 @@ function AddStudent() {
                   }),
                   singleValue: (baseStyles) => ({
                     ...baseStyles,
-                    color: '#9E9E9E', // Change the color of the text inside the input container
+                    color: '#2E2E2E', // Change the color of the text inside the input container
                   }),
                 }}
                 className="border-white text-base text-gray-500"
@@ -323,7 +330,7 @@ function AddStudent() {
                   }),
                   singleValue: (baseStyles) => ({
                     ...baseStyles,
-                    color: '#9E9E9E', // Change the color of the text inside the input container
+                    color: '#2E2E2E', // Change the color of the text inside the input container
                   }),
                 }}
                 className="border-white text-base text-gray-500"
@@ -357,7 +364,7 @@ function AddStudent() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -388,7 +395,7 @@ function AddStudent() {
                   }),
                   singleValue: (baseStyles) => ({
                     ...baseStyles,
-                    color: '#9E9E9E', // Change the color of the text inside the input container
+                    color: '#2E2E2E', // Change the color of the text inside the input container
                   }),
                 }}
                 className="border-white text-base text-gray-500"
@@ -421,7 +428,7 @@ function AddStudent() {
                   }),
                   singleValue: (baseStyles) => ({
                     ...baseStyles,
-                    color: '#9E9E9E', // Change the color of the text inside the input container
+                    color: '#2E2E2E', // Change the color of the text inside the input container
                   }),
                 }}
                 className="border-white text-base text-gray-500"
@@ -444,7 +451,7 @@ function AddStudent() {
               <input
                 type="text"
                 id="phoneNum"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="9876543210"
                 value={phoneNum}
                 onChange={(e) => setPhoneNum(e.target.value)}
@@ -461,7 +468,7 @@ function AddStudent() {
               <input
                 type="text"
                 id="parentNum"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="9876543210"
                 value={parentNum}
                 onChange={(e) => setParentNum(e.target.value)}
@@ -479,7 +486,7 @@ function AddStudent() {
                 type="date"
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="Select date"
               />
             </div>
@@ -493,7 +500,7 @@ function AddStudent() {
               <input
                 type="email"
                 id="email"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="student@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -510,7 +517,7 @@ function AddStudent() {
               <input
                 type="email"
                 id="confirmEmail"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="student@gmail.com"
                 value={confirmEmail}
                 onChange={(e) => setConfirmEmail(e.target.value)}
@@ -537,7 +544,7 @@ function AddStudent() {
                   }),
                   singleValue: (baseStyles) => ({
                     ...baseStyles,
-                    color: '#9E9E9E', // Change the color of the text inside the input container
+                    color: '#2E2E2E', // Change the color of the text inside the input container
                   }),
                 }}
                 className="border-white text-base text-gray-500"
@@ -560,7 +567,7 @@ function AddStudent() {
               <input
                 type="text"
                 id="admissionCorrdinator"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="John Doe"
                 onChange={(e) => setAdmCoordinator(e.target.value)}
                 required
@@ -576,7 +583,7 @@ function AddStudent() {
               <input
                 type="text"
                 id="admissionFee"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="1000"
                 onChange={(e) => setAdmissionFee(e.target.value)}
                 required
@@ -592,7 +599,7 @@ function AddStudent() {
               <input
                 type="text"
                 id="utrNumber"
-                className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                className="bg-white border border-white text-gray-700 text-base rounded-lg block w-full p-2.5"
                 placeholder="Enter the utr numnber"
                 onChange={(e) => setUtrNumber(e.target.value)}
                 required
@@ -655,14 +662,14 @@ function AddStudent() {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                      className="block text-sm lg:text-lg font-medium text-gray-500"
                     >
                       Name
                     </label>
                     <input
                       type="text"
                       id="name"
-                      className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                      className="bg-white border border-white text-gray-700 text-sm lg:text-lg rounded-lg block w-full p-2.5"
                       placeholder="John"
                       onChange={(e) => setName(e.target.value)}
                       required
@@ -672,14 +679,14 @@ function AddStudent() {
                 <div className="col-span-1">
                   <label
                     htmlFor="place"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Place
                   </label>
                   <input
                     type="text"
                     id="place"
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg rounded-lg block w-full p-2.5"
                     placeholder="nyc"
                     onChange={(e) => setPlace(e.target.value)}
                     required
@@ -690,7 +697,7 @@ function AddStudent() {
                 <div className="col-span-1">
                   <label
                     htmlFor="year"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Year
                   </label>
@@ -703,6 +710,10 @@ function AddStudent() {
                         padding: '0.2rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm lg:text-lg"
@@ -718,7 +729,7 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="course"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Course
                   </label>
@@ -731,6 +742,10 @@ function AddStudent() {
                         padding: '0.2rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm lg:text-lg"
@@ -746,7 +761,7 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="intake"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Intake
                   </label>
@@ -759,6 +774,10 @@ function AddStudent() {
                         padding: '0.2rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm lg:text-lg"
@@ -782,7 +801,7 @@ function AddStudent() {
                   <div className="col-span-1">
                     <label
                       htmlFor="batch"
-                      className="block text-sm lg:text-lg font-medium text-gray-900"
+                      className="block text-sm lg:text-lg font-medium text-gray-500"
                     >
                       Batch
                     </label>
@@ -795,6 +814,10 @@ function AddStudent() {
                           padding: '0.2rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
+                        }),
+                        singleValue: (baseStyles) => ({
+                          ...baseStyles,
+                          color: '#2E2E2E', // Change the color of the text inside the input container
                         }),
                       }}
                       className="border-white text-sm lg:text-lg"
@@ -809,14 +832,14 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="phoneNum"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Phone Number
                   </label>
                   <input
                     type="text"
                     id="phoneNum"
-                    className="bg-white border border-white text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm rounded-lg block w-full p-2.5"
                     placeholder="9876543210"
                     onChange={(e) => setPhoneNum(e.target.value)}
                     required
@@ -825,14 +848,14 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="parentNum"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Parent's Phone Number
                   </label>
                   <input
                     type="text"
                     id="parentNum"
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg rounded-lg block w-full p-2.5"
                     placeholder="9876543210"
                     onChange={(e) => setParentNum(e.target.value)}
                     required
@@ -844,7 +867,7 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="mode"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Mode
                   </label>
@@ -857,6 +880,10 @@ function AddStudent() {
                         padding: '0.2rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm lg:text-lg"
@@ -872,28 +899,28 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="dob"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Date of Birth
                   </label>
                   <input
                     type="date"
                     onChange={(e) => setDob(e.target.value)}
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg rounded-lg block w-full p-2.5"
                     placeholder="Select date"
                   />
                 </div>
                 <div className="col-span-2">
                   <label
                     htmlFor="email"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Email
                   </label>
                   <input
                     type="email"
                     id="email"
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg rounded-lg block w-full p-2.5"
                     placeholder="student@gmail.com"
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -905,14 +932,14 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="confirmEmail"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Confirm Email
                   </label>
                   <input
                     type="email"
                     id="confirmEmail"
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg rounded-lg block w-full p-2.5"
                     placeholder="student@gmail.com"
                     onChange={(e) => setConfirmEmail(e.target.value)}
                     required
@@ -921,7 +948,7 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="branch"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Branch
                   </label>
@@ -934,6 +961,10 @@ function AddStudent() {
                         padding: '0.2rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm lg:text-lg"
@@ -952,14 +983,14 @@ function AddStudent() {
                 <div className="col-span-2">
                   <label
                     htmlFor="admissionCorrdinator"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Admission Coordinator
                   </label>
                   <input
                     type="text"
                     id="admissionCorrdinator"
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg rounded-lg block w-full p-2.5"
                     placeholder="John Doe"
                     onChange={(e) => setAdmCoordinator(e.target.value)}
                     required
@@ -968,14 +999,14 @@ function AddStudent() {
                 <div className="col-span-1">
                   <label
                     htmlFor="admissionFee"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     Admission Fee
                   </label>
                   <input
                     type="text"
                     id="admissionFee"
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg  rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg  rounded-lg block w-full p-2.5"
                     placeholder="1000"
                     onChange={(e) => setAdmissionFee(e.target.value)}
                     required
@@ -984,14 +1015,14 @@ function AddStudent() {
                 <div className="col-span-1">
                   <label
                     htmlFor="utrNumber"
-                    className="block text-sm lg:text-lg font-medium text-gray-900"
+                    className="block text-sm lg:text-lg font-medium text-gray-500"
                   >
                     UTR number
                   </label>
                   <input
                     type="text"
                     id="utrNumber"
-                    className="bg-white border border-white text-gray-900 text-sm lg:text-lg  rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-700 text-sm lg:text-lg  rounded-lg block w-full p-2.5"
                     placeholder="Enter UTR number"
                     onChange={(e) => setUtrNumber(e.target.value)}
                     required
@@ -1031,14 +1062,14 @@ function AddStudent() {
                 <div className="">
                   <label
                     for="name"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                     placeholder="John"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -1048,7 +1079,7 @@ function AddStudent() {
                 <div>
                   <label
                     for="year"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Course
                   </label>
@@ -1061,6 +1092,10 @@ function AddStudent() {
                         padding: '0.1rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm 3xl:text-lg"
@@ -1076,14 +1111,14 @@ function AddStudent() {
                 <div>
                   <label
                     for="phoneNum"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Phone Number
                   </label>
                   <input
                     type="text"
                     id="phoneNum"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
                     placeholder="9876543210"
                     value={phoneNum}
                     onChange={(e) => setPhoneNum(e.target.value)}
@@ -1093,14 +1128,14 @@ function AddStudent() {
                 <div>
                   <label
                     for="email"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Email
                   </label>
                   <input
                     type="email"
                     id="email"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
                     placeholder="student@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -1110,14 +1145,14 @@ function AddStudent() {
                 <div>
                   <label
                     for="admissionCorrdinator"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Admission Coordinator
                   </label>
                   <input
                     type="text"
                     id="admissionCorrdinator"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
                     placeholder="John Doe"
                     value={admCoordinator}
                     onChange={(e) => setAdmCoordinator(e.target.value)}
@@ -1127,7 +1162,7 @@ function AddStudent() {
                 <div className={`${course === 'Plustwo' ? 'block' : 'hidden'}`}>
                   <label
                     for="utrNumber"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     UTR number
                   </label>
@@ -1135,7 +1170,7 @@ function AddStudent() {
                     type="text"
                     id="utrNumber"
                     onChange={(e) => setUtrNumber(e.target.value)}
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2"
                     placeholder="Enter UTR number"
                   />
                 </div>
@@ -1145,14 +1180,14 @@ function AddStudent() {
                 <div className="">
                   <label
                     for="place"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500"
                   >
                     Place
                   </label>
                   <input
                     type="text"
                     id="place"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                     placeholder="cyc"
                     value={place}
                     onChange={(e) => setPlace(e.target.value)}
@@ -1162,7 +1197,7 @@ function AddStudent() {
                 <div>
                   <label
                     for="year"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Intake
                   </label>
@@ -1175,6 +1210,10 @@ function AddStudent() {
                         padding: '0.1rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm 3xl:text-lg"
@@ -1190,14 +1229,14 @@ function AddStudent() {
                 <div>
                   <label
                     for="parentNum"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Parent's Phone Number
                   </label>
                   <input
                     type="text"
                     id="parentNum"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
                     placeholder="9876543210"
                     value={parentNum}
                     onChange={(e) => setParentNum(e.target.value)}
@@ -1207,14 +1246,14 @@ function AddStudent() {
                 <div>
                   <label
                     for="confirmEmail"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Confirm Email
                   </label>
                   <input
                     type="email"
                     id="confirmEmail"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
                     placeholder="student@gmail.com"
                     value={confirmEmail}
                     onChange={(e) => setConfirmEmail(e.target.value)}
@@ -1224,14 +1263,14 @@ function AddStudent() {
                 <div>
                   <label
                     for="admissionFee"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Admission Fee
                   </label>
                   <input
                     type="text"
                     id="admissionFee"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2.5"
                     placeholder="1000"
                     value={admissionFee}
                     onChange={(e) => setAdmissionFee(e.target.value)}
@@ -1244,7 +1283,7 @@ function AddStudent() {
                 <div>
                   <label
                     for="year"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Year
                   </label>
@@ -1257,6 +1296,10 @@ function AddStudent() {
                         padding: '0.1rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm 3xl:text-lg"
@@ -1273,7 +1316,7 @@ function AddStudent() {
                   <div>
                     <label
                       for="batch"
-                      class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                      class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                     >
                       Batch
                     </label>
@@ -1287,6 +1330,10 @@ function AddStudent() {
                           borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
                         }),
+                        singleValue: (baseStyles) => ({
+                          ...baseStyles,
+                          color: '#2E2E2E', // Change the color of the text inside the input container
+                        }),
                       }}
                       className="border-white text-sm 3xl:text-lg"
                       closeMenuOnSelect={true}
@@ -1299,7 +1346,7 @@ function AddStudent() {
                 <div>
                   <label
                     for="mode"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Mode
                   </label>
@@ -1312,6 +1359,10 @@ function AddStudent() {
                         padding: '0.1rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm 3xl:text-lg"
@@ -1327,7 +1378,7 @@ function AddStudent() {
                 <div>
                   <label
                     for="dob"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Date of Birth
                   </label>
@@ -1335,14 +1386,14 @@ function AddStudent() {
                     type="date"
                     value={dob}
                     onChange={(e) => setDob(e.target.value)}
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2"
                     placeholder="Select date"
                   />
                 </div>
                 <div>
                   <label
                     for="branch"
-                    class="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    class="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     Branch
                   </label>
@@ -1355,6 +1406,10 @@ function AddStudent() {
                         padding: '0.1rem',
                         borderWidth: '0px',
                         backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                      singleValue: (baseStyles) => ({
+                        ...baseStyles,
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-sm 3xl:text-lg"
@@ -1374,14 +1429,14 @@ function AddStudent() {
                 >
                   <label
                     for="utrNo"
-                    className="block text-sm 3xl:text-lg font-medium text-gray-900 "
+                    className="block text-sm 3xl:text-lg font-medium text-gray-500 "
                   >
                     utrNo
                   </label>
                   <input
                     type="text"
                     id="utrNo"
-                    class="bg-white border border-white text-gray-900 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                    class="bg-white border border-white text-gray-700 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                     placeholder="UIX457GH"
                     value={utrNumber}
                     onChange={(e) => setUtrNumber(e.target.value)}

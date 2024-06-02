@@ -1,5 +1,5 @@
 import axios from "axios";
-import {STUDENT_FILTER_REQUEST,STUDENT_FILTER_SUCCESS,STUDENT_FILTER_FAIL} from '../constants/filterConstants'
+import {STUDENT_FILTER_REQUEST,STUDENT_FILTER_SUCCESS,STUDENT_FILTER_FAIL, UPDATE_FILTERED_STUDENTS} from '../constants/filterConstants'
 
 export const  filterStudents = ({filterObject}) => async (dispatch) => {
 
@@ -35,3 +35,10 @@ export const  filterStudents = ({filterObject}) => async (dispatch) => {
       })
     }
   }
+
+  export const updateFilteredStudents = (updatedData) => async (dispatch) => {
+    dispatch ({
+      type: UPDATE_FILTERED_STUDENTS,
+      payload: updatedData,
+    });
+  };

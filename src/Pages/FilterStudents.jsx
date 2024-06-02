@@ -95,8 +95,8 @@ function FilterStudents() {
       label: 'Offline',
     },
     {
-      value: 'Correspondence',
-      label: 'Correspondence',
+      value: 'Correspondent',
+      label: 'Correspondent',
     },
   ];
   const pendingFeeOptions = [
@@ -272,11 +272,9 @@ function FilterStudents() {
         setStudentData(response.data);
       } else {
         // If the response data is neither an object nor an array, log an error or set studentData to an empty array
-        console.error('Error: response.data is not an object or an array');
         setStudentData([]);
       }
     } catch (error) {
-      console.error('Error fetching search results:', error);
       toast.error('No student data available');
       // Set studentData to an empty array in case of an error
 
@@ -305,20 +303,6 @@ function FilterStudents() {
     if (tocSubmitted !== null) filterCriteria.tocSubmitted = tocSubmitted;
 
     dispatch(filterStudents({ filterObject: filterCriteria }));
-
-    // try {
-    //   // Send a POST request to the filter API endpoint with the filter criteria
-    //   const response = await axios.post(
-    //     'https://lobster-app-yjjm5.ondigitalocean.app/api/students/filterStudents',
-    //     filterCriteria
-    //   );
-
-    //   // Update the studentData state with the filtered results
-    //   setStudentData(response.data);
-    // } catch (error) {
-    //   console.error('Error applying filter:', error);
-    //   toast.error('Failed to apply filter');
-    // }
   };
 
   const fetchTotalStudents = async () => {
@@ -328,34 +312,50 @@ function FilterStudents() {
       );
       setTotalStudents(response.data.numberOfAdmissions);
     } catch (error) {
-      console.error('Error fetching total students:', error);
       window.alert('Failed to fetch total students');
     }
   };
 
   useEffect(() => {
-    fetchTotalStudents();
-    // applyFilter();
-  }, []);
+    const fetchDatas = async () => {
+      if (filteredStudents !== null || filteredStudents !== undefined) {
+        console.log('Condition 1');
+        console.log(filteredStudents);
+        console.log(filteredStudents.length);
+        setStudentData(filteredStudents);
+        setTotalStudents(filteredStudents.length);
+      } else {
+        console.log('Condition 2');
+        fetchTotalStudents();
+      }
+    };
 
-  useEffect(() => {
-    if (filteredStudents && filteredStudents.length > 0) {
-      setStudentData(filteredStudents);
-    }
+    //calling the fucntion
+    fetchDatas();
   }, [filteredStudents]);
 
-  const changeStatus = () => {
-    const updatedStudents = studentData.filter(
-      (student) => student.status === academicStatus
-    );
-    setStudentData(updatedStudents);
-  };
+  // useEffect(() => {
+  //   const fetchDatas = async () => {
+  //     await fetchTotalStudents();
+  //   };
+  //   fetchDatas();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (filteredStudents) {
+  //     console.log(filteredStudents.length);
+  //     setStudentData(filteredStudents);
+  //     setTotalStudents(filteredStudents.length);
+  //   }
+  //   // console.log(`printing the filtered students`);
+  //   // console.log(filteredStudents);
+  // }, [filteredStudents, studentData]);
+  // const updtatedStudentsData = () => {
+
+  // }
 
   return (
     <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
-      {console.log(
-        filteredStudents && filteredStudents.length > 0 && filteredStudents[0]
-      )}
       <div className="h-full w-full  block md:grid md:grid-cols-7 lg:grid-cols-6 xl:grid-cols-11 2xl:grid-cols-6">
         {/* mobile screens */}
         <div className="block md:hidden  ">
@@ -394,7 +394,7 @@ function FilterStudents() {
                     title={student.name}
                     tailData={student.course}
                     admissionNumber={student.admissionNumber}
-                    callBackFunction={changeStatus}
+                    showPopUp={true}
                   />
                 ))
               ) : (
@@ -459,6 +459,7 @@ function FilterStudents() {
                         type="admissions"
                         title={student.name}
                         tailData={student.course}
+                        admissionNumber={student.admissionNumber}
                       />
                     ))
                   ) : (
@@ -499,8 +500,6 @@ function FilterStudents() {
               <OverviewCard title={'Total Students'} number={totalStudents} />
             </div>
 
-            {console.log(`printing the admissions count${totalStudents}`)}
-
             <div className="row-span-4 3xl:row-span-8 pt-4">
               <div className="overflow-y-auto h-full p-4">
                 <div className="space-y-3">
@@ -511,6 +510,7 @@ function FilterStudents() {
                         type="admissions"
                         title={student.name}
                         tailData={student.course}
+                        admissionNumber={student.admissionNumber}
                       />
                     ))
                   ) : (
@@ -534,7 +534,7 @@ function FilterStudents() {
               <SeachBar onSearch={performSearch} />
             </div>
             <div className="row-span-11  px-5 py-2">
-              <div className=" h-full flex flex-col bg-white p-12 rounded-xl">
+              <div className=" h-full flex flex-col bg-white p-6 rounded-xl">
                 <div className="">
                   <h2 className="text-base xl:text-xl 3xl:text-2xl font-semibold">
                     Filter Students
@@ -543,7 +543,7 @@ function FilterStudents() {
                     Filter the student based on your criteria
                   </h2>
                 </div>
-                <div className="overflow-y-auto scroll-smooth pt-8 flex flex-col gap-3">
+                <div className="overflow-y-auto scroll-smooth pt-4 flex flex-col gap-3">
                   <div>
                     <label
                       htmlFor="year"
@@ -844,6 +844,7 @@ function FilterStudents() {
                       }
                     />
                   </div>
+
                   <div>
                     <label
                       htmlFor="academicStatus"

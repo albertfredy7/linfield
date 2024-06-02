@@ -3,7 +3,6 @@ import React from 'react';
 
 function OverviewCard({ title, value, style, number, totalAdmission }) {
   const isMobileScreen = useMediaQuery('(max-width: 767px)'); // Detect mobile screen size
-  console.log(totalAdmission);
 
   let hight = style && style.h ? style.h : 'full';
 

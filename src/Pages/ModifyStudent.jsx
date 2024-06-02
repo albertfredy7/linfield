@@ -35,26 +35,244 @@ function ModifyStudent() {
 
   const animatedComponents = makeAnimated();
 
-  const subjectsOptions = [
+  const yearOptions = [
+    {
+      label: 2024,
+      value: 2024,
+    },
+    {
+      label: 2025,
+      value: 2025,
+    },
+    {
+      label: 2026,
+      value: 2026,
+    },
+    {
+      label: 2027,
+      value: 2027,
+    },
+  ];
+
+  const courseOptions = [
+    {
+      label: 'SSLC',
+      value: 'SSLC',
+    },
+    {
+      label: 'Plustwo',
+      value: 'Plustwo',
+    },
+  ];
+
+  const batchOptions = [
+    {
+      label: 'Science',
+      value: 'Science',
+    },
+    {
+      label: 'Commerce',
+      value: 'Commerce',
+    },
+    {
+      label: 'Humanities',
+      value: 'Humanities',
+    },
+  ];
+
+  const intakeOptions = [
+    {
+      label: 'April',
+      value: 'April',
+    },
+    {
+      label: 'September',
+      value: 'September',
+    },
+  ];
+
+  const modeOptions = [
+    {
+      label: 'Online',
+      value: 'Online',
+    },
+    {
+      label: 'Offline',
+      value: 'Offline',
+    },
+    {
+      label: 'Correspondent',
+      value: 'Correspondent',
+    },
+  ];
+
+  const branchOptions = [
+    {
+      label: 'Kumaranellur',
+      value: 'Kumaranellur',
+    },
+  ];
+
+  const ssclSubjects = [
+    {
+      label: 'English',
+      value: 'English',
+    },
+    {
+      label: 'Malayalam',
+      value: 'Malayalam',
+    },
+    {
+      label: 'Social Science',
+      value: 'Social Science',
+    },
+    {
+      label: 'Home Science',
+      value: 'Home Science',
+    },
+    {
+      label: 'Business Studies',
+      value: 'Business Studies',
+    },
+    {
+      label: 'Maths',
+      value: 'Maths',
+    },
+  ];
+
+  const plsuTwoScienceSubjects = [
+    {
+      label: 'English',
+      value: 'English',
+    },
+    {
+      label: 'Malayalam',
+      value: 'Malayalam',
+    },
+    {
+      label: 'Physics',
+      value: 'Physics',
+    },
+    {
+      label: 'Chemistry',
+      value: 'Chemistry',
+    },
+    {
+      label: 'Biology',
+      value: 'Biology',
+    },
+    {
+      label: 'Maths',
+      value: 'Maths',
+    },
+  ];
+
+  const plsuTwoHumanitiesSubjects = [
+    {
+      label: 'English',
+      value: 'English',
+    },
+    {
+      label: 'Malayalam',
+      value: 'Malayalam',
+    },
     {
       label: 'History',
       value: 'History',
+    },
+    {
+      label: 'Political Science',
+      value: 'Political Science',
+    },
+    {
+      label: 'Sociology',
+      value: 'Sociology',
+    },
+  ];
+
+  const plsuTwoCommerceSubjects = [
+    {
+      label: 'English',
+      value: 'English',
+    },
+    {
+      label: 'Malayalam',
+      value: 'Malayalam',
+    },
+    {
+      label: 'Accountancy',
+      value: 'Accountancy',
+    },
+    {
+      label: 'Business Studies',
+      value: 'Business Studies',
+    },
+    {
+      label: 'Political Science',
+      value: 'Political Science',
+    },
+    {
+      label: 'Economics',
+      value: 'Economics',
+    },
+  ];
+
+  const subjectsOptions = [
+    {
+      label: 'Science',
+      value: 'Science',
+    },
+    {
+      label: 'English',
+      value: 'English',
+    },
+    {
+      label: 'Malayalam',
+      value: 'Malayalam',
+    },
+    {
+      label: 'Physics',
+      value: 'Physics',
+    },
+    {
+      label: 'Chemistry',
+      value: 'Chemistry',
+    },
+    {
+      label: 'Biology',
+      value: 'Biology',
+    },
+    {
+      label: 'Maths',
+      value: 'Maths',
+    },
+    {
+      label: 'Humanities',
+      value: 'Humanities',
     },
     {
       label: 'Politics',
       value: 'Politics',
     },
     {
-      label: 'Geography',
-      value: 'Geography',
+      label: 'Sociology',
+      value: 'Sociology',
     },
     {
-      label: 'Mathematics',
-      value: 'Mathematics',
+      label: 'Commerce',
+      value: 'Commerce',
     },
     {
-      label: 'Chemistry',
-      value: 'Chemistry',
+      label: 'Accountancy',
+      value: 'Accountancy',
+    },
+    {
+      label: 'Business Studies',
+      value: 'Business Studies',
+    },
+    {
+      label: 'Economics',
+      value: 'Economics',
     },
   ];
 
@@ -96,6 +314,87 @@ function ModifyStudent() {
     },
   ];
 
+  const streamOptions = [
+    {
+      label: 'Stream 1',
+      value: 'Stream1',
+    },
+    {
+      label: 'Stream 2',
+      value: 'Stream2',
+    },
+    {
+      label: 'Stream 3',
+      value: 'Stream3',
+    },
+    {
+      label: 'Stream 4',
+      value: 'Stream4',
+    },
+  ];
+
+  const examMode = [
+    {
+      label: 'Normal exam',
+      value: 'Normal exam',
+    },
+    {
+      label: 'Ondemand exam',
+      value: 'Ondemand exam',
+    },
+  ];
+
+  const examMonthOptions = [
+    {
+      label: 'January',
+      value: 'January',
+    },
+    {
+      label: 'February',
+      value: 'February',
+    },
+    {
+      label: 'March',
+      value: 'March',
+    },
+    {
+      label: 'April',
+      value: 'April',
+    },
+    {
+      label: 'May',
+      value: 'May',
+    },
+    {
+      label: 'June',
+      value: 'June',
+    },
+    {
+      label: 'July',
+      value: 'July',
+    },
+    {
+      label: 'August',
+      value: 'August',
+    },
+    {
+      label: 'September',
+      value: 'September',
+    },
+    {
+      label: 'October',
+      value: 'October',
+    },
+    {
+      label: 'November',
+      value: 'November',
+    },
+    {
+      label: 'December',
+      value: 'December',
+    },
+  ];
+
   const valuesOnlyArraySubjects = (e) => {
     const newSubjects = e.map((obj) => obj.value);
     setSubjects(newSubjects);
@@ -113,14 +412,12 @@ function ModifyStudent() {
 
   const performSearch = async (query) => {
     try {
-      const response = await axios.get(
+      const { data } = await axios.get(
         `https://lobster-app-yjjm5.ondigitalocean.app/api/students/search/${query}`
       );
-
-      console.log(`printing the data ${response.data}`);
-      setStudentData(response.data);
+      setStudentData(data);
     } catch (error) {
-      console.error('Error fetching search results:', error);
+      window.alert(error.response.data.message);
       // Set studentData to an empty array in case of an error
       setStudentData([]);
     }
@@ -143,6 +440,10 @@ function ModifyStudent() {
       studentData.tocSubjects = [];
       studentData.tocSubmitted = false;
       studentData.tocReceived = false;
+    }
+
+    if (studentData.course === 'SSLC') {
+      studentData.batch = undefined;
     }
 
     // let modifyStudentRequestObject = {
@@ -173,32 +474,45 @@ function ModifyStudent() {
       },
     };
 
-    axios
-      .put(
+    try {
+      const { data } = await axios.put(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/students/updateExisting',
         modifyStudentRequestObject,
         config
-      )
-      .then((response) => {
-        const data = response.data;
-        console.log(`student data ${data.name}`);
+      );
+      if (data.name) {
+        window.alert('Student modified successfully');
+      }
 
-        if (data && data.name) {
-          console.log(`success`);
-          window.alert('student modified successfully');
+      //navigate to the home page
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
+    } catch (error) {
+      window.alert(error.response.data.message);
+    }
 
-          setTimeout(() => {
-            navigate('/');
-          }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        window.alert('An error occurred while modifying the student.');
-      });
+    // axios
+    //   .put(
+    //     'https://lobster-app-yjjm5.ondigitalocean.app/api/students/updateExisting',
+    //     modifyStudentRequestObject,
+    //     config
+    //   )
+    //   .then((response) => {
+    //     const data = response.data;
+
+    //     if (data && data.name) {
+    //       window.alert('student modified successfully');
+
+    //       setTimeout(() => {
+    //         navigate('/');
+    //       }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     window.alert('An error occurred while modifying the student.');
+    //   });
   };
-
-  console.log(subjects);
 
   const selectedOptionalSubjectsExam = booleanOptions.find(
     (option) => option.value === optionalSubjectsExam
@@ -214,16 +528,18 @@ function ModifyStudent() {
   );
 
   useEffect(() => {
-    if (studentData._id) {
-      setName(studentData.name);
-      setEmail(studentData.email);
-      setPhone(studentData.phoneNumber);
-      setReferenceNo(studentData.referenceNumber);
-      setSubjects(studentData.subjects);
-      setOptionalSubjectsExam(studentData.optionalSubjectsExam);
-      setToc(studentData.toc);
-      setTocRecieved(studentData.tocReceived);
-      setTocSubmitted(studentData.tocSubmitted);
+    if (studentData.password) {
+      // setName(studentData.name);
+      // setEmail(studentData.email);
+      // setPhone(studentData.phoneNumber);
+      // setReferenceNo(studentData.referenceNumber);
+      // setSubjects(studentData.subjects);
+      // setOptionalSubjectsExam(studentData.optionalSubjectsExam);
+      // setToc(studentData.toc);
+      // setTocRecieved(studentData.tocReceived);
+      // setTocSubmitted(studentData.tocSubmitted);
+      // setPassword(studentData.password);
+      // setConfirmPassword(studentData.password);
       setPassword(studentData.password);
       setConfirmPassword(studentData.password);
     }
@@ -245,8 +561,8 @@ function ModifyStudent() {
               <SearchBar onSearch={performSearch} />
             </div>
             {studentData._id ? (
-              <div className="flex flex-col gap-2 px-5 overflow-y-auto">
-                <div className="pt-2">
+              <div className="flex flex-col gap-1 px-5 overflow-y-auto">
+                <div className="pt-0">
                   <label
                     htmlFor="name"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -256,7 +572,7 @@ function ModifyStudent() {
                   <input
                     type="text"
                     id="name"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder="John"
                     value={studentData.name}
                     onChange={(e) =>
@@ -265,7 +581,7 @@ function ModifyStudent() {
                     required
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="email"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -275,7 +591,7 @@ function ModifyStudent() {
                   <input
                     type="email"
                     id="email"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder=""
                     value={studentData.email}
                     onChange={(e) =>
@@ -284,7 +600,7 @@ function ModifyStudent() {
                     required
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="phone"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -294,7 +610,7 @@ function ModifyStudent() {
                   <input
                     type="tel"
                     id="phone"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder=""
                     value={studentData.phoneNumber}
                     onChange={(e) =>
@@ -306,7 +622,184 @@ function ModifyStudent() {
                     required
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
+                  <label
+                    htmlFor="year"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Year
+                  </label>
+                  <Select
+                    options={yearOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    value={yearOptions.find(
+                      (option) => option.value === studentData.year
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, year: e.value })
+                    }
+                  />
+                </div>
+                <div className="pt-1">
+                  <label
+                    htmlFor="course"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Course
+                  </label>
+                  <Select
+                    options={courseOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    value={courseOptions.find(
+                      (option) => option.value === studentData.course
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, course: e.value })
+                    }
+                  />
+                </div>
+
+                <div
+                  className={`pt-1 ${
+                    studentData.course === 'SSLC' ? 'hidden' : 'block'
+                  }`}
+                >
+                  <label
+                    htmlFor="batch"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Batch
+                  </label>
+                  <Select
+                    options={batchOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    value={batchOptions.find(
+                      (option) => option.value === studentData.batch
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, batch: e.value })
+                    }
+                  />
+                </div>
+
+                <div className="pt-1">
+                  <label
+                    htmlFor="intake"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Intake
+                  </label>
+                  <Select
+                    options={intakeOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    value={intakeOptions.find(
+                      (option) => option.value === studentData.intake
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, intake: e.value })
+                    }
+                  />
+                </div>
+
+                <div className="pt-1">
+                  <label
+                    htmlFor="mode"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Mode
+                  </label>
+                  <Select
+                    options={modeOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    value={modeOptions.find(
+                      (option) => option.value === studentData.mode
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, mode: e.value })
+                    }
+                  />
+                </div>
+
+                <div className="pt-1">
+                  <label
+                    htmlFor="branch"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Branch
+                  </label>
+                  <Select
+                    options={branchOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    components={animatedComponents}
+                    value={branchOptions.find(
+                      (option) => option.value === studentData.branch
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, branch: e.value })
+                    }
+                  />
+                </div>
+
+                <div className="pt-1">
                   <label
                     htmlFor="password"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -314,16 +807,16 @@ function ModifyStudent() {
                     Password
                   </label>
                   <input
-                    type="password"
+                    type="text"
                     id="password"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder="******"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="confirmPassword"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -331,9 +824,9 @@ function ModifyStudent() {
                     Confirm Password
                   </label>
                   <input
-                    type="password"
+                    type="text"
                     id="confirmPassword"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder="******"
                     required
                     value={confirmPassword}
@@ -341,7 +834,7 @@ function ModifyStudent() {
                   />
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="referenceNo"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -351,7 +844,7 @@ function ModifyStudent() {
                   <input
                     type="text"
                     id="referenceNo"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder="Reference No"
                     required
                     value={studentData.referenceNumber}
@@ -363,7 +856,7 @@ function ModifyStudent() {
                     }
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="registrationFee"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -373,7 +866,7 @@ function ModifyStudent() {
                   <input
                     type="text"
                     id="registrationFee"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder="Registration Fees"
                     required
                     value={studentData.feeDetails.registrationFees}
@@ -388,7 +881,7 @@ function ModifyStudent() {
                     }
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="examFee"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -398,7 +891,7 @@ function ModifyStudent() {
                   <input
                     type="text"
                     id="examFee"
-                    className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                     placeholder="Exam Fees"
                     required
                     value={studentData.feeDetails.examFees}
@@ -413,7 +906,7 @@ function ModifyStudent() {
                     }
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="subjects"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -421,7 +914,20 @@ function ModifyStudent() {
                     Subjects
                   </label>
                   <Select
-                    options={subjectsOptions}
+                    options={
+                      studentData.course === 'SSLC'
+                        ? ssclSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Science'
+                        ? plsuTwoScienceSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Commerce'
+                        ? plsuTwoCommerceSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Humanities'
+                        ? plsuTwoHumanitiesSubjects
+                        : null
+                    }
                     styles={{
                       control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -450,7 +956,7 @@ function ModifyStudent() {
                     }}
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="optionalSubjects"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -482,7 +988,7 @@ function ModifyStudent() {
                     }
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-1">
                   <label
                     htmlFor="toc"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -511,7 +1017,7 @@ function ModifyStudent() {
                   />
                 </div>
                 <div
-                  className={`pt-2 ${
+                  className={`pt-1 ${
                     !studentData.optionalSubjectsExam ? 'hidden' : 'block'
                   }`}
                 >
@@ -522,7 +1028,20 @@ function ModifyStudent() {
                     Optional Subjects
                   </label>
                   <Select
-                    options={optionalSubjectsOptions}
+                    options={
+                      studentData.course === 'SSLC'
+                        ? ssclSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Science'
+                        ? plsuTwoScienceSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Commerce'
+                        ? plsuTwoCommerceSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Humanities'
+                        ? plsuTwoHumanitiesSubjects
+                        : null
+                    }
                     styles={{
                       control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -551,7 +1070,9 @@ function ModifyStudent() {
                     }}
                   />
                 </div>
-                <div className={`pt-2 ${!toc ? 'hidden' : 'block'}`}>
+                <div
+                  className={`pt-1 ${!studentData.toc ? 'hidden' : 'block'}`}
+                >
                   <label
                     htmlFor="tocSubjects"
                     className="block text-base font-medium text-gray-500 pb-1"
@@ -559,7 +1080,20 @@ function ModifyStudent() {
                     TOC Subjects
                   </label>
                   <Select
-                    options={subjectsOptions}
+                    options={
+                      studentData.course === 'SSLC'
+                        ? ssclSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Science'
+                        ? plsuTwoScienceSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Commerce'
+                        ? plsuTwoCommerceSubjects
+                        : studentData.course === 'Plustwo' &&
+                          studentData.batch === 'Humanities'
+                        ? plsuTwoHumanitiesSubjects
+                        : null
+                    }
                     styles={{
                       control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -588,7 +1122,7 @@ function ModifyStudent() {
                   />
                 </div>
                 <div
-                  className={`pt-2 ${!studentData.toc ? 'hidden' : 'block'}`}
+                  className={`pt-1 ${!studentData.toc ? 'hidden' : 'block'}`}
                 >
                   <label
                     htmlFor="tocSubmitted"
@@ -618,7 +1152,7 @@ function ModifyStudent() {
                   />
                 </div>
                 <div
-                  className={`pt-2 ${!studentData.toc ? 'hidden' : 'block'}`}
+                  className={`pt-1 ${!studentData.toc ? 'hidden' : 'block'}`}
                 >
                   <label
                     htmlFor="tocRecieved"
@@ -647,7 +1181,192 @@ function ModifyStudent() {
                     }
                   />
                 </div>
-                <div className="pt-2 pb-20">
+                <div className={`pt-1`}>
+                  <label
+                    htmlFor="stream"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Choose Stream
+                  </label>
+                  <Select
+                    options={streamOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    isSearchable={false}
+                    value={streamOptions.filter(
+                      (option) =>
+                        option.value === studentData.registrationStream
+                    )}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        registrationStream: e.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="pt-1">
+                  <label
+                    htmlFor="enrollmentNo"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Enrollment number
+                  </label>
+                  <input
+                    type="text"
+                    id="enrollmentNo"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
+                    placeholder="UIX677"
+                    required
+                    value={studentData.enrollmentNumber}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        enrollmentNumber: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className={`pt-1`}>
+                  <label
+                    htmlFor="examMonth"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Exam Month
+                  </label>
+                  <Select
+                    options={examMonthOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    isSearchable={false}
+                    value={examMonthOptions.filter(
+                      (option) => option.value === studentData.examMonth
+                    )}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        examMonth: e.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="pt-1">
+                  <label
+                    htmlFor="examCentre"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Exam Centre
+                  </label>
+                  <input
+                    type="text"
+                    id="examCentre"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
+                    placeholder="Kochi"
+                    required
+                    value={studentData.examCentre}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        examCentre: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="pt-1">
+                  <label
+                    htmlFor="lastNiosYear"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    Last NIOS exam year
+                  </label>
+                  <input
+                    type="text"
+                    id="examCentre"
+                    className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
+                    placeholder="2020"
+                    required
+                    value={studentData.lastExamYear}
+                    onChange={(e) =>
+                      setStudentData({
+                        ...studentData,
+                        lastExamYear: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className={`pt-1`}>
+                  <label
+                    htmlFor="tmaReceived"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    TMA Recieved
+                  </label>
+                  <Select
+                    options={booleanOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    isSearchable={false}
+                    value={booleanOptions.find(
+                      (option) => option.value === studentData.tmaReceived
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, tmaReceived: e.value })
+                    }
+                  />
+                </div>
+                <div className={`pt-1`}>
+                  <label
+                    htmlFor="tmaSubmitted"
+                    className="block text-base font-medium text-gray-500 pb-1"
+                  >
+                    TMA Submitted
+                  </label>
+                  <Select
+                    options={booleanOptions}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderRadius: '12px',
+                        padding: '0.05rem',
+                        borderWidth: '0px',
+                        backgroundColor: 'RGB(255, 255, 255)',
+                      }),
+                    }}
+                    closeMenuOnSelect={true}
+                    isSearchable={false}
+                    value={booleanOptions.find(
+                      (option) => option.value === studentData.tmaSubmitted
+                    )}
+                    onChange={(e) =>
+                      setStudentData({ ...studentData, tmaSubmitted: e.value })
+                    }
+                  />
+                </div>
+                <div className="pt-1 pb-20">
                   <button
                     className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
                     onClick={() => submitHandler()}
@@ -706,7 +1425,7 @@ function ModifyStudent() {
                       <input
                         type="text"
                         id="name"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder="John"
                         value={studentData.name}
                         onChange={(e) =>
@@ -730,7 +1449,7 @@ function ModifyStudent() {
                       <input
                         type="email"
                         id="email"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder=""
                         value={studentData.email}
                         onChange={(e) =>
@@ -757,7 +1476,7 @@ function ModifyStudent() {
                       <input
                         type="tel"
                         id="phone"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder=""
                         value={studentData.phoneNumber}
                         onChange={(e) =>
@@ -770,6 +1489,7 @@ function ModifyStudent() {
                       />
                     </div>
                   </div>
+
                   <div className="col-span-6">
                     <div className="pt-2">
                       <label
@@ -781,7 +1501,7 @@ function ModifyStudent() {
                       <input
                         type="tel"
                         id="parentPhone"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder=""
                         value={studentData.parentNumber}
                         onChange={(e) =>
@@ -800,6 +1520,184 @@ function ModifyStudent() {
                   <div className="col-span-6">
                     <div className="pt-2">
                       <label
+                        htmlFor="course"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Course
+                      </label>
+                      <Select
+                        options={courseOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={courseOptions.find(
+                          (option) => option.value === studentData.course
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            course: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`col-span-6 ${
+                      studentData.course === 'SSLC' ? 'hidden' : 'block'
+                    }`}
+                  >
+                    <div className="pt-2">
+                      <label
+                        htmlFor="batch"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Batch
+                      </label>
+                      <Select
+                        options={batchOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={booleanOptions.find(
+                          (option) => option.value === studentData.batch
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            batch: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row-span-1 grid grid-cols-12 gap-4">
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="intake"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Intake
+                      </label>
+                      <Select
+                        options={intakeOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={intakeOptions.find(
+                          (option) => option.value === studentData.intake
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            intake: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className={`col-span-6`}>
+                    <div className="pt-2">
+                      <label
+                        htmlFor="mode"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Mode
+                      </label>
+                      <Select
+                        options={modeOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={modeOptions.find(
+                          (option) => option.value === studentData.mode
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            mode: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row-span-1 grid grid-cols-12 gap-4">
+                  <div className="col-span-12">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="branch"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Branch
+                      </label>
+                      <Select
+                        options={branchOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={branchOptions.find(
+                          (option) => option.value === studentData.branch
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            branch: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row-span-1 grid grid-cols-12 gap-4">
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
                         htmlFor="password"
                         className="block text-base font-medium text-gray-500 pb-1"
                       >
@@ -808,7 +1706,7 @@ function ModifyStudent() {
                       <input
                         type="password"
                         id="password"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder="******"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -827,7 +1725,7 @@ function ModifyStudent() {
                       <input
                         type="password"
                         id="confirmPassword"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder="******"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -838,23 +1736,6 @@ function ModifyStudent() {
                 </div>
 
                 <div className="row-span-1 grid grid-cols-12 gap-4">
-                  {/* <div className="col-span-6">
-                    <div className="pt-2">
-                      <label
-                        htmlFor="previousNiosResult"
-                        className="block text-base font-medium text-gray-500 pb-1"
-                      >
-                        Previous NIOS Result
-                      </label>
-                      <input
-                        type="text"
-                        id="previousNiosResult"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
-                        placeholder="www.nios.com/result?"
-                        required
-                      />
-                    </div>
-                  </div> */}
                   <div className="col-span-12">
                     <div className="pt-2">
                       <label
@@ -866,7 +1747,7 @@ function ModifyStudent() {
                       <input
                         type="text"
                         id="referenceNo"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder="Reference No"
                         value={studentData.referenceNumber}
                         onChange={(e) =>
@@ -893,7 +1774,7 @@ function ModifyStudent() {
                       <input
                         type="text"
                         id="registrationFee"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder="Registration Fees"
                         value={studentData.feeDetails.registrationFees}
                         onChange={(e) =>
@@ -920,7 +1801,7 @@ function ModifyStudent() {
                       <input
                         type="text"
                         id="examFee"
-                        className="bg-white border border-white text-gray-500 text-base rounded-lg block w-full p-2.5"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
                         placeholder="Exam Fees"
                         value={studentData.feeDetails.examFees}
                         onChange={(e) =>
@@ -1001,12 +1882,15 @@ function ModifyStudent() {
                         closeMenuOnSelect={true}
                         isSearchable={false}
                         value={booleanOptions.find(
-                          (option) => option.value === studentData.toc
+                          (option) =>
+                            option.value === studentData.optionalSubjectsExam
                         )}
                         onChange={(e) =>
-                          setStudentData({ ...studentData, toc: e.value })
+                          setStudentData({
+                            ...studentData,
+                            optionalSubjectsExam: e.value,
+                          })
                         }
-                        controlShouldRenderValue={toc !== null ? true : false}
                       />
                     </div>
                   </div>
@@ -1040,9 +1924,6 @@ function ModifyStudent() {
                             ...studentData,
                             optionalSubjectsExam: e.value,
                           })
-                        }
-                        controlShouldRenderValue={
-                          optionalSubjectsExam !== null ? true : false
                         }
                       />
                     </div>
@@ -1089,8 +1970,6 @@ function ModifyStudent() {
                         });
                         // setSubjects(selectedValues);
                       }}
-                      onBlur={() => console.log('Blur')}
-                      onFocus={() => console.log('Focus')}
                     />
                   </div>
                 </div>
@@ -1135,8 +2014,6 @@ function ModifyStudent() {
                         });
                         // setSubjects(selectedValues);
                       }}
-                      onBlur={() => console.log('Blur')}
-                      onFocus={() => console.log('Focus')}
                     />
                   </div>
                 </div>
@@ -1176,9 +2053,6 @@ function ModifyStudent() {
                             tocSubmitted: e.value,
                           })
                         }
-                        controlShouldRenderValue={
-                          tocSubmitted !== null ? true : false
-                        }
                       />
                     </div>
                   </div>
@@ -1212,15 +2086,230 @@ function ModifyStudent() {
                             tocReceived: e.value,
                           })
                         }
-                        controlShouldRenderValue={
-                          tocRecieved !== null ? true : false
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`row-span-1 grid grid-cols-12 gap-4`}>
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="Stream"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Stream
+                      </label>
+                      <Select
+                        options={streamOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={streamOptions.filter(
+                          (option) =>
+                            option.value === studentData.registrationStream
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            registrationStream: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="enrollmentNo"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Enrollment Number
+                      </label>
+                      <input
+                        type="text"
+                        id="enrollmentNo"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
+                        placeholder="UIUX1023"
+                        value={studentData.enrollmentNumber}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            enrollmentNumber: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`row-span-1 grid grid-cols-12 gap-4`}>
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="examMonth"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Exam Month
+                      </label>
+                      <Select
+                        options={examMonthOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={examMonthOptions.filter(
+                          (option) => option.value === studentData.examMonth
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            examMonth: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="examCentre"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Exam centre
+                      </label>
+                      <input
+                        type="text"
+                        id="examCentre"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
+                        placeholder="Kochi"
+                        value={studentData.examCentre}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            examCentre: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`row-span-1 grid grid-cols-12 gap-4`}>
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="tmaReceived"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        TMA received
+                      </label>
+                      <Select
+                        options={booleanOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={booleanOptions.find(
+                          (option) => option.value === studentData.tmaReceived
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            tmaReceived: e.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="tmaSubmitted"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        TMA submitted
+                      </label>
+                      <Select
+                        options={booleanOptions}
+                        styles={{
+                          control: (baseStyles, state) => ({
+                            ...baseStyles,
+                            borderRadius: '12px',
+                            padding: '0.05rem',
+                            borderWidth: '1px',
+                            backgroundColor: 'RGB(255, 255, 255)',
+                          }),
+                        }}
+                        closeMenuOnSelect={true}
+                        isSearchable={false}
+                        value={booleanOptions.find(
+                          (option) => option.value === studentData.tmaSubmitted
+                        )}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            tmaSubmitted: e.value,
+                          })
                         }
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="lg:row-span-2 md:row-span-1 pt-10  float-end justify-end">
+                <div className={`row-span-1 grid grid-cols-12 gap-4`}>
+                  <div className="col-span-6">
+                    <div className="pt-2">
+                      <label
+                        htmlFor="niosExamYear"
+                        className="block text-base font-medium text-gray-500 pb-1"
+                      >
+                        Last NIOS exam year
+                      </label>
+                      <input
+                        type="text"
+                        id="niosExamYear"
+                        className="bg-white border border-white text-gray-800 text-base rounded-lg block w-full p-2.5"
+                        placeholder="2020"
+                        value={studentData.lastExamYear}
+                        onChange={(e) =>
+                          setStudentData({
+                            ...studentData,
+                            lastExamYear: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-6"></div>
+                </div>
+
+                <div className="lg:row-span-2 md:row-span-1 pt-4  float-end justify-end">
                   <div className="pt-2 pb-10 ">
                     <button
                       className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
@@ -1276,7 +2365,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="name"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="John doe"
                       value={studentData.name}
                       onChange={(e) =>
@@ -1295,7 +2384,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="email"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="somehing@gmail.com"
                       value={studentData.email}
                       onChange={(e) =>
@@ -1317,7 +2406,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="phoneNumber"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="967335361"
                       value={studentData.phoneNumber}
                       onChange={(e) =>
@@ -1331,6 +2420,170 @@ function ModifyStudent() {
                   </div>
                   <div className="">
                     <label
+                      htmlFor="course"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Course
+                    </label>
+                    <Select
+                      options={courseOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={courseOptions.find(
+                        (option) => option.value === studentData.course
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          course: e.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div
+                    className={`${
+                      studentData.course === 'SSLC' ? 'hidden' : 'block'
+                    }`}
+                  >
+                    <label
+                      htmlFor="batch"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Batch
+                    </label>
+                    <Select
+                      options={batchOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={batchOptions.find(
+                        (option) => option.value === studentData.batch
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          batch: e.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="">
+                    <label
+                      htmlFor="intake"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Intake
+                    </label>
+                    <Select
+                      options={intakeOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={intakeOptions.find(
+                        (option) => option.value === studentData.intake
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          intake: e.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="">
+                    <label
+                      htmlFor="mode"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Mode
+                    </label>
+                    <Select
+                      options={modeOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={modeOptions.find(
+                        (option) => option.value === studentData.mode
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          mode: e.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <label
+                      htmlFor="branch"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Branch
+                    </label>
+                    <Select
+                      options={branchOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0.2rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={branchOptions.find(
+                        (option) => option.value === studentData.branch
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          branch: e.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="">
+                    <label
                       for="password"
                       class="block text-sm 3xl:text-lg font-semibold text-gray-500 "
                     >
@@ -1339,7 +2592,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="password"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="**********"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -1356,7 +2609,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="confirmPassword"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="**********"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -1373,7 +2626,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="refNo"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="UIXO89654"
                       value={studentData.referenceNumber}
                       onChange={(e) =>
@@ -1398,7 +2651,7 @@ function ModifyStudent() {
                         control: (baseStyles, state) => ({
                           ...baseStyles,
                           borderRadius: '.5rem',
-                          padding: '0.4rem',
+                          padding: '0.2rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
                         }),
@@ -1434,7 +2687,7 @@ function ModifyStudent() {
                         control: (baseStyles, state) => ({
                           ...baseStyles,
                           borderRadius: '.5rem',
-                          padding: '0.4rem',
+                          padding: '0.15rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
                         }),
@@ -1461,7 +2714,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="examFee"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="1500"
                       value={studentData.feeDetails.examFees}
                       onChange={(e) =>
@@ -1485,7 +2738,7 @@ function ModifyStudent() {
                     <input
                       type="text"
                       id="regFee"
-                      class="bg-white border border-white text-gray-500 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
                       placeholder="1500"
                       value={studentData.feeDetails.registrationFees}
                       onChange={(e) =>
@@ -1539,8 +2792,6 @@ function ModifyStudent() {
                           optionalSubjects: selectedValues,
                         });
                       }}
-                      onBlur={() => console.log('Blur')}
-                      onFocus={() => console.log('Focus')}
                     />
                   </div>
                   <div className="">
@@ -1555,10 +2806,11 @@ function ModifyStudent() {
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
-                          borderRadius: '12px',
-                          padding: '0.4rem',
+                          borderRadius: '.5rem',
+                          padding: '0rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
                         }),
                       }}
                       closeMenuOnSelect={true}
@@ -1586,10 +2838,11 @@ function ModifyStudent() {
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
-                          borderRadius: '12px',
-                          padding: '0.4rem',
+                          borderRadius: '.5rem',
+                          padding: '0rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
                         }),
                       }}
                       closeMenuOnSelect={true}
@@ -1617,10 +2870,11 @@ function ModifyStudent() {
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
-                          borderRadius: '12px',
-                          padding: '0.4rem',
+                          borderRadius: '.5rem',
+                          padding: '0rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
                         }),
                       }}
                       closeMenuOnSelect={true}
@@ -1652,9 +2906,9 @@ function ModifyStudent() {
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
-                          borderRadius: '12px',
-                          padding: '0.05rem',
-                          borderWidth: '1px',
+                          borderRadius: '.5rem',
+                          padding: '0rem',
+                          borderWidth: '0px',
                           backgroundColor: 'RGB(255, 255, 255)',
                         }),
                       }}
@@ -1674,10 +2928,214 @@ function ModifyStudent() {
                           tocSubjects: selectedValues,
                         });
                       }}
-                      onBlur={() => console.log('Blur')}
-                      onFocus={() => console.log('Focus')}
                     />
                   </div>
+
+                  <div className={`block col-span-1`}>
+                    <label
+                      htmlFor="stream"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Registration stream
+                    </label>
+                    <Select
+                      options={streamOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                        }),
+                      }}
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      value={streamOptions.filter(
+                        (option) =>
+                          option.value === studentData.registrationStream
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          registrationStream: e.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className={`block col-span-2`}>
+                    <label
+                      htmlFor="enrollmentNo"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Enrollment Number
+                    </label>
+                    <input
+                      type="text"
+                      id="enrollmentNo"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      placeholder="UIUX45HY"
+                      value={studentData.enrollmentNumber}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          enrollmentNumber: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className={`block col-span-1`}>
+                    <label
+                      htmlFor="examMonth"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Exam month
+                    </label>
+                    <Select
+                      options={examMonthOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                          color: 'blue',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={examMonthOptions.filter(
+                        (option) => option.value === studentData.examMonth
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          examMonth: e.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className={`block col-span-1`}>
+                    <label
+                      htmlFor="examCenter"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Exam center
+                    </label>
+                    <input
+                      type="text"
+                      id="examCenter"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      placeholder="Kochi"
+                      value={studentData.examCentre}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          examCentre: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className={`block col-span-1`}>
+                    <label
+                      htmlFor="niosExamYear"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      Last NIOS exam year
+                    </label>
+                    <input
+                      type="text"
+                      id="niosExamYear"
+                      class="bg-white border border-white text-gray-800 text-sm 3xl:text-lg rounded-lg block w-full p-2 3xl:p-2.5"
+                      placeholder="Kochi"
+                      value={studentData.lastExamYear}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          lastExamYear: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div className={`block col-span-1`}>
+                    <label
+                      htmlFor="tmaReceived"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      TMA received
+                    </label>
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                          color: 'blue',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={booleanOptions.find(
+                        (option) => option.value === studentData.tmaReceived
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          tmaReceived: e.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className={`block col-span-1`}>
+                    <label
+                      htmlFor="tmaSubmitted"
+                      className="block text-sm 3xl:text-lg font-semibold text-gray-500"
+                    >
+                      TMA submitted
+                    </label>
+                    <Select
+                      options={booleanOptions}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderRadius: '.5rem',
+                          padding: '0rem',
+                          borderWidth: '0px',
+                          backgroundColor: 'RGB(255, 255, 255)',
+                          fontSize: '14px',
+                          color: 'blue',
+                        }),
+                      }}
+                      closeMenuOnSelect={true}
+                      components={animatedComponents}
+                      value={booleanOptions.find(
+                        (option) => option.value === studentData.tmaSubmitted
+                      )}
+                      onChange={(e) =>
+                        setStudentData({
+                          ...studentData,
+                          tmaSubmitted: e.value,
+                        })
+                      }
+                    />
+                  </div>
+
                   <div className="float-end flex  justify-end col-span-3 pt-1">
                     <div>
                       <button
