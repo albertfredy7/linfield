@@ -23,7 +23,6 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.10",
     "framer-motion": "^11.0.8",
-    "material-ui-search-bar": "^1.0.1",
     "primeicons": "^6.0.1",
     "primereact": "^10.5.1",
     "react": "^18.2.0",
