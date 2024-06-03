@@ -11,6 +11,7 @@ import MobileNavigation from '../Components/MobileNavigation';
 import MobileOverviewCard from '../Components/MobileOverviewCard';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 function Home() {
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ function Home() {
   const [totalExpense, setTotalExpense] = useState(null);
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [recentAdmissions, setRecentAdmissions] = useState([]);
+
+  const teacherLoginData = useSelector((state) => state.teacherLogin);
+  const { loading, teacherInfo, error } = teacherLoginData;
 
   const formatNumber = (number) => {
     if (number >= 1000000) {
@@ -47,47 +51,53 @@ function Home() {
   };
 
   useEffect(() => {
-    const getRevenue = async () => {
-      const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/totalRevenue'
-      );
-      setTotalRevenue(formatNumber(JSON.stringify(data.totalRevenue)));
-    };
-    getRevenue();
+    if (!teacherInfo) {
+      navigate('/login');
+    } else {
+      const getRevenue = async () => {
+        const { data } = await axios.get(
+          'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/totalRevenue'
+        );
+        setTotalRevenue(formatNumber(JSON.stringify(data.totalRevenue)));
+      };
+      getRevenue();
 
-    const getAdmissionsCount = async () => {
-      const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/totalAdmissions'
-      );
-      setTotalAdmissions(formatNumber(JSON.stringify(data.numberOfAdmissions)));
-    };
-    getAdmissionsCount();
+      const getAdmissionsCount = async () => {
+        const { data } = await axios.get(
+          'https://lobster-app-yjjm5.ondigitalocean.app/api/students/totalAdmissions'
+        );
+        setTotalAdmissions(
+          formatNumber(JSON.stringify(data.numberOfAdmissions))
+        );
+      };
+      getAdmissionsCount();
 
-    const getExpense = async () => {
-      const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/totalExpense'
-      );
-      setTotalExpense(
-        formatNumber(Math.abs(JSON.stringify(data.totalExpenses)))
-      );
-    };
-    getExpense();
+      const getExpense = async () => {
+        const { data } = await axios.get(
+          'https://lobster-app-yjjm5.ondigitalocean.app/api/expense/totalExpense'
+        );
+        setTotalExpense(
+          formatNumber(Math.abs(JSON.stringify(data.totalExpenses)))
+        );
+      };
+      getExpense();
 
-    const getRecentTransactions = async () => {
-      const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/recentTransactions'
-      );
-      setRecentTransactions(data);
-    };
-    getRecentTransactions();
+      const getRecentTransactions = async () => {
+        const { data } = await axios.get(
+          'https://lobster-app-yjjm5.ondigitalocean.app/api/transactions/recentTransactions'
+        );
+        setRecentTransactions(data);
+      };
+      getRecentTransactions();
 
-    const getRecentAdmissions = async () => {
-      const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/students/recentAdmissions'
-      );
-      setRecentAdmissions(data);
-    };
-    getRecentAdmissions();
+      const getRecentAdmissions = async () => {
+        const { data } = await axios.get(
+          'https://lobster-app-yjjm5.ondigitalocean.app/api/students/recentAdmissions'
+        );
+        setRecentAdmissions(data);
+      };
+      getRecentAdmissions();
+    }
   }, []);
 
   return (
@@ -399,30 +409,6 @@ function Home() {
                     );
                   })}
 
-                {/* <div className="row-span-3 flex items-center pl-7 py-2">
-                  <DataCard
-                    type="admissions"
-                    title="Berlin"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                </div>
-                <div className="row-span-3 flex items-center pl-7 py-2">
-                  <DataCard
-                    type="admissions"
-                    title="Denver"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                </div>
-                <div className="row-span-3 flex items-center pl-7 py-2">
-                  <DataCard
-                    type="admissions"
-                    title="Professor"
-                    tailData="SSLC"
-                    style={{ h: 'full' }}
-                  />
-                </div> */}
                 <div
                   className="row-span-1 text-xl lg:text-2xl text-blue-600 flex justify-end "
                   onClick={() => navigate('/insights')}
@@ -566,139 +552,6 @@ function Home() {
                       </div>
                     </div>
                   </div>
-                  {/* Transactions row */}
-                  {/* <div className="row-span-1 flex items-center">
-                    <h3 className="text-sm 3xl:text-xl font-semibold px-9">
-                      Recent transactions
-                    </h3>
-                  </div>
-                  {recentTransactions
-                    .slice(0, 3)
-                    .reverse()
-                    .map((x, index) => {
-                      const formatDate = (dateString) => {
-                        const createdAtDate = new Date(dateString);
-                        const formattedDate = `${createdAtDate.getDate()} ${createdAtDate.toLocaleString(
-                          'default',
-                          { month: 'short' }
-                        )} ${createdAtDate.getFullYear()}`;
-                        const formattedTime = createdAtDate.toLocaleTimeString(
-                          'en-US',
-                          { hour: '2-digit', minute: '2-digit', hour12: true }
-                        );
-
-                        return `${formattedDate} || ${formattedTime}`;
-                      };
-
-                      const formattedDate = formatDate(x.date);
-                      console.log(formattedDate);
-
-                      console.log(x);
-
-                      return (
-                        <div className=" row-span-2 pl-9 pr-4 bg-green-200">
-                          <DataCard
-                            key={index}
-                            type="transactions"
-                            title={x.purpose}
-                            subTitle={
-                              x.type === 'debit'
-                                ? formattedDate
-                                : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
-                                x.studentName
-                                ? `${x.studentName} (${x.studentAdmissionNumber})`
-                                : formattedDate
-                            }
-                            tailData={
-                              x.type === 'credit'
-                                ? `+${x.amount}`
-                                : `${x.amount}`
-                            }
-                            tailDataStyle={`${
-                              x.type === 'credit'
-                                ? 'text-green-600 font-semibold'
-                                : 'text-red-500 font-semibold'
-                            }`}
-                            style={{ h: '5/6' }}
-                          />
-                        </div>
-                      );
-                    })} */}
-                  {/* <div className=" row-span-2 pl-9 pr-4 pb-2">
-                    <DataCard
-                      type="transactions"
-                      title="Admission Fees"
-                      subTitle="John doe"
-                      tailData="SSLC"
-                    />
-                  </div>
-                  <div className="row-span-2 pl-9 pr-4 pb-2">
-                    <DataCard
-                      type="transactions"
-                      title="Admission Fees"
-                      subTitle="John doe"
-                      tailData="SSLC"
-                    />
-                  </div>
-                  <div className="row-span-2 pl-9 pr-4 pb-2">
-                    <DataCard
-                      type="transactions"
-                      title="Admission Fees"
-                      subTitle="John doe"
-                      tailData="SSLC"
-                    />
-                  </div> */}
-                  {/* <div className="row-span-1 flex justify-end pr-4">
-                    <h3 className="text-sm 3xl:text-lg text-blue-500">
-                      View more
-                    </h3>
-                  </div>
-                  <div className="row-span-1 flex items-center">
-                    <h3 className="text-sm 3xl:text-xl font-semibold px-9 pb-2 3xl:pb-4">
-                      Recent admissions
-                    </h3>
-                  </div>
-                  {recentAdmissions
-                    .slice(0, 3)
-                    .reverse()
-                    .map((x, index) => {
-                      return (
-                        <div className=" row-span-2 pl-9 pr-4 pb-2 bg-red-200">
-                          <DataCard
-                            type={'admissions'}
-                            title={x.name}
-                            tailData={x.course}
-                            style={{ h: 'full' }}
-                          />
-                        </div>
-                      );
-                    })} */}
-                  {/* <div className=" row-span-2 pl-9 pr-4 pb-2">
-                    <DataCard
-                      type="admissions"
-                      title="Berlin"
-                      tailData="SSLC"
-                    />
-                  </div>
-                  <div className="row-span-2 pl-9 pr-4 pb-2">
-                    <DataCard
-                      type="admissions"
-                      title="Denver"
-                      tailData="SSLC"
-                    />
-                  </div>
-                  <div className="row-span-2 pl-9 pr-4 pb-2">
-                    <DataCard
-                      type="admissions"
-                      title="Professor"
-                      tailData="SSLC"
-                    />
-                  </div> */}
-                  {/* <div className="row-span-1 flex justify-end pr-4">
-                    <h3 className="text-sm 3xl:text-lg text-blue-500">
-                      View more
-                    </h3>
-                  </div> */}
                 </div>
               </div>
               <div className="col-span-1  grid grid-rows-5 px-8 py-4 items-center ">
