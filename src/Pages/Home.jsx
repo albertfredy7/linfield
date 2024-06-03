@@ -166,53 +166,71 @@ function Home() {
                   Recent transactions
                 </h4>
                 <div className="py-3 flex flex-col gap-2">
-                  {recentTransactions
-                    .slice(0, 3)
-                    .reverse()
-                    .reverse()
-                    .map((x, index) => {
-                      const formatDate = (dateString) => {
-                        const date = new Date(dateString);
-                        const day = date.getDate();
-                        const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
-                        const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+                  {recentTransactions.length > 0 ? (
+                    recentTransactions
+                      .slice(0, 3)
+                      .reverse()
+                      .reverse()
+                      .map((x, index) => {
+                        const formatDate = (dateString) => {
+                          const date = new Date(dateString);
+                          const day = date.getDate();
+                          const month = date.getMonth() + 1; // Month is zero-indexed, so we add 1
+                          const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
 
-                        // Ensure leading zero for single-digit day and month
-                        const formattedDay = day < 10 ? '0' + day : day;
-                        const formattedMonth = month < 10 ? '0' + month : month;
+                          // Ensure leading zero for single-digit day and month
+                          const formattedDay = day < 10 ? '0' + day : day;
+                          const formattedMonth =
+                            month < 10 ? '0' + month : month;
 
-                        return `${formattedDay}-${formattedMonth}-${year}`;
-                      };
+                          return `${formattedDay}-${formattedMonth}-${year}`;
+                        };
 
-                      const formattedDate = formatDate(x.date);
+                        const formattedDate = formatDate(x.date);
 
-                      return (
-                        <DataCard
-                          key={index}
-                          type="transactions"
-                          title={x.purpose}
-                          subTitle={
-                            x.type === 'debit'
-                              ? formattedDate
-                              : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
-                              x.studentName
-                              ? `${x.studentName} (${x.studentAdmissionNumber})`
-                              : formattedDate
-                          }
-                          tailData={
-                            x.type === 'credit' ? `+${x.amount}` : `${x.amount}`
-                          }
-                          tailDataStyle={`${
-                            x.type === 'credit'
-                              ? 'text-green-600 font-semibold'
-                              : 'text-red-500 font-semibold'
-                          }`}
-                        />
-                      );
-                    })}
+                        return (
+                          <DataCard
+                            key={index}
+                            type="transactions"
+                            title={x.purpose}
+                            subTitle={
+                              x.type === 'debit'
+                                ? formattedDate
+                                : // : `${x.studentName} `? `${x.studentName} (${x.studentAdmissionNumber} `: `${x.date}`
+                                x.studentName
+                                ? `${x.studentName} (${x.studentAdmissionNumber})`
+                                : formattedDate
+                            }
+                            tailData={
+                              x.type === 'credit'
+                                ? `+${x.amount}`
+                                : `${x.amount}`
+                            }
+                            tailDataStyle={`${
+                              x.type === 'credit'
+                                ? 'text-green-600 font-semibold'
+                                : 'text-red-500 font-semibold'
+                            }`}
+                          />
+                        );
+                      })
+                  ) : (
+                    <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-start items-center mb-6">
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply w-4/6"
+                        alt=""
+                      />
+                      <h1 className="text-center text-gray-500">
+                        No transactions to show
+                      </h1>
+                    </div>
+                  )}
 
                   <div
-                    className=" px-2 text-sm md:text-base text-blue-600 flex justify-end "
+                    className={`px-2 text-sm md:text-base text-blue-600 flex justify-end ${
+                      recentTransactions.length < 1 && 'hidden'
+                    }`}
                     onClick={() => navigate('/insights')}
                   >
                     View more
@@ -226,25 +244,40 @@ function Home() {
                   Recent Admisisons
                 </h4>
                 <div className="py-3 flex flex-col gap-2 pb-12">
-                  {recentAdmissions
-                    .slice(0, 3)
-                    .reverse()
-                    .reverse()
-                    .map((x, index) => {
-                      return (
-                        <DataCard
-                          key={index} // Make sure to provide a unique key for each item in the list
-                          type={'admissions'}
-                          title={x.name}
-                          tailData={x.course}
-                          style={{ h: 'full' }}
-                          admissionNumber={x.admissionNumber}
-                        />
-                      );
-                    })}
+                  {recentAdmissions.length > 0 ? (
+                    recentAdmissions
+                      .slice(0, 3)
+                      .reverse()
+                      .reverse()
+                      .map((x, index) => {
+                        return (
+                          <DataCard
+                            key={index} // Make sure to provide a unique key for each item in the list
+                            type={'admissions'}
+                            title={x.name}
+                            tailData={x.course}
+                            style={{ h: 'full' }}
+                            admissionNumber={x.admissionNumber}
+                          />
+                        );
+                      })
+                  ) : (
+                    <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-start items-center">
+                      <img
+                        src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
+                        className="mix-blend-multiply w-4/6"
+                        alt=""
+                      />
+                      <h1 className="text-center text-gray-500">
+                        No Admissions to show
+                      </h1>
+                    </div>
+                  )}
 
                   <div
-                    className=" px-2 text-sm md:text-md text-blue-600 flex justify-end "
+                    className={`px-2 text-sm md:text-md text-blue-600 flex justify-end ${
+                      recentAdmissions.length < 1 && 'hidden'
+                    }`}
                     onClick={() => navigate('/insights')}
                   >
                     View more
