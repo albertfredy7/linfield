@@ -5,6 +5,7 @@ import Button from '../Components/Button';
 import Select from 'react-select';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function Teacher() {
   const [name, setName] = useState('');
@@ -12,6 +13,9 @@ function Teacher() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState(null);
+
+  //handling the state of the loading button
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,6 +26,8 @@ function Teacher() {
   ];
 
   const teacherSubmitHandler = async () => {
+    setLoading(true);
+
     try {
       if (!name || !contactNo || !email || !password || !role) {
         window.alert('Please fill all fields');
@@ -58,6 +64,8 @@ function Teacher() {
       }
     } catch (error) {
       window.alert(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -186,6 +194,8 @@ function Teacher() {
                   text="Create Teacher ID"
                   buttonStyle="bg-[#2740CD] text-white rounded-lg px-4 py-3 text-md w-full"
                   onClick={teacherSubmitHandler}
+                  loading={loading}
+                  Icon={HourglassEmptyIcon}
                 />
               </div>
             </div>

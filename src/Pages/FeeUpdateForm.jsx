@@ -12,6 +12,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { format } from 'date-fns';
 import { useNavigate, useParams } from 'react-router-dom';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function FeeUpdateForm() {
   const { number } = useParams();
@@ -38,6 +39,7 @@ function FeeUpdateForm() {
 
   const [student, setStudent] = useState(null);
   const [transactions, setTransactions] = useState(null);
+  const [loading, setLoading] = useState(null);
 
   //   const searchValueHandler = (value) => {
   //     setNumber(value);
@@ -148,6 +150,8 @@ function FeeUpdateForm() {
       },
     };
 
+    setLoading(true);
+
     try {
       const { data } = await axios.put(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/students/fees/nios',
@@ -161,6 +165,8 @@ function FeeUpdateForm() {
       }
     } catch (error) {
       window.alert(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -512,7 +518,9 @@ function FeeUpdateForm() {
                       buttonStyle={
                         'bg-[#2740CD] text-white rounded-lg  flex items-center justify-center px-2 py-3 text-md lg:text-xl xl:text-sm 3xl:text-lg  w-full'
                       }
-                      onClick={() => updateFeeHandler()}
+                      onClick={updateFeeHandler}
+                      Icon={HourglassEmptyIcon}
+                      loading={loading}
                     />
                   </div>
                 </div>

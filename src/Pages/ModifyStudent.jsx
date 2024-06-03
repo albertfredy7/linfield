@@ -9,6 +9,7 @@ import makeAnimated from 'react-select/animated';
 import Button from '../Components/Button';
 import MobileNavigation from '../Components/MobileNavigation';
 import { useNavigate } from 'react-router-dom';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function ModifyStudent() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function ModifyStudent() {
   const [registrationFee, setRegistrationFee] = useState('');
   const [examFee, setExamFee] = useState('');
   const [tocRecieved, setTocRecieved] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const animatedComponents = makeAnimated();
 
@@ -276,10 +278,6 @@ function ModifyStudent() {
     },
   ];
 
-  const selectedSubjectsOption = subjectsOptions.filter((option) =>
-    subjects.includes(option.value)
-  );
-
   const optionalSubjectsOptions = [
     {
       label: 'History',
@@ -330,17 +328,6 @@ function ModifyStudent() {
     {
       label: 'Stream 4',
       value: 'Stream4',
-    },
-  ];
-
-  const examMode = [
-    {
-      label: 'Normal exam',
-      value: 'Normal exam',
-    },
-    {
-      label: 'Ondemand exam',
-      value: 'Ondemand exam',
     },
   ];
 
@@ -395,21 +382,6 @@ function ModifyStudent() {
     },
   ];
 
-  const valuesOnlyArraySubjects = (e) => {
-    const newSubjects = e.map((obj) => obj.value);
-    setSubjects(newSubjects);
-  };
-
-  const valuesOnlyOptionalSubjects = (e) => {
-    const newOptionalSubjects = e.map((obj) => obj.value);
-    setOptionalSubjects(newOptionalSubjects);
-  };
-
-  const valuesOnlyArrayTocSubjects = (e) => {
-    const newToc = e.map((obj) => obj.value);
-    setTocSubjects(newToc);
-  };
-
   const performSearch = async (query) => {
     try {
       const { data } = await axios.get(
@@ -446,23 +418,6 @@ function ModifyStudent() {
       studentData.batch = undefined;
     }
 
-    // let modifyStudentRequestObject = {
-    //   admissionNumber: studentData[0].admissionNumber,
-    //   password,
-    //   referenceNumber: referenceNo,
-    //   registrationFees: registrationFee,
-    //   examFees: examFee,
-    //   subjects,
-    //   toc,
-    //   tocReceived: tocRecieved,
-    //   tocSubmitted,
-    // };
-
-    // if (optionalSubjectsExam) {
-    //   modifyStudentRequestObject.optionalSubjectsExam = optionalSubjectsExam;
-    //   modifyStudentRequestObject.optionalSubjects = optionalSubjects;
-    // }
-
     const modifyStudentRequestObject = {
       ...studentData,
       password,
@@ -473,6 +428,8 @@ function ModifyStudent() {
         'Content-Type': 'application/json',
       },
     };
+
+    setLoading(true);
 
     try {
       const { data } = await axios.put(
@@ -490,56 +447,13 @@ function ModifyStudent() {
       }, 1000);
     } catch (error) {
       window.alert(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
-
-    // axios
-    //   .put(
-    //     'https://lobster-app-yjjm5.ondigitalocean.app/api/students/updateExisting',
-    //     modifyStudentRequestObject,
-    //     config
-    //   )
-    //   .then((response) => {
-    //     const data = response.data;
-
-    //     if (data && data.name) {
-    //       window.alert('student modified successfully');
-
-    //       setTimeout(() => {
-    //         navigate('/');
-    //       }, 2000); // Adjust the time as needed (2000 milliseconds = 2 seconds)
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     window.alert('An error occurred while modifying the student.');
-    //   });
   };
-
-  const selectedOptionalSubjectsExam = booleanOptions.find(
-    (option) => option.value === optionalSubjectsExam
-  );
-  const selectedTocOption = booleanOptions.find(
-    (option) => option.value === toc
-  );
-  const selectedTocRecievedOption = booleanOptions.find(
-    (option) => option.value === tocRecieved
-  );
-  const selectedTocSubmittedOption = booleanOptions.find(
-    (option) => option.value === tocSubmitted
-  );
 
   useEffect(() => {
     if (studentData.password) {
-      // setName(studentData.name);
-      // setEmail(studentData.email);
-      // setPhone(studentData.phoneNumber);
-      // setReferenceNo(studentData.referenceNumber);
-      // setSubjects(studentData.subjects);
-      // setOptionalSubjectsExam(studentData.optionalSubjectsExam);
-      // setToc(studentData.toc);
-      // setTocRecieved(studentData.tocReceived);
-      // setTocSubmitted(studentData.tocSubmitted);
-      // setPassword(studentData.password);
-      // setConfirmPassword(studentData.password);
       setPassword(studentData.password);
       setConfirmPassword(studentData.password);
     }
@@ -1367,12 +1281,13 @@ function ModifyStudent() {
                   />
                 </div>
                 <div className="pt-1 pb-20">
-                  <button
-                    className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
-                    onClick={() => submitHandler()}
-                  >
-                    Modify Student
-                  </button>
+                  <Button
+                    buttonStyle="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
+                    onClick={submitHandler}
+                    Icon={HourglassEmptyIcon}
+                    loading={loading}
+                    text={'Modify Student'}
+                  />
                 </div>
               </div>
             ) : (
@@ -2311,12 +2226,13 @@ function ModifyStudent() {
 
                 <div className="lg:row-span-2 md:row-span-1 pt-4  float-end justify-end">
                   <div className="pt-2 pb-10 ">
-                    <button
-                      className="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
-                      onClick={() => submitHandler()}
-                    >
-                      Modify Student
-                    </button>
+                    <Button
+                      buttonStyle="bg-[#2740CD] text-white rounded-lg text-base font-semibold w-full p-3 mt-5"
+                      onClick={submitHandler}
+                      text={'Modify student'}
+                      Icon={HourglassEmptyIcon}
+                      loading={loading}
+                    />
                   </div>
                 </div>
               </div>
@@ -3138,12 +3054,13 @@ function ModifyStudent() {
 
                   <div className="float-end flex  justify-end col-span-3 pt-1">
                     <div>
-                      <button
-                        className="bg-[#2740CD] text-white rounded-lg text-sm 3xl:text-lg font-semibold w-full p-3 mt-5"
-                        onClick={() => submitHandler()}
-                      >
-                        Modify Student
-                      </button>
+                      <Button
+                        buttonStyle="bg-[#2740CD] text-white rounded-lg text-sm 3xl:text-lg font-semibold w-full p-3 mt-5"
+                        onClick={submitHandler}
+                        text={'Modify student'}
+                        Icon={HourglassEmptyIcon}
+                        loading={loading}
+                      />
                     </div>
                   </div>
                 </div>
@@ -3163,12 +3080,6 @@ function ModifyStudent() {
           {/* <SidebarComponent /> */}
         </div>
       </div>
-      {/* <div className='grid grid-cols-5'>
-            <div className='w-full '>
-                <Sidebar />
-            </div>
-            <div>Home</div>
-        </div> */}
     </div>
   );
 }

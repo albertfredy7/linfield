@@ -12,6 +12,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function UpdateFee() {
   const [feeType, setFeeType] = useState(null);
@@ -29,6 +30,7 @@ function UpdateFee() {
   const [number, setNumber] = useState(null);
   const [student, setStudent] = useState(null);
   const [transactions, setTransactions] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   //defining the navigate for navigation purposes
   const navigate = useNavigate();
@@ -190,6 +192,8 @@ function UpdateFee() {
       },
     };
 
+    setLoading(true);
+
     try {
       console.log('Sending request with body:', feeBody);
       const { data } = await axios.put(
@@ -211,6 +215,8 @@ function UpdateFee() {
       // Log the error to understand what went wrong
       console.error('An error occurred:', error);
       window.alert('An error occurred: ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -822,6 +828,8 @@ function UpdateFee() {
                         'bg-[#2740CD] text-white rounded-lg  flex items-center justify-center px-2 py-2 text-md lg:text-xl xl:text-sm 3xl:text-lg  w-full'
                       }
                       onClick={updateFeeHandler}
+                      Icon={HourglassEmptyIcon}
+                      loading={loading}
                     />
                   </div>
                 </div>

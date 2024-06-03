@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 const Button = ({
   buttonStyle,
   text,
-  icon,
+  Icon,
   iconStyle,
   textStyle,
   navigateUrl,
   onClick,
+  loading,
 }) => {
   const navigate = useNavigate();
 
@@ -16,13 +17,25 @@ const Button = ({
     if (onClick) {
       onClick();
     }
-    navigate(navigateUrl);
+    if (navigateUrl) {
+      navigate(navigateUrl);
+    }
   };
 
   return (
-    <button className={`${buttonStyle}`} onClick={handleClick}>
-      {icon && <img src={icon} className={`${iconStyle}`} />}
-      <h4 className={`${textStyle}`}>{text}</h4>
+    <button
+      className={`${buttonStyle}`}
+      onClick={handleClick}
+      disabled={loading}
+    >
+      {loading ? (
+        <div className="flex justify-center gap-3">
+          {Icon && <Icon className={`spin`} />}
+          <h4 className={`${textStyle}`}>{text}</h4>
+        </div>
+      ) : (
+        <h4 className={`${textStyle}`}>{text}</h4>
+      )}
     </button>
   );
 };

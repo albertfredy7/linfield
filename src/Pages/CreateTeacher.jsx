@@ -7,6 +7,7 @@ import DataCard from '../Components/DataCard';
 import Select from 'react-select';
 import MobileNavigation from '../Components/MobileNavigation';
 import MobileOverviewCard from '../Components/MobileOverviewCard';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import axios from 'axios';
 
 function CreateTeacher() {
@@ -16,6 +17,7 @@ function CreateTeacher() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState(null);
+  var [loading, setLoading] = useState(false);
 
   const options = [
     { value: 'Admin', label: 'Admin' },
@@ -23,11 +25,24 @@ function CreateTeacher() {
     { value: 'Tutor', label: 'Tutor' },
   ];
 
+  //api call to fetch the teacher datas available
+  const fetchTeachersData = async () => {
+    const { data } = await axios.get(
+      'https://lobster-app-yjjm5.ondigitalocean.app/api/teachers/showAll'
+    );
+    if (data) {
+      setTeachersData(data);
+    }
+  };
+
   const teacherSubmitHandler = async () => {
     try {
       if (!name || !contactNo || !email || !password || !role) {
         window.alert('Please fill all fields');
         return;
+      }
+      if (contactNo.length !== 10) {
+        window.alert('Please enter a valid contact number');
       }
       const requestData = {
         name,
@@ -42,6 +57,8 @@ function CreateTeacher() {
           'Content-Type': 'application/json',
         },
       };
+
+      setLoading(true);
 
       const { data } = await axios.post(
         'https://lobster-app-yjjm5.ondigitalocean.app/api/teachers/register',
@@ -59,19 +76,13 @@ function CreateTeacher() {
       }
     } catch (error) {
       window.alert(error.response.data.message);
+    } finally {
+      setLoading(false);
+      fetchTeachersData();
     }
   };
 
   useEffect(() => {
-    const fetchTeachersData = async () => {
-      const { data } = await axios.get(
-        'https://lobster-app-yjjm5.ondigitalocean.app/api/teachers/showAll'
-      );
-      if (data) {
-        setTeachersData(data);
-      }
-    };
-
     fetchTeachersData();
   }, []);
 
@@ -103,6 +114,8 @@ function CreateTeacher() {
                 text="Create"
                 buttonStyle="bg-[#2740CD] text-white px-3 py-2 rounded-xl"
                 navigateUrl={'/createTeacher'}
+                Icon={HourglassEmptyIcon}
+                loading={loading}
               />
             </div>
 
@@ -112,16 +125,20 @@ function CreateTeacher() {
               <DataCard type="admissions" title="Geetha" tailData="Teacher" />
               <DataCard type="admissions" title="John" tailData="Teacher" /> */}
               {teachersData.length > 0 ? (
-                teachersData.map((teacher, index) => (
-                  <DataCard
-                    key={index}
-                    type="admissions"
-                    title={teacher.name}
-                    tailData={teacher.role}
-                    role={'teacher'}
-                    teacherId={teacher._id.toString()}
-                  />
-                ))
+                teachersData
+                  .slice()
+                  .reverse()
+                  .map((teacher, index) => (
+                    <DataCard
+                      key={index}
+                      type="admissions"
+                      title={teacher.name}
+                      tailData={teacher.role}
+                      role={'teacher'}
+                      teacherId={teacher._id.toString()}
+                      showPopUp={true}
+                    />
+                  ))
               ) : (
                 <div className="text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center">
                   <img
@@ -173,6 +190,8 @@ function CreateTeacher() {
                 text="Create"
                 buttonStyle="bg-[#2740CD] h-1/2 text-white px-6 py-2  lg:text-xl rounded-xl"
                 navigateUrl={'/createTeacher'}
+                Icon={HourglassEmptyIcon}
+                loading={loading}
               />
             </div>
 
@@ -244,16 +263,20 @@ function CreateTeacher() {
                     tailData="Teacher"
                   /> */}
                   {teachersData.length > 0 ? (
-                    teachersData.map((teacher, index) => (
-                      <DataCard
-                        key={index}
-                        type="admissions"
-                        title={teacher.name}
-                        tailData={teacher.role}
-                        role={'teacher'}
-                        teacherId={teacher._id.toString()}
-                      />
-                    ))
+                    teachersData
+                      .slice()
+                      .reverse()
+                      .map((teacher, index) => (
+                        <DataCard
+                          key={index}
+                          type="admissions"
+                          title={teacher.name}
+                          tailData={teacher.role}
+                          role={'teacher'}
+                          teacherId={teacher._id.toString()}
+                          showPopUp={true}
+                        />
+                      ))
                   ) : (
                     <div className="text-center text-lg font-semibold overflow-y-hidden flex flex-col justify-center items-center">
                       <img
@@ -294,6 +317,7 @@ function CreateTeacher() {
                       id="name"
                       placeholder="Enter name"
                       className="bg-[#f0f0f0] text-gray-600 bg text-sm 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
+                      value={name}
                       onChange={(e) => {
                         setName(e.target.value);
                       }}
@@ -313,6 +337,7 @@ function CreateTeacher() {
                       id="contactNo"
                       placeholder="Enter contact number"
                       className="bg-[#f0f0f0] text-gray-600 bg text-sm 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
+                      value={contactNo}
                       onChange={(e) => {
                         setContactNo(e.target.value);
                       }}
@@ -332,6 +357,7 @@ function CreateTeacher() {
                       id="email"
                       placeholder="Enter email"
                       className="bg-[#f0f0f0] text-gray-600 bg text-sm 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
+                      value={email}
                       onChange={(e) => {
                         setEmail(e.target.value);
                       }}
@@ -351,6 +377,7 @@ function CreateTeacher() {
                       id="password"
                       placeholder="Enter password"
                       className="bg-[#f0f0f0] text-gray-600 bg text-sm 3xl:text-lg  rounded-md block w-full p-2 3xl:p-3 md:p-4 xl:p-2"
+                      value={password}
                       onChange={(e) => {
                         setPassword(e.target.value);
                       }}
@@ -371,20 +398,23 @@ function CreateTeacher() {
                         control: (baseStyles, state) => ({
                           ...baseStyles,
                           borderRadius: '.5rem',
-                          padding: '0.4rem',
+                          padding: '0.08rem',
                           borderWidth: '0px',
                           backgroundColor: 'RGB(240, 240, 240)',
-                          fontSize: '1rem',
+                          fontSize: '.85rem',
                         }),
                         singleValue: (baseStyles) => ({
                           ...baseStyles,
-                          color: '#9E9E9E', // Change the color of the text inside the input container
+                          color: '#2E2E2E', // Change the color of the text inside the input container
                         }),
                       }}
                       className="border-white text-base text-gray-500"
                       closeMenuOnSelect={true}
                       isSearchable={false}
                       name="roles"
+                      value={
+                        options.find((option) => option.value === role) || null
+                      }
                       onChange={(e) => {
                         setRole(e.value);
                       }}
@@ -397,6 +427,8 @@ function CreateTeacher() {
                       text="Create Teacher ID"
                       buttonStyle="bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md w-full"
                       onClick={teacherSubmitHandler}
+                      Icon={HourglassEmptyIcon}
+                      loading={loading}
                     />
                   </div>
                 </div>

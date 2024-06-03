@@ -174,7 +174,10 @@ function MobileNavigation() {
             <p className="text-nowrap">Modify Student</p>
           </div>
           <div className="flex flex-col items-center">
-            <SensorOccupiedIcon fontSize="medium" onClick={()=>navigate('/createTeacher')} />
+            <SensorOccupiedIcon
+              fontSize="medium"
+              onClick={() => navigate('/teacherId')}
+            />
             <p className="text-nowrap">Create Teacher</p>
           </div>
           <div

@@ -337,7 +337,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -371,7 +371,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-sm"
@@ -405,7 +405,7 @@ function Filter() {
                       }),
                       singleValue: (baseStyles) => ({
                         ...baseStyles,
-                        color: '#9E9E9E', // Change the color of the text inside the input container
+                        color: '#2E2E2E', // Change the color of the text inside the input container
                       }),
                     }}
                     className="border-white text-base text-gray-500"
@@ -440,7 +440,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -473,7 +473,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -506,7 +506,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -543,7 +543,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -580,7 +580,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -613,7 +613,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -646,7 +646,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -679,7 +679,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -712,7 +712,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"
@@ -745,7 +745,7 @@ function Filter() {
                     }),
                     singleValue: (baseStyles) => ({
                       ...baseStyles,
-                      color: '#9E9E9E', // Change the color of the text inside the input container
+                      color: '#2E2E2E ', // Change the color of the text inside the input container
                     }),
                   }}
                   className="border-white text-base text-gray-500"

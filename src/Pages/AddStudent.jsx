@@ -7,11 +7,13 @@ import Button from '../Components/Button';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function AddStudent() {
   const navigate = useNavigate();
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState('');
   const [place, setPlace] = useState('');
@@ -173,6 +175,8 @@ function AddStudent() {
         },
       };
 
+      setLoading(true);
+
       try {
         const { data } = await axios.post(
           'https://lobster-app-yjjm5.ondigitalocean.app/api/students/nios',
@@ -205,6 +209,8 @@ function AddStudent() {
         }
       } catch (error) {
         window.alert(error.response.data.message);
+      } finally {
+        setLoading(false);
       }
 
       // axios
@@ -614,6 +620,8 @@ function AddStudent() {
                   'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-full '
                 }
                 text={'Add Student'}
+                Icon={HourglassEmptyIcon}
+                loading={loading}
               />
               <ToastContainer
                 position="top-right"
@@ -1030,14 +1038,14 @@ function AddStudent() {
                 </div>
               </div>
               <div className="flex justify-center items-center p-10">
-                <button
-                  className={
+                <Button
+                  buttonStyle={
                     'bg-[#2740CD] text-white text-md lg:text-md font-medium p-3 px-6 rounded-xl w-1/2 '
                   }
-                  onClick={() => addStudentHandler()}
+                  onClick={addStudentHandler}
                 >
                   Add student
-                </button>
+                </Button>
               </div>
             </div>
           </div>

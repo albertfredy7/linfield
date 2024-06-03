@@ -14,6 +14,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { set } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { filterStudents } from '../actions/studentFilterActions';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function FilterStudents() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function FilterStudents() {
   const [tocSubmitted, setTocSubmitted] = useState(null);
   const [studentData, setStudentData] = useState([]);
   const [totalStudents, setTotalStudents] = useState(0);
+  const [spinnerLoading, setSpinnerLoading] = useState(false);
 
   const yearOptions = [
     {
@@ -302,6 +304,9 @@ function FilterStudents() {
     if (tocRecieved !== null) filterCriteria.tocRecieved = tocRecieved;
     if (tocSubmitted !== null) filterCriteria.tocSubmitted = tocSubmitted;
 
+    //set the loading comonent here to false and make it truw once we get the return data
+    setSpinnerLoading(true);
+
     dispatch(filterStudents({ filterObject: filterCriteria }));
   };
 
@@ -317,22 +322,34 @@ function FilterStudents() {
   };
 
   useEffect(() => {
-    const fetchDatas = async () => {
-      if (filteredStudents !== null || filteredStudents !== undefined) {
-        console.log('Condition 1');
-        console.log(filteredStudents);
-        console.log(filteredStudents.length);
-        setStudentData(filteredStudents);
-        setTotalStudents(filteredStudents.length);
-      } else {
-        console.log('Condition 2');
-        fetchTotalStudents();
-      }
-    };
+    fetchTotalStudents();
+  }, []);
 
-    //calling the fucntion
-    fetchDatas();
+  useEffect(() => {
+    if (filteredStudents) {
+      setStudentData(filteredStudents);
+      setTotalStudents(filteredStudents.length);
+      setSpinnerLoading(false);
+    }
   }, [filteredStudents]);
+
+  // useEffect(() => {
+  //   const fetchDatas = async () => {
+  //     if (filteredStudents !== null || filteredStudents !== undefined) {
+  //       console.log('Condition 1');
+  //       console.log(filteredStudents);
+  //       console.log(filteredStudents.length);
+  //       setStudentData(filteredStudents);
+  //       setTotalStudents(filteredStudents.length);
+  //     } else {
+  //       console.log('Condition 2');
+  //       fetchTotalStudents();
+  //     }
+  //   };
+
+  //   //calling the fucntion
+  //   fetchDatas();
+  // }, [filteredStudents]);
 
   // useEffect(() => {
   //   const fetchDatas = async () => {
@@ -492,7 +509,7 @@ function FilterStudents() {
                 Filter students
               </h1>
               <h1 className="text-md 3xl:text-xl font-normal">
-                Lorem ipsum some random sub heading
+                Filter students according to criterias
               </h1>
             </div>
 
@@ -1226,6 +1243,8 @@ function FilterStudents() {
                       text="Apply Filter"
                       buttonStyle="bg-[#2740CD] text-white rounded-lg px-4 py-2 text-md w-full"
                       onClick={applyFilter}
+                      Icon={HourglassEmptyIcon}
+                      loading={spinnerLoading}
                     />
                   </div>
                 </div>

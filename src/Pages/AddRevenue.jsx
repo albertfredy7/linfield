@@ -4,12 +4,15 @@ import Button from '../Components/Button';
 import SidebarNew from '../Components/SidebarNew';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function AddRevenue() {
   const [category, setCategory] = useState(null);
   const [amount, setAmount] = useState(null);
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const revenueCategories = [
     {
       value: 'Excess Reg',
@@ -23,6 +26,7 @@ function AddRevenue() {
   const navigate = useNavigate();
 
   const handleAddRevenue = async () => {
+    setLoading(true);
     try {
       const revenueData = {
         category: category,
@@ -52,6 +56,8 @@ function AddRevenue() {
       }
     } catch (error) {
       window.alert(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -149,6 +155,8 @@ function AddRevenue() {
                     text="Add Revenue"
                     buttonStyle="bg-[#2740CD] text-white p-3 text-md lg:text-xl rounded-xl w-full"
                     onClick={handleAddRevenue}
+                    Icon={HourglassEmptyIcon}
+                    loading={loading}
                   />
                 </div>
               </div>

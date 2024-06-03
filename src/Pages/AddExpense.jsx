@@ -10,6 +10,7 @@ import SidebarNew from '../Components/SidebarNew';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function AddExpense() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function AddExpense() {
   const [amount, setAmount] = useState(null);
   const [description, setDescription] = useState(null);
   const [date, setDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const addExpenseHandler = async () => {
     const config = {
@@ -38,6 +40,8 @@ function AddExpense() {
         'Content-Type': 'application/json',
       },
     };
+
+    setLoading(true);
 
     try {
       const { data } = await axios.post(
@@ -51,6 +55,8 @@ function AddExpense() {
       }
     } catch (error) {
       window.alert(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
 
     // axios
@@ -177,6 +183,8 @@ function AddExpense() {
                   buttonStyle={'bg-[#2740CD] text-white p-3 rounded-xl w-full'}
                   text={'Add Expense'}
                   onClick={addExpenseHandler}
+                  Icon={HourglassEmptyIcon}
+                  loading={loading}
                 />
               </div>
               {/* <ToastContainer
@@ -311,6 +319,8 @@ function AddExpense() {
                     }
                     text={'Add Expense'}
                     onClick={addExpenseHandler}
+                    Icon={HourglassEmptyIcon}
+                    loading={loading}
                   />
                 </div>
                 {/* <ToastContainer

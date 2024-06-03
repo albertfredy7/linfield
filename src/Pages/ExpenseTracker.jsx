@@ -13,6 +13,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function ExpenseTracker() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function ExpenseTracker() {
 
   const [expenseData, setExpenseData] = useState([]);
   const [totalExpense, setTotalExpense] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const options = [
     { value: 'Salary', label: 'Salary' },
@@ -52,11 +54,18 @@ function ExpenseTracker() {
   };
 
   const addExpenseHandler = async () => {
+    if (!amount || !category || !description || !date) {
+      window.alert('Please enter all fields');
+      return;
+    }
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
+
+    setLoading(true);
 
     try {
       const { data } = await axios.post(
@@ -80,6 +89,8 @@ function ExpenseTracker() {
         // Handling other types of errors
         window.alert('something went wrong. connect admin for more info');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -630,6 +641,8 @@ function ExpenseTracker() {
                     buttonStyle={`w-full bg-[#5266D7] text-white text-md 3xl:text-xl p-2 md:p-3 xl:p-2 3xl:p-3 rounded-lg`}
                     text={`Add`}
                     onClick={addExpenseHandler}
+                    Icon={HourglassEmptyIcon}
+                    loading={loading}
                   />
                 </div>
                 <ToastContainer
