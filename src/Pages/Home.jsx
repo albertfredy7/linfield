@@ -133,7 +133,7 @@ function Home() {
                 >
                   <Button
                     buttonStyle={`flex items-center gap-2`}
-                    icon={gmeet}
+                    Icon={gmeet}
                     iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
                     text={`Meet`}
                     textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
@@ -148,7 +148,7 @@ function Home() {
                 >
                   <Button
                     buttonStyle={`flex items-center gap-2`}
-                    icon={notion}
+                    Icon={notion}
                     iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
                     text={`Notion`}
                     textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}

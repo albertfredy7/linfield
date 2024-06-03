@@ -34,7 +34,10 @@ const Button = ({
           <h4 className={`${textStyle}`}>{text}</h4>
         </div>
       ) : (
-        <h4 className={`${textStyle}`}>{text}</h4>
+        <div className="flex justify-center items-center gap-2">
+          {Icon && <img src={Icon} className={iconStyle} />}
+          <h4 className={`${textStyle}`}>{text}</h4>
+        </div>
       )}
     </button>
   );
