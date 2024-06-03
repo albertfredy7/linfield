@@ -215,14 +215,14 @@ function Home() {
                         );
                       })
                   ) : (
-                    <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center bg-[#f0f0f0]">
+                    <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center bg-[#f0f0f0] mb-6">
                       <img
                         src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
                         className="mix-blend-multiply"
                         alt=""
                       />
-                      <h1 className="text-center text-lg font-semibold text-gray-500">
-                        No transactions available
+                      <h1 className="text-center text-gray-600">
+                        No recent transactions
                       </h1>
                     </div>
                   )}
@@ -262,14 +262,14 @@ function Home() {
                         );
                       })
                   ) : (
-                    <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-start items-center">
+                    <div className="text-center text-base font-semibold overflow-y-hidden flex flex-col justify-center items-center bg-[#f0f0f0] mb-6">
                       <img
                         src="https://blog.vantagecircle.com/content/images/2021/08/open-to-learning-engaged-employees-1.gif"
-                        className="mix-blend-multiply w-4/6"
+                        className="mix-blend-multiply"
                         alt=""
                       />
-                      <h1 className="text-center text-gray-500">
-                        No Admissions to show
+                      <h1 className="text-center text-gray-600">
+                        No recent admissions
                       </h1>
                     </div>
                   )}
