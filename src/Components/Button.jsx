@@ -10,6 +10,7 @@ const Button = ({
   navigateUrl,
   onClick,
   loading,
+  page,
 }) => {
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ const Button = ({
         </div>
       ) : (
         <div className="flex justify-center items-center gap-2">
-          {Icon && <img src={Icon} className={iconStyle} />}
+          {page && Icon && <img src={Icon} className={iconStyle} />}
           <h4 className={`${textStyle}`}>{text}</h4>
         </div>
       )}

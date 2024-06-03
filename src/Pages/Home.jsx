@@ -137,6 +137,7 @@ function Home() {
                     iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
                     text={`Meet`}
                     textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
+                    page={'Home'}
                   />
                 </Link>
               </div>
@@ -152,6 +153,7 @@ function Home() {
                     iconStyle={`h-1/5 w-1/5 md:h-1/4 md:w-1/4 lg:h-3/5 lg:w-3/5`}
                     text={`Notion`}
                     textStyle={`text-base md:text-lg lg:text-2xl hover:text-blue-400`}
+                    page={'Home'}
                   />
                 </Link>
               </div>
@@ -574,17 +576,19 @@ function Home() {
                     <div className="flex gap-4">
                       <Button
                         buttonStyle={`flex items-center cursor-pointer`}
-                        icon={gmeet}
-                        iconStyle={`w-3/5 h-3/5 3xl:w-4/5 3xl:h-4/5`}
+                        Icon={gmeet}
+                        iconStyle={`w-3/5 h-3/5 xl:h-1/4 xl:w-1/4 3xl:w-4/5 3xl:h-4/5`}
                         text={`Meet`}
                         textStyle={`text-md 3xl:text-lg hover:text-blue-400`}
+                        page={'Home'}
                       />
                       <Button
                         buttonStyle={`flex items-center cursor-pointer gap-1`}
-                        icon={notion}
-                        iconStyle={`w-1/2 h-1/2 3xl:w-4/5 3xl:h-4/5`}
+                        Icon={notion}
+                        iconStyle={`w-1/2 h-1/2 xl:h-1/4 xl:w-1/4 3xl:w-4/5 3xl:h-4/5`}
                         text={`Notion`}
                         textStyle={`text-md 3xl:text-lg hover:text-blue-400`}
+                        page={'Home'}
                       />
                     </div>
                   </div>
