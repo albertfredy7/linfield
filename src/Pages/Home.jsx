@@ -51,6 +51,7 @@ function Home() {
    };
 
    useEffect(() => {
+      console.log(teacherInfo);
       if (!teacherInfo) {
          navigate('/login');
       } else {
@@ -131,7 +132,7 @@ function Home() {
          };
          getRecentAdmissions();
       }
-   }, []);
+   }, [teacherInfo]);
 
    return (
       <div className="bg-[#f0f0f0] h-screen w-screen overflow-hidden">
@@ -141,7 +142,7 @@ function Home() {
                <div className="flex flex-col h-screen">
                   <div className="flex flex-col items-start px-5 pt-10">
                      <h1 className="text-xl text-[#2740CD] font-bold ">
-                        Hey {teacherInfo.name} 👋
+                        Hey {teacherInfo?.name} 👋
                      </h1>
                      <p className="text-[#66666] text-nowrap">
                         Here's the overview of key metrics and insights
